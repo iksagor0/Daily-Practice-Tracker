@@ -3,7 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Daily Practice Tracker</title>
+    <title>Daily Practice Tracker</title>
+    <meta name="description" content="Build consistency. Track progress. Achieve mastery. A beautiful daily practice tracker to manage your learning habits, set goals, and celebrate achievements." />
+    <meta name="author" content="Daily Practice Tracker" />
+    <meta name="theme-color" content="#0ea5e9" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="public/favicon.svg" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Daily Practice Tracker" />
+    <meta property="og:description" content="Build consistency. Track progress. Achieve mastery. A beautiful daily practice tracker to manage your learning habits and celebrate achievements." />
+    <meta property="og:image" content="public/favicon.svg" />
+    <meta property="og:site_name" content="Daily Practice Tracker" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Daily Practice Tracker" />
+    <meta name="twitter:description" content="Build consistency. Track progress. Achieve mastery. A beautiful daily practice tracker to manage your learning habits and celebrate achievements." />
+    <meta name="twitter:image" content="public/favicon.svg" />
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,8 +34,8 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/date-fns@3.6.0/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-    <script src="tailwind.config.js"></script>
-    <link rel="stylesheet" href="styles.css" />
+    <script src="js/tailwind.config.js"></script>
+    <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body
     class="font-sans text-slate-800 antialiased selection:bg-brand-200 selection:text-brand-900 pb-20 overflow-x-hidden"
@@ -94,10 +114,10 @@
     <!-- Header Section -->
     <header class="pt-10 pb-6 px-4 text-center animate-fade-in">
       <h1
-        class="text-[28px] md:text-5xl font-display font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-brand-900 to-slate-900 tracking-tight"
+        class="text-[28px] md:text-5xl font-display font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-brand-900 to-slate-900 tracking-tight mb-4"
       >
         <div
-          class="inline-flex items-center justify-center p-1.5 md:p-3 mb-4 md:mr-3 rounded-2xl bg-gradient-to-br from-brand-100 to-indigo-100 text-brand-600 shadow-sm border border-white"
+          class="inline-flex items-center justify-center p-1.5 md:p-3 md:mr-3 rounded-2xl bg-gradient-to-br from-brand-100 to-indigo-100 text-brand-600 shadow-sm border border-white"
         >
           <i data-lucide="target" class="w-6 h-6 md:w-8 md:h-8"></i>
         </div>
@@ -620,7 +640,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-database-compat.js"></script>
-    <script src="data.js"></script>
-    <script src="app.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
   </body>
 </html>
