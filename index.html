@@ -121,8 +121,24 @@
     </style>
   </head>
   <body
-    class="font-sans text-slate-800 antialiased selection:bg-brand-200 selection:text-brand-900 pb-20"
+    class="font-sans text-slate-800 antialiased selection:bg-brand-200 selection:text-brand-900 pb-20 overflow-x-hidden"
   >
+    <!-- Auth Overlay -->
+    <div id="authOverlay" class="fixed inset-0 bg-slate-50 z-[100] flex flex-col items-center justify-center transition-opacity duration-300" style="display: none;">
+      <div class="glass-panel p-8 max-w-sm w-full mx-4 rounded-2xl text-center border border-slate-200 shadow-2xl animate-scale-in">
+        <div class="inline-flex items-center justify-center p-4 mb-4 rounded-2xl bg-gradient-to-br from-brand-100 to-indigo-100 text-brand-600 shadow-sm border border-white">
+          <i data-lucide="lock" class="w-8 h-8"></i>
+        </div>
+        <h2 class="text-2xl font-display font-bold text-slate-800 mb-2">Welcome Back</h2>
+        <p class="text-slate-500 mb-6 text-sm">Please enter your passcode to access the tracker.</p>
+        <div class="relative mb-4">
+          <input type="password" id="authPasswordInput" class="w-full px-4 py-3 bg-white rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-center text-xl tracking-[0.2em] font-mono shadow-sm placeholder:tracking-normal" placeholder="Enter Passcode">
+        </div>
+        <p id="authErrorMsg" class="text-rose-500 text-sm mb-4 hidden font-medium bg-rose-50 py-2 rounded-lg border border-rose-100">Incorrect passcode</p>
+        <button onclick="submitAuth()" class="w-full bg-brand-600 text-white font-bold py-3.5 px-4 rounded-xl hover:bg-brand-700 transition shadow-lg shadow-brand-500/30 text-lg">Unlock Tracker</button>
+      </div>
+    </div>
+
     <!-- Header Section -->
     <header class="pt-10 pb-6 px-6 text-center animate-fade-in">
       <h1

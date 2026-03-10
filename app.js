@@ -11,6 +11,55 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
+// --- Authentication ---
+const PASSCODE = "202011056254"; // CHANGE THIS to your desired password
+const AUTH_EXPIRY_DAYS = 30;
+
+function checkAuthStatus() {
+  const authData = localStorage.getItem("trackerAuth");
+  let isAuthenticated = false;
+  if (authData) {
+    try {
+      const parsed = JSON.parse(authData);
+      const now = Date.now();
+      const expiryMs = AUTH_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
+      if (now - parsed.timestamp < expiryMs) {
+        document.getElementById("authOverlay").style.display = "none";
+        isAuthenticated = true;
+      }
+    } catch (e) {
+      console.error("Auth verify error", e);
+    }
+  }
+
+  if (!isAuthenticated) {
+    const overlay = document.getElementById("authOverlay");
+    if (overlay) overlay.style.display = "flex";
+    setTimeout(() => {
+      const el = document.getElementById("authPasswordInput");
+      if (el) el.focus();
+    }, 100);
+  }
+  return isAuthenticated;
+}
+
+function submitAuth() {
+  const input = document.getElementById("authPasswordInput").value;
+  if (input === PASSCODE) {
+    localStorage.setItem("trackerAuth", JSON.stringify({ timestamp: Date.now() }));
+    const overlay = document.getElementById("authOverlay");
+    overlay.style.opacity = "0";
+    setTimeout(() => {
+      overlay.style.display = "none";
+    }, 300);
+    document.getElementById("authErrorMsg").classList.add("hidden");
+  } else {
+    document.getElementById("authErrorMsg").classList.remove("hidden");
+    document.getElementById("authPasswordInput").value = "";
+    document.getElementById("authPasswordInput").focus();
+  }
+}
+
 // --- Data Definitions ---
 const INITIAL_TASKS = [
   {
@@ -147,9 +196,9 @@ function checkDailyReset() {
 }
 
 function loadState() {
-  const stateRef = db.ref('trackerState');
-  
-  stateRef.on('value', (snapshot) => {
+  const stateRef = db.ref("trackerState");
+
+  stateRef.on("value", (snapshot) => {
     if (snapshot.exists()) {
       const parsed = snapshot.val();
       appState.tasks = (parsed.tasks || []).map((t) => {
@@ -158,7 +207,7 @@ function loadState() {
       });
       appState.history = parsed.history || [];
       appState.lastResetTime = parsed.lastResetTime || null;
-      
+
       const didReset = checkDailyReset();
       if (didReset) {
         saveState();
@@ -177,9 +226,9 @@ function loadState() {
           });
           appState.history = parsed.history || [];
           appState.lastResetTime = parsed.lastResetTime || null;
-        } catch(e) {}
-      } 
-      
+        } catch (e) {}
+      }
+
       if (!appState.tasks || appState.tasks.length === 0) {
         appState.tasks = INITIAL_TASKS.map((t) => ({
           ...t,
@@ -188,7 +237,7 @@ function loadState() {
           completedAt: null,
         }));
       }
-      
+
       checkDailyReset();
       // Push initial state to Firebase
       saveState();
@@ -197,7 +246,7 @@ function loadState() {
 }
 
 function saveState() {
-  db.ref('trackerState').set(appState);
+  db.ref("trackerState").set(appState);
   localStorage.setItem("practiceTrackerState", JSON.stringify(appState));
   updateUI();
 }
@@ -472,7 +521,7 @@ function triggerSuccessFeedback() {
   }, 800);
 }
 
-// Support pressing Enter in input
+// Support pressing Enter in inputs
 const timeInputEl = document.getElementById("timeInput");
 if (timeInputEl) {
   timeInputEl.addEventListener("keypress", function (e) {
@@ -482,8 +531,35 @@ if (timeInputEl) {
   });
 }
 
+const authInputEl = document.getElementById("authPasswordInput");
+if (authInputEl) {
+  authInputEl.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+      submitAuth();
+    }
+  });
+}
+
 // --- Initialization ---
 window.addEventListener("DOMContentLoaded", () => {
+  checkAuthStatus();
+
+  // Initial render for dates immediately before data loads
+  const bdTime = getBDTime();
+  if (window.dateFns && document.getElementById("currentDateText")) {
+    document.getElementById("currentDateText").innerText = window.dateFns.format(
+      bdTime,
+      "EEEE, MMMM d, yyyy",
+    );
+  } else if (document.getElementById("currentDateText")) {
+    document.getElementById("currentDateText").innerText = bdTime.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  }
+
   loadState();
 
   // Check for reset every minute while tab is open just in case they leave it open through 6 AM
@@ -497,6 +573,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 // --- Export for HTML Inline Event Handlers ---
+window.submitAuth = submitAuth;
 window.openTimeModal = openTimeModal;
 window.closeModal = closeModal;
 window.submitTaskCompletion = submitTaskCompletion;
