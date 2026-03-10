@@ -672,6 +672,169 @@ function triggerSuccessFeedback() {
     ring.classList.add("text-brand-500");
     ring.classList.remove("text-emerald-400");
   }, 800);
+
+  // Check achievements after a brief delay to let stats update
+  setTimeout(() => checkAchievements(), 300);
+}
+
+// --- Achievement System ---
+const shownAchievements = new Set(
+  JSON.parse(sessionStorage.getItem("shownAchievements") || "[]")
+);
+
+/**
+ * Gathers current stats and checks all achievement milestones.
+ * Triggers celebration for newly unlocked achievements.
+ */
+function checkAchievements() {
+  const doneTasks = appState.tasks.filter((t) => t.status === "DONE");
+  const todayTime = doneTasks.reduce((sum, t) => sum + (t.actualTime || 0), 0);
+  const todayCompleted = doneTasks.length;
+  const todayTotal = appState.tasks.length;
+
+  // Calculate weekly and monthly totals (same logic as calculateHistoricalStats)
+  const currentEffectiveDate = getEffectiveBDDateStr();
+  const todayObj = new Date(currentEffectiveDate);
+  let weeklyTime = todayTime;
+  let monthlyTime = todayTime;
+
+  appState.history.forEach((record) => {
+    const recDate = new Date(record.dateKey);
+    const diffTime = Math.abs(todayObj - recDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    if (diffDays <= 7) weeklyTime += record.totalTime;
+    if (diffDays <= 30) monthlyTime += record.totalTime;
+  });
+
+  const stats = { todayTime, todayCompleted, todayTotal, weeklyTime, monthlyTime };
+
+  // Check each achievement
+  for (const achievement of ACHIEVEMENTS) {
+    if (shownAchievements.has(achievement.id)) continue;
+    if (achievement.check(stats)) {
+      shownAchievements.add(achievement.id);
+      sessionStorage.setItem(
+        "shownAchievements",
+        JSON.stringify([...shownAchievements])
+      );
+      triggerCelebration(achievement);
+      return; // Show one at a time
+    }
+  }
+}
+
+/**
+ * Triggers the full celebration effect: confetti firecrackers + achievement toast.
+ * @param {object} achievement - The unlocked achievement object.
+ */
+function triggerCelebration(achievement) {
+  // Fire multiple confetti bursts like firecrackers
+  fireConfettiBurst();
+
+  // Show achievement toast
+  showAchievementToast(achievement);
+}
+
+/**
+ * Creates a spectacular multi-burst confetti firecracker effect
+ * lasting ~5 seconds from multiple positions across the screen.
+ */
+function fireConfettiBurst() {
+  const BURST_COLORS = [
+    ["#ff0000", "#ff6600", "#ffcc00"],
+    ["#00ccff", "#0066ff", "#6600ff"],
+    ["#ff00cc", "#ff0066", "#ff3399"],
+    ["#00ff66", "#00cc44", "#66ff00"],
+    ["#ffcc00", "#ff9900", "#ff6600"],
+  ];
+
+  const defaults = {
+    spread: 360,
+    ticks: 100,
+    gravity: 0.6,
+    decay: 0.94,
+    startVelocity: 30,
+    zIndex: 9999,
+  };
+
+  /**
+   * Fires a single confetti burst at a given origin.
+   * @param {number} x - Horizontal origin (0-1).
+   * @param {number} y - Vertical origin (0-1).
+   * @param {number} count - Number of particles.
+   * @param {string[]} colors - Color palette.
+   * @param {number} velocity - Start velocity override.
+   * @param {number} size - Scalar size override.
+   */
+  const burst = (x, y, count, colors, velocity = 30, size = 1) => {
+    confetti({
+      ...defaults,
+      particleCount: count,
+      origin: { x, y },
+      colors,
+      startVelocity: velocity,
+      scalar: size,
+    });
+  };
+
+  // Wave 1: Center explosion (0ms)
+  burst(0.5, 0.4, 80, BURST_COLORS[0], 35, 1.2);
+
+  // Wave 2: Side bursts (300-600ms)
+  setTimeout(() => burst(0.2, 0.5, 50, BURST_COLORS[1], 30, 1), 300);
+  setTimeout(() => burst(0.8, 0.5, 50, BURST_COLORS[2], 30, 1), 600);
+
+  // Wave 3: Corner bursts (900-1200ms)
+  setTimeout(() => burst(0.1, 0.2, 40, BURST_COLORS[3], 25, 0.8), 900);
+  setTimeout(() => burst(0.9, 0.2, 40, BURST_COLORS[4], 25, 0.8), 1200);
+
+  // Wave 4: Mid bursts (1500-2000ms)
+  setTimeout(() => burst(0.3, 0.3, 60, BURST_COLORS[2], 30, 1.1), 1500);
+  setTimeout(() => burst(0.7, 0.7, 60, BURST_COLORS[3], 30, 1.1), 2000);
+
+  // Wave 5: Random scattered bursts (2300-3200ms)
+  setTimeout(() => burst(0.15, 0.7, 35, BURST_COLORS[0], 28, 0.9), 2300);
+  setTimeout(() => burst(0.85, 0.3, 35, BURST_COLORS[4], 28, 0.9), 2600);
+  setTimeout(() => burst(0.5, 0.6, 50, BURST_COLORS[1], 32, 1), 2900);
+  setTimeout(() => burst(0.4, 0.2, 40, BURST_COLORS[2], 26, 0.85), 3200);
+
+  // Wave 6: Dual side finale (3600-4000ms)
+  setTimeout(() => burst(0.25, 0.4, 55, BURST_COLORS[3], 35, 1.1), 3600);
+  setTimeout(() => burst(0.75, 0.4, 55, BURST_COLORS[0], 35, 1.1), 4000);
+
+  // Wave 7: Grand finale center explosion (4500ms)
+  setTimeout(() => {
+    confetti({
+      ...defaults,
+      particleCount: 150,
+      origin: { x: 0.5, y: 0.45 },
+      colors: ["#ff0000", "#ffcc00", "#00ccff", "#ff00cc", "#00ff66", "#6600ff"],
+      spread: 360,
+      startVelocity: 45,
+      scalar: 1.5,
+      ticks: 120,
+    });
+  }, 4500);
+}
+
+/**
+ * Displays the achievement message in the right sidebar
+ * between Today's Progress and Performance Analytics.
+ * @param {object} achievement - The unlocked achievement object.
+ */
+function showAchievementToast(achievement) {
+  const container = document.getElementById("achievementContainer");
+  if (!container) return;
+
+  container.classList.remove("hidden");
+  container.innerHTML = `
+    <div class="rounded-3xl p-5 text-center border-2 border-amber-200 bg-gradient-to-br from-amber-50 to-yellow-50 shadow-sm"
+         style="animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+      <div class="text-4xl mb-2">${achievement.label.split(" ")[0]}</div>
+      <h3 class="text-base font-display font-bold text-slate-900 mb-1">${achievement.label}</h3>
+      <p class="text-xs text-slate-500 font-medium">${achievement.desc}</p>
+    </div>
+  `;
 }
 
 // Support pressing Enter in inputs
