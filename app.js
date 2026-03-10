@@ -260,18 +260,18 @@ function renderTasks() {
                   </div>
                   <p class="text-slate-500 text-sm leading-relaxed truncate group-hover:text-slate-600 transition-colors">${t.desc}</p>
               </div>
-              <div class="shrink-0 w-full sm:w-auto mt-2 sm:mt-0 flex justify-end gap-2 sm:ml-1 items-center">
+              <div class="shrink-0 w-full sm:w-auto mt-3 sm:mt-0 flex justify-between sm:justify-end gap-2 sm:ml-1 items-center">
                <div class="shrink-0 flex gap-2">
-                  <button onclick="editTask('${t.id}')" class="flex w-6 h-6 shrink-0 rounded-lg bg-slate-50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-indigo-400 hover:text-indigo-500 hover:bg-indigo-50 shadow-sm transition-all focus:ring-2 focus:ring-indigo-100" title="Edit Task">
-                      <i data-lucide="edit-2" class="w-2.5 h-2.5"></i>
+                  <button onclick="editTask('${t.id}')" class="flex w-8 h-8 sm:w-6 sm:h-6 shrink-0 rounded-lg bg-slate-50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-indigo-400 hover:text-indigo-500 hover:bg-indigo-50 shadow-sm transition-all focus:ring-2 focus:ring-indigo-100" title="Edit Task">
+                      <i data-lucide="edit-2" class="w-4 h-4 sm:w-2.5 sm:h-2.5"></i>
                   </button>
-                  <button onclick="deleteTask('${t.id}')" class="flex w-6 h-6 shrink-0 rounded-lg bg-slate-50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-rose-400 hover:text-rose-500 hover:bg-rose-50 shadow-sm transition-all focus:ring-2 focus:ring-rose-100" title="Delete Task">
-                      <i data-lucide="trash-2" class="w-2.5 h-2.5"></i>
+                  <button onclick="deleteTask('${t.id}')" class="flex w-8 h-8 sm:w-6 sm:h-6 shrink-0 rounded-lg bg-slate-50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-rose-400 hover:text-rose-500 hover:bg-rose-50 shadow-sm transition-all focus:ring-2 focus:ring-rose-100" title="Delete Task">
+                      <i data-lucide="trash-2" class="w-4 h-4 sm:w-2.5 sm:h-2.5"></i>
                   </button>
-                   </div>
-                  <button onclick="openTimeModal('${t.id}')" class="flex sm:w-10 sm:h-10 w-full py-2.5 sm:py-0 shrink-0 rounded-xl sm:rounded-full bg-slate-50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-emerald-400 hover:text-emerald-500 hover:bg-emerald-50 shadow-sm transition-all focus:ring-4 focus:ring-emerald-100 font-semibold sm:font-normal gap-2 sm:gap-0" title="Mark Done">
-                      <i data-lucide="check" class="w-5 h-5"></i> <span class="sm:hidden text-sm">Mark Done</span>
-                  </button>
+               </div>
+               <button onclick="openTimeModal('${t.id}')" class="flex-1 sm:flex-none flex sm:w-10 sm:h-10 py-2.5 sm:py-0 shrink-0 rounded-xl sm:rounded-full bg-slate-50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-emerald-400 hover:text-emerald-500 hover:bg-emerald-50 shadow-sm transition-all focus:ring-4 focus:ring-emerald-100 font-semibold sm:font-normal gap-2 sm:gap-0" title="Mark Done">
+                   <i data-lucide="check" class="w-5 h-5"></i> <span class="sm:hidden text-sm">Mark Done</span>
+               </button>
               </div>
           </div>
       `,
@@ -295,16 +295,18 @@ function renderTasks() {
                   </div>
                   <p class="text-slate-400 text-sm leading-relaxed truncate">${t.desc}</p>
               </div>
-              <div class="shrink-0 w-full sm:w-auto mt-2 sm:mt-0 flex justify-end gap-2 sm:ml-1 items-center">
-                  <button onclick="editTask('${t.id}')" class="flex w-8 h-8 shrink-0 rounded-lg bg-white/50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-indigo-400 hover:text-indigo-500 hover:bg-indigo-50 shadow-sm transition-all focus:ring-2 focus:ring-indigo-100" title="Edit Task">
-                      <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
+              <div class="shrink-0 w-full sm:w-auto mt-3 sm:mt-0 flex justify-between sm:justify-end gap-2 sm:ml-1 items-center">
+               <div class="shrink-0 flex gap-2">
+                  <button onclick="editTask('${t.id}')" class="flex w-8 h-8 sm:w-6 sm:h-6 shrink-0 rounded-lg bg-white/50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-indigo-400 hover:text-indigo-500 hover:bg-indigo-50 shadow-sm transition-all focus:ring-2 focus:ring-indigo-100" title="Edit Task">
+                      <i data-lucide="edit-2" class="w-4 h-4 sm:w-2.5 sm:h-2.5"></i>
                   </button>
-                  <button onclick="deleteTask('${t.id}')" class="flex w-8 h-8 shrink-0 rounded-lg bg-white/50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-rose-400 hover:text-rose-500 hover:bg-rose-50 shadow-sm transition-all focus:ring-2 focus:ring-rose-100" title="Delete Task">
-                      <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                  <button onclick="deleteTask('${t.id}')" class="flex w-8 h-8 sm:w-6 sm:h-6 shrink-0 rounded-lg bg-white/50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-rose-400 hover:text-rose-500 hover:bg-rose-50 shadow-sm transition-all focus:ring-2 focus:ring-rose-100" title="Delete Task">
+                      <i data-lucide="trash-2" class="w-4 h-4 sm:w-2.5 sm:h-2.5"></i>
                   </button>
-                   <button onclick="undoTask('${t.id}')" title="Undo" class="flex sm:w-10 sm:h-10 w-full py-2.5 sm:py-0 shrink-0 items-center justify-center gap-2 sm:gap-0 text-slate-400 font-semibold sm:font-normal hover:text-indigo-500 transition-colors rounded-xl sm:rounded-full hover:bg-white/50 border border-transparent hover:border-slate-200 shadow-sm">
-                      <i data-lucide="rotate-ccw" class="w-4 h-4"></i> <span class="sm:hidden text-sm">Undo</span>
-                  </button>
+               </div>
+               <button onclick="undoTask('${t.id}')" title="Undo" class="flex-1 sm:flex-none flex sm:w-10 sm:h-10 py-2.5 sm:py-0 shrink-0 items-center justify-center gap-2 sm:gap-0 text-slate-400 font-semibold sm:font-normal hover:text-indigo-500 transition-colors rounded-xl sm:rounded-full hover:bg-white/50 border border-transparent hover:border-slate-200 shadow-sm">
+                   <i data-lucide="rotate-ccw" class="w-4 h-4"></i> <span class="sm:hidden text-sm">Undo</span>
+               </button>
               </div>
           </div>
       `,
