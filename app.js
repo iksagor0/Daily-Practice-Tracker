@@ -13,6 +13,30 @@ const db = firebase.database();
 
 // --- Authentication ---
 let currentUser = null;
+let isGuest = localStorage.getItem("isGuestTracker") === "true";
+
+function continueAsGuest() {
+  isGuest = true;
+  localStorage.setItem("isGuestTracker", "true");
+  
+  document.getElementById("authOverlay").style.display = "none";
+  const loader = document.getElementById("globalLoader");
+  if (loader) loader.style.display = "none";
+
+  const profile = document.getElementById("userProfile");
+  if (profile) {
+    profile.classList.add("hidden");
+    profile.classList.remove("flex");
+  }
+
+  const guestProfile = document.getElementById("guestProfile");
+  if (guestProfile) {
+    guestProfile.classList.remove("hidden");
+    guestProfile.classList.add("flex");
+  }
+  
+  loadState();
+}
 
 function signInWithGoogle() {
   const provider = new firebase.auth.GoogleAuthProvider();
@@ -162,6 +186,35 @@ function checkDailyReset() {
 }
 
 function loadState() {
+  if (isGuest) {
+    const saved = localStorage.getItem("guestTrackerState");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        appState.tasks = (parsed.tasks || []).map((t) => t);
+        appState.history = parsed.history || [];
+        appState.lastResetTime = parsed.lastResetTime || null;
+      } catch (e) {}
+    }
+
+    if (!appState.tasks || appState.tasks.length === 0) {
+      appState.tasks = INITIAL_TASKS.map((t) => ({
+        ...t,
+        status: "TODO",
+        actualTime: 0,
+        completedAt: null,
+      }));
+    }
+
+    const didReset = checkDailyReset();
+    if (didReset) {
+      saveState();
+    } else {
+      updateUI();
+    }
+    return;
+  }
+
   if (!currentUser) return;
   const stateRef = db.ref(`users/${currentUser.uid}/trackerState`);
 
@@ -211,9 +264,14 @@ function loadState() {
 }
 
 function saveState() {
+  if (isGuest) {
+    localStorage.setItem("guestTrackerState", JSON.stringify(appState));
+    updateUI();
+    return;
+  }
+
   if (!currentUser) return;
   db.ref(`users/${currentUser.uid}/trackerState`).set(appState);
-  localStorage.setItem("practiceTrackerState", JSON.stringify(appState));
   updateUI();
 }
 
@@ -760,9 +818,35 @@ window.addEventListener("DOMContentLoaded", () => {
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       currentUser = user;
+      
+      const wasGuest = isGuest;
+      isGuest = false;
+      localStorage.removeItem("isGuestTracker");
+
+      // Sync guest data to database if they were a guest
+      if (wasGuest) {
+        const savedGuestData = localStorage.getItem("guestTrackerState");
+        if (savedGuestData) {
+          try {
+            db.ref(`users/${currentUser.uid}/trackerState`).set(JSON.parse(savedGuestData));
+          } catch (e) {
+            console.error("Failed to sync guest data to db", e);
+          }
+        }
+        localStorage.removeItem("guestTrackerState");
+      }
+      
+      
       document.getElementById("authOverlay").style.display = "none";
       const loader = document.getElementById("globalLoader");
       if (loader) loader.style.display = "none";
+      
+      const guestProfile = document.getElementById("guestProfile");
+      if (guestProfile) {
+        guestProfile.classList.add("hidden");
+        guestProfile.classList.remove("flex");
+      }
+
       const btn = document.getElementById("signOutBtn");
       const profile = document.getElementById("userProfile");
       if (profile) {
@@ -774,18 +858,29 @@ window.addEventListener("DOMContentLoaded", () => {
       loadState();
     } else {
       currentUser = null;
-      document.getElementById("authOverlay").style.display = "flex";
       const loader = document.getElementById("globalLoader");
       if (loader) loader.style.display = "none";
+
       const profile = document.getElementById("userProfile");
       if (profile) {
         profile.classList.add("hidden");
         profile.classList.remove("flex");
       }
-      
-      appState.tasks = [];
-      appState.history = [];
-      updateUI();
+
+      if (isGuest) {
+        document.getElementById("authOverlay").style.display = "none";
+        const guestProfile = document.getElementById("guestProfile");
+        if (guestProfile) {
+          guestProfile.classList.remove("hidden");
+          guestProfile.classList.add("flex");
+        }
+        loadState();
+      } else {
+        document.getElementById("authOverlay").style.display = "flex";
+        appState.tasks = [];
+        appState.history = [];
+        updateUI();
+      }
     }
   });
 
@@ -821,6 +916,7 @@ window.addEventListener("DOMContentLoaded", () => {
 // Assuming renderTasks exists and will be modified elsewhere to include the button.
 window.signInWithGoogle = signInWithGoogle;
 window.signOutUser = signOutUser;
+window.continueAsGuest = continueAsGuest;
 window.openTimeModal = openTimeModal;
 window.closeModal = closeModal;
 window.submitTaskCompletion = submitTaskCompletion;
