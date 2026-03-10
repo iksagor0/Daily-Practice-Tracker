@@ -60,73 +60,6 @@ function submitAuth() {
   }
 }
 
-// --- Data Definitions ---
-const INITIAL_TASKS = [
-  {
-    id: "t1",
-    name: "Watch movies/series/youtube videos",
-    targetTime: null,
-    targetStr: "Unlimited",
-    icon: "film",
-    colorClass: "bg-indigo-50 text-indigo-600",
-    desc: "Visual learning for vocabulary, pronunciation and improves listening comprehension.",
-  },
-  {
-    id: "t2",
-    name: "Read technological articles/news/documentation",
-    targetTime: 30,
-    targetStr: "30 min",
-    icon: "book-open",
-    colorClass: "bg-blue-50 text-blue-600",
-    desc: "Effective for vocabulary expansion and understanding industry context.",
-  },
-  {
-    id: "t3",
-    name: "Talk with AI",
-    targetTime: 30,
-    targetStr: "30 min",
-    icon: "bot",
-    colorClass: "bg-sky-50 text-sky-600",
-    desc: "Practicing conversational skills and real-time response formulation.",
-  },
-  {
-    id: "t4",
-    name: "Duolingo",
-    targetTime: 30,
-    targetStr: "30 min",
-    icon: "graduation-cap",
-    colorClass: "bg-emerald-50 text-emerald-600",
-    desc: "Consistent daily learning for foundational vocabulary and grammar structure.",
-  },
-  {
-    id: "t5",
-    name: "Listen podcast",
-    targetTime: 20,
-    targetStr: "20 min",
-    icon: "headphones",
-    colorClass: "bg-fuchsia-50 text-fuchsia-600",
-    desc: "Improves listening comprehension and exposure to natural speech patterns.",
-  },
-  {
-    id: "t6",
-    name: "Self talk in front of camera",
-    targetTime: 10,
-    targetStr: "5-10 min",
-    icon: "video",
-    colorClass: "bg-orange-50 text-orange-600",
-    desc: "A powerful technique for improving pronunciation, rhythm, and confidence.",
-  },
-  {
-    id: "t7",
-    name: "Call someone and speak in English",
-    targetTime: null,
-    targetStr: "Sometimes",
-    icon: "phone-call",
-    colorClass: "bg-purple-50 text-purple-600",
-    desc: "Building fluency and confidence through live speaking practice.",
-  },
-];
-
 // --- State Management ---
 let appState = {
   tasks: [],
@@ -181,8 +114,8 @@ function checkDailyReset() {
       });
     }
 
-    // Reset tasks to TODO
-    appState.tasks = INITIAL_TASKS.map((t) => ({
+    // Reset tasks to TODO, preserving their dynamic properties
+    appState.tasks = appState.tasks.map((t) => ({
       ...t,
       status: "TODO",
       actualTime: 0,
@@ -510,6 +443,172 @@ function undoTask(taskId) {
   }
 }
 
+// Add Task Modal Logic
+const AVAILABLE_ICONS = [
+  "star",
+  "zap",
+  "compass",
+  "book",
+  "coffee",
+  "sun",
+  "heart",
+  "moon",
+  "music",
+  "smile",
+  "pen-tool",
+  "target",
+  "flag",
+  "code",
+  "film",
+  "book-open",
+  "bot",
+  "graduation-cap",
+  "headphones",
+  "video",
+  "phone-call",
+  // Goals & Productivity
+  "trending-up",
+  "check-circle",
+  "award",
+  "medal",
+  "flame",
+  "activity",
+  "crosshair",
+  "dumbbell",
+  "calendar",
+  // Students
+  "pencil",
+  "edit",
+  "library",
+  "backpack",
+  "microscope",
+  "calculator",
+  "book-open-check",
+  "file-text",
+  "brain",
+  // Office Workers
+  "briefcase",
+  "monitor",
+  "keyboard",
+  "mail",
+  "pie-chart",
+  "bar-chart",
+  "presentation",
+  "users",
+  "file-spreadsheet",
+  "inbox",
+  "printer",
+  "wallet"
+];
+let selectedNewTaskIcon = AVAILABLE_ICONS[0];
+let isIconSelectorExpanded = false;
+
+function renderIconSelector() {
+  const container = document.getElementById("iconSelectorContainer");
+  if (!container) return;
+  
+  const displayIcons = isIconSelectorExpanded ? AVAILABLE_ICONS : AVAILABLE_ICONS.slice(0, 13);
+  let html = displayIcons.map(
+    (icon) => `
+    <button onclick="selectNewTaskIcon('${icon}')" type="button" class="w-10 h-10 rounded-xl flex items-center justify-center border-2 transition-all shrink-0 ${
+      selectedNewTaskIcon === icon
+        ? "border-brand-500 bg-brand-50 text-brand-600 cursor-default shadow-sm"
+        : "border-slate-200 bg-white text-slate-400 hover:border-brand-300 hover:text-brand-500 hover:bg-slate-50 cursor-pointer shadow-sm"
+    }">
+      <i data-lucide="${icon}" class="w-5 h-5"></i>
+    </button>
+  `,
+  ).join("");
+  
+  if (!isIconSelectorExpanded && AVAILABLE_ICONS.length > 13) {
+    html += `
+      <button onclick="toggleIconSelector()" type="button" class="w-auto px-3 h-10 rounded-xl flex items-center justify-center border-2 border-slate-200 bg-slate-50 text-slate-500 hover:text-brand-600 hover:border-brand-300 transition-all shadow-sm font-semibold text-xs cursor-pointer shrink-0">
+        +${AVAILABLE_ICONS.length - 13} More
+      </button>
+    `;
+  } else if (isIconSelectorExpanded) {
+    html += `
+      <button onclick="toggleIconSelector()" type="button" class="w-auto px-3 h-10 rounded-xl flex items-center justify-center border-2 border-slate-200 bg-slate-50 text-slate-500 hover:text-brand-600 hover:border-brand-300 transition-all shadow-sm font-semibold text-xs cursor-pointer shrink-0">
+        Show Less
+      </button>
+    `;
+  }
+
+  container.innerHTML = html;
+  if (window.lucide) lucide.createIcons();
+}
+
+function toggleIconSelector() {
+  isIconSelectorExpanded = !isIconSelectorExpanded;
+  renderIconSelector();
+}
+
+function selectNewTaskIcon(icon) {
+  selectedNewTaskIcon = icon;
+  renderIconSelector();
+}
+
+function openAddTaskModal() {
+  document.getElementById("addTaskName").value = "";
+  document.getElementById("addTaskTime").value = "";
+  document.getElementById("addTaskDesc").value = "";
+  document.getElementById("addTaskModal").style.display = "flex";
+
+  selectedNewTaskIcon = AVAILABLE_ICONS[0];
+  isIconSelectorExpanded = false; // Reset to collapsed view on open
+  renderIconSelector();
+
+  setTimeout(() => document.getElementById("addTaskName").focus(), 50);
+}
+
+function closeAddTaskModal() {
+  document.getElementById("addTaskModal").style.display = "none";
+}
+
+function submitNewTask() {
+  const name = document.getElementById("addTaskName").value.trim();
+  const timeVal = document.getElementById("addTaskTime").value.trim();
+  const desc = document.getElementById("addTaskDesc").value.trim();
+
+  if (!name) return; // name is required
+
+  const targetTime = timeVal ? parseInt(timeVal, 10) : null;
+  const targetStr = targetTime ? `${targetTime} min` : "Unlimited";
+
+  // Pick a random color and icon for custom tasks
+  const colors = [
+    "bg-indigo-50 text-indigo-600",
+    "bg-emerald-50 text-emerald-600",
+    "bg-sky-50 text-sky-600",
+    "bg-blue-50 text-blue-600",
+    "bg-purple-50 text-purple-600",
+    "bg-fuchsia-50 text-fuchsia-600",
+    "bg-red-50 text-red-600",
+    "bg-orange-50 text-orange-600",
+  ];
+  const colorClass = colors[Math.floor(Math.random() * colors.length)];
+
+  // Use the selected icon instead of random
+  const icon = selectedNewTaskIcon || AVAILABLE_ICONS[0];
+
+  const newTask = {
+    id: "task_" + Date.now(),
+    name: name,
+    targetTime: targetTime,
+    targetStr: targetStr,
+    icon: icon,
+    colorClass: colorClass,
+    desc: desc || "No description provided.",
+    status: "TODO",
+    actualTime: 0,
+    completedAt: null,
+  };
+
+  appState.tasks.push(newTask);
+  saveState();
+  closeAddTaskModal();
+}
+
 // Simple visual feedback
 function triggerSuccessFeedback() {
   const ring = document.getElementById("progressRing");
@@ -578,3 +677,8 @@ window.openTimeModal = openTimeModal;
 window.closeModal = closeModal;
 window.submitTaskCompletion = submitTaskCompletion;
 window.undoTask = undoTask;
+window.openAddTaskModal = openAddTaskModal;
+window.closeAddTaskModal = closeAddTaskModal;
+window.submitNewTask = submitNewTask;
+window.selectNewTaskIcon = selectNewTaskIcon;
+window.toggleIconSelector = toggleIconSelector;
