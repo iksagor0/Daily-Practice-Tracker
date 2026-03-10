@@ -18,7 +18,7 @@ let isGuest = localStorage.getItem("isGuestTracker") === "true";
 function continueAsGuest() {
   isGuest = true;
   localStorage.setItem("isGuestTracker", "true");
-  
+
   document.getElementById("authOverlay").style.display = "none";
   const loader = document.getElementById("globalLoader");
   if (loader) loader.style.display = "none";
@@ -34,16 +34,19 @@ function continueAsGuest() {
     guestProfile.classList.remove("hidden");
     guestProfile.classList.add("flex");
   }
-  
+
   loadState();
 }
 
 function signInWithGoogle() {
   const provider = new firebase.auth.GoogleAuthProvider();
-  firebase.auth().signInWithPopup(provider).catch((error) => {
-    console.error("Auth error:", error);
-    alert("Authentication failed: " + error.message);
-  });
+  firebase
+    .auth()
+    .signInWithPopup(provider)
+    .catch((error) => {
+      console.error("Auth error:", error);
+      alert("Authentication failed: " + error.message);
+    });
 }
 
 function signOutUser() {
@@ -249,7 +252,7 @@ function getTaskTimeBadge(targetStr) {
     colorClass = "text-rose-500 bg-rose-50 border-rose-100";
   }
   return `
-    <div class="${colorClass} font-bold text-xs flex items-center gap-1.5 px-2.5 py-1 rounded-full border">
+    <div class="${colorClass} font-semibold text-xs flex items-center gap-1.5 px-2.5 py-1 rounded-full border">
         <i data-lucide="${icon}" class="w-3.5 h-3.5"></i> ${targetStr}
     </div>
   `;
@@ -275,7 +278,7 @@ function renderTasks() {
   todoContainer.innerHTML = todoTasks
     .map(
       (t, index) => `
-          <div class="glass-panel task-card rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 group" style="animation: slideUp 0.3s ease-out forwards; animation-delay: ${index * 0.05}s; opacity: 0; transform: translateY(10px);">
+          <div class="bg-white border border-slate-200 task-card rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 group" style="animation: slideUp 0.3s ease-out forwards; animation-delay: ${index * 0.05}s; opacity: 0; transform: translateY(10px);">
               <div class="shrink-0 w-12 h-12 rounded-xl ${t.colorClass} flex items-center justify-center shadow-sm">
                   <i data-lucide="${t.icon}" class="w-6 h-6"></i>
               </div>
@@ -310,7 +313,7 @@ function renderTasks() {
   doneContainer.innerHTML = doneTasks
     .map(
       (t, index) => `
-          <div class="glass-panel rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 opacity-80 hover:opacity-100 transition-opacity bg-white/40 group relative" style="animation: slideUp 0.3s ease-out forwards; animation-delay: ${index * 0.05}s; opacity: 0; transform: translateY(10px);">
+          <div class="bg-slate-50 border border-slate-200 shadow-sm rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 opacity-80 hover:opacity-100 transition-opacity group relative" style="animation: slideUp 0.3s ease-out forwards; animation-delay: ${index * 0.05}s; opacity: 0; transform: translateY(10px);">
               <div class="shrink-0 w-12 h-12 rounded-xl bg-slate-100 text-slate-400 flex items-center justify-center">
                   <i data-lucide="check" class="w-6 h-6"></i>
               </div>
@@ -695,7 +698,7 @@ window.addEventListener("DOMContentLoaded", () => {
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       currentUser = user;
-      
+
       const wasGuest = isGuest;
       isGuest = false;
       localStorage.removeItem("isGuestTracker");
@@ -712,12 +715,11 @@ window.addEventListener("DOMContentLoaded", () => {
         }
         localStorage.removeItem("guestTrackerState");
       }
-      
-      
+
       document.getElementById("authOverlay").style.display = "none";
       const loader = document.getElementById("globalLoader");
       if (loader) loader.style.display = "none";
-      
+
       const guestProfile = document.getElementById("guestProfile");
       if (guestProfile) {
         guestProfile.classList.add("hidden");
@@ -729,7 +731,11 @@ window.addEventListener("DOMContentLoaded", () => {
       if (profile) {
         profile.classList.remove("hidden");
         profile.classList.add("flex");
-        document.getElementById("userAvatar").src = user.photoURL || "https://ui-avatars.com/api/?name=" + encodeURIComponent(user.displayName || "User") + "&background=random";
+        document.getElementById("userAvatar").src =
+          user.photoURL ||
+          "https://ui-avatars.com/api/?name=" +
+            encodeURIComponent(user.displayName || "User") +
+            "&background=random";
         document.getElementById("userName").innerText = user.displayName || "User";
       }
       loadState();
