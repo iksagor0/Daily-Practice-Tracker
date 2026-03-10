@@ -12,52 +12,18 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 // --- Authentication ---
-const PASSCODE = "202011056254"; // CHANGE THIS to your desired password
-const AUTH_EXPIRY_DAYS = 30;
+let currentUser = null;
 
-function checkAuthStatus() {
-  const authData = localStorage.getItem("trackerAuth");
-  let isAuthenticated = false;
-  if (authData) {
-    try {
-      const parsed = JSON.parse(authData);
-      const now = Date.now();
-      const expiryMs = AUTH_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
-      if (now - parsed.timestamp < expiryMs) {
-        document.getElementById("authOverlay").style.display = "none";
-        isAuthenticated = true;
-      }
-    } catch (e) {
-      console.error("Auth verify error", e);
-    }
-  }
-
-  if (!isAuthenticated) {
-    const overlay = document.getElementById("authOverlay");
-    if (overlay) overlay.style.display = "flex";
-    setTimeout(() => {
-      const el = document.getElementById("authPasswordInput");
-      if (el) el.focus();
-    }, 100);
-  }
-  return isAuthenticated;
+function signInWithGoogle() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithPopup(provider).catch((error) => {
+    console.error("Auth error:", error);
+    alert("Authentication failed: " + error.message);
+  });
 }
 
-function submitAuth() {
-  const input = document.getElementById("authPasswordInput").value;
-  if (input === PASSCODE) {
-    localStorage.setItem("trackerAuth", JSON.stringify({ timestamp: Date.now() }));
-    const overlay = document.getElementById("authOverlay");
-    overlay.style.opacity = "0";
-    setTimeout(() => {
-      overlay.style.display = "none";
-    }, 300);
-    document.getElementById("authErrorMsg").classList.add("hidden");
-  } else {
-    document.getElementById("authErrorMsg").classList.remove("hidden");
-    document.getElementById("authPasswordInput").value = "";
-    document.getElementById("authPasswordInput").focus();
-  }
+function signOutUser() {
+  firebase.auth().signOut();
 }
 
 // --- Data Definitions ---
@@ -132,7 +98,8 @@ function checkDailyReset() {
 }
 
 function loadState() {
-  const stateRef = db.ref("trackerState");
+  if (!currentUser) return;
+  const stateRef = db.ref(`users/${currentUser.uid}/trackerState`);
 
   stateRef.on("value", (snapshot) => {
     if (snapshot.exists()) {
@@ -175,7 +142,8 @@ function loadState() {
 }
 
 function saveState() {
-  db.ref("trackerState").set(appState);
+  if (!currentUser) return;
+  db.ref(`users/${currentUser.uid}/trackerState`).set(appState);
   localStorage.setItem("practiceTrackerState", JSON.stringify(appState));
   updateUI();
 }
@@ -720,7 +688,26 @@ if (authInputEl) {
 
 // --- Initialization ---
 window.addEventListener("DOMContentLoaded", () => {
-  checkAuthStatus();
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      currentUser = user;
+      document.getElementById("authOverlay").style.display = "none";
+      const btn = document.getElementById("signOutBtn");
+      if (btn) btn.classList.remove("hidden");
+      if (btn) btn.classList.add("inline-flex");
+      loadState();
+    } else {
+      currentUser = null;
+      document.getElementById("authOverlay").style.display = "flex";
+      const btn = document.getElementById("signOutBtn");
+      if (btn) btn.classList.add("hidden");
+      if (btn) btn.classList.remove("inline-flex");
+      
+      appState.tasks = [];
+      appState.history = [];
+      updateUI();
+    }
+  });
 
   // Initial render for dates immediately before data loads
   const bdTime = getBDTime();
@@ -738,8 +725,6 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  loadState();
-
   // Check for reset every minute while tab is open just in case they leave it open through 6 AM
   setInterval(() => {
     checkDailyReset();
@@ -754,7 +739,8 @@ window.addEventListener("DOMContentLoaded", () => {
 // Note: The instruction implies adding a delete button in renderTasks,
 // but the renderTasks function is not provided in the given content.
 // Assuming renderTasks exists and will be modified elsewhere to include the button.
-window.submitAuth = submitAuth;
+window.signInWithGoogle = signInWithGoogle;
+window.signOutUser = signOutUser;
 window.openTimeModal = openTimeModal;
 window.closeModal = closeModal;
 window.submitTaskCompletion = submitTaskCompletion;
