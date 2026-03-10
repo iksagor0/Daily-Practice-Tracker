@@ -192,15 +192,32 @@
           <span id="currentDateText">Loading date...</span>
         </div>
 
-        <button
-          id="signOutBtn"
-          onclick="signOutUser()"
-          class="hidden items-center gap-2 p-2 rounded-full bg-white/50 border border-slate-200 text-slate-600 hover:text-rose-600 hover:border-rose-200 text-sm font-semibold shadow-sm transition-colors mb-4"
-          title="Sign Out"
-        >
-          <i data-lucide="log-out" class="w-4 h-4"></i>
-          <!-- <span>Sign Out</span> -->
-        </button>
+        <div id="userProfile" class="hidden items-center gap-2 mb-4">
+          <div
+            class="flex items-center bg-white/50 border border-slate-200 rounded-full whitespace-nowrap pr-2"
+          >
+            <img
+              id="userAvatar"
+              src="Photo"
+              alt="User Avatar"
+              class="w-8 h-8 rounded-full border-2 border-white shadow-sm"
+            />
+            <span
+              id="userName"
+              class="text-sm font-bold text-slate-700 hidden sm:inline-block"
+            ></span>
+          </div>
+
+          <button
+            id="signOutBtn"
+            onclick="signOutUser()"
+            class="flex items-center gap-2 p-2 rounded-full bg-white/50 border border-slate-200 text-slate-600 hover:text-rose-600 hover:border-rose-200 text-sm font-semibold shadow-sm transition-colors"
+            title="Sign Out"
+          >
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+            <!-- <span>Sign Out</span> -->
+          </button>
+        </div>
       </div>
     </header>
 

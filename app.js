@@ -693,15 +693,22 @@ window.addEventListener("DOMContentLoaded", () => {
       currentUser = user;
       document.getElementById("authOverlay").style.display = "none";
       const btn = document.getElementById("signOutBtn");
-      if (btn) btn.classList.remove("hidden");
-      if (btn) btn.classList.add("inline-flex");
+      const profile = document.getElementById("userProfile");
+      if (profile) {
+        profile.classList.remove("hidden");
+        profile.classList.add("flex");
+        document.getElementById("userAvatar").src = user.photoURL || "https://ui-avatars.com/api/?name=" + encodeURIComponent(user.displayName || "User") + "&background=random";
+        document.getElementById("userName").innerText = user.displayName || "User";
+      }
       loadState();
     } else {
       currentUser = null;
       document.getElementById("authOverlay").style.display = "flex";
-      const btn = document.getElementById("signOutBtn");
-      if (btn) btn.classList.add("hidden");
-      if (btn) btn.classList.remove("inline-flex");
+      const profile = document.getElementById("userProfile");
+      if (profile) {
+        profile.classList.add("hidden");
+        profile.classList.remove("flex");
+      }
       
       appState.tasks = [];
       appState.history = [];
