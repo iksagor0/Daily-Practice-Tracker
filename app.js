@@ -761,6 +761,8 @@ window.addEventListener("DOMContentLoaded", () => {
     if (user) {
       currentUser = user;
       document.getElementById("authOverlay").style.display = "none";
+      const loader = document.getElementById("globalLoader");
+      if (loader) loader.style.display = "none";
       const btn = document.getElementById("signOutBtn");
       const profile = document.getElementById("userProfile");
       if (profile) {
@@ -773,6 +775,8 @@ window.addEventListener("DOMContentLoaded", () => {
     } else {
       currentUser = null;
       document.getElementById("authOverlay").style.display = "flex";
+      const loader = document.getElementById("globalLoader");
+      if (loader) loader.style.display = "none";
       const profile = document.getElementById("userProfile");
       if (profile) {
         profile.classList.add("hidden");
