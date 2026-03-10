@@ -125,14 +125,14 @@
   >
     <!-- Header Section -->
     <header class="pt-10 pb-6 px-6 text-center animate-fade-in">
-      <div
-        class="inline-flex items-center justify-center p-3 mb-4 rounded-2xl bg-gradient-to-br from-brand-100 to-indigo-100 text-brand-600 shadow-sm border border-white"
-      >
-        <i data-lucide="target" class="w-8 h-8"></i>
-      </div>
       <h1
         class="text-4xl md:text-5xl font-display font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-brand-900 to-slate-900 tracking-tight mb-3"
       >
+        <div
+          class="inline-flex items-center justify-center p-3 mb-4 mr-3 rounded-2xl bg-gradient-to-br from-brand-100 to-indigo-100 text-brand-600 shadow-sm border border-white"
+        >
+          <i data-lucide="target" class="w-8 h-8"></i>
+        </div>
         Daily Practice Tracker
       </h1>
       <p class="text-slate-500 max-w-lg mx-auto text-lg font-medium">
@@ -414,6 +414,8 @@
     </div>
 
     <!-- Core App Logic -->
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-database-compat.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

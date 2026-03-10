@@ -1,3 +1,16 @@
+const firebaseConfig = {
+  apiKey: "AIzaSyABBiZ665TxQktlPynC9DAZtB8d0U_QJ8w",
+  authDomain: "daily-practice-tracker.firebaseapp.com",
+  databaseURL: "https://daily-practice-tracker-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "daily-practice-tracker",
+  storageBucket: "daily-practice-tracker.firebasestorage.app",
+  messagingSenderId: "149600530913",
+  appId: "1:149600530913:web:b7478144c0fc051fb8a2a0",
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
 // --- Data Definitions ---
 const INITIAL_TASKS = [
   {
@@ -134,20 +147,39 @@ function checkDailyReset() {
 }
 
 function loadState() {
-  const saved = localStorage.getItem("practiceTrackerState");
-  let needsSave = false;
-
-  if (saved) {
-    try {
-      const parsed = JSON.parse(saved);
+  const stateRef = db.ref('trackerState');
+  
+  stateRef.on('value', (snapshot) => {
+    if (snapshot.exists()) {
+      const parsed = snapshot.val();
       appState.tasks = (parsed.tasks || []).map((t) => {
         const initial = INITIAL_TASKS.find((i) => i.id === t.id);
         return initial ? { ...initial, ...t } : t;
       });
       appState.history = parsed.history || [];
       appState.lastResetTime = parsed.lastResetTime || null;
-
-      // Fallback to defaults if broken or user cleared items inside storage explicitly
+      
+      const didReset = checkDailyReset();
+      if (didReset) {
+        saveState();
+      } else {
+        updateUI();
+      }
+    } else {
+      // First time loading from Firebase, try to migrate from old localStorage
+      const saved = localStorage.getItem("practiceTrackerState");
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          appState.tasks = (parsed.tasks || []).map((t) => {
+            const initial = INITIAL_TASKS.find((i) => i.id === t.id);
+            return initial ? { ...initial, ...t } : t;
+          });
+          appState.history = parsed.history || [];
+          appState.lastResetTime = parsed.lastResetTime || null;
+        } catch(e) {}
+      } 
+      
       if (!appState.tasks || appState.tasks.length === 0) {
         appState.tasks = INITIAL_TASKS.map((t) => ({
           ...t,
@@ -155,38 +187,17 @@ function loadState() {
           actualTime: 0,
           completedAt: null,
         }));
-        appState.lastResetTime = null;
-        needsSave = true;
       }
-    } catch (e) {
-      console.error("Error parsing local storage", e);
-      needsSave = true;
+      
+      checkDailyReset();
+      // Push initial state to Firebase
+      saveState();
     }
-  } else {
-    needsSave = true;
-  }
-
-  // If completely new state
-  if (!appState.tasks || appState.tasks.length === 0) {
-    appState.tasks = INITIAL_TASKS.map((t) => ({
-      ...t,
-      status: "TODO",
-      actualTime: 0,
-      completedAt: null,
-    }));
-  }
-
-  const didReset = checkDailyReset();
-
-  // Fix: UI wasn't updating on initial load if we didn't force a save!
-  if (needsSave || didReset) {
-    saveState(); // Internally updates UI
-  } else {
-    updateUI(); // Was previously missing, leading to an empty screen
-  }
+  });
 }
 
 function saveState() {
+  db.ref('trackerState').set(appState);
   localStorage.setItem("practiceTrackerState", JSON.stringify(appState));
   updateUI();
 }
@@ -484,3 +495,9 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }, 60000);
 });
+
+// --- Export for HTML Inline Event Handlers ---
+window.openTimeModal = openTimeModal;
+window.closeModal = closeModal;
+window.submitTaskCompletion = submitTaskCompletion;
+window.undoTask = undoTask;
