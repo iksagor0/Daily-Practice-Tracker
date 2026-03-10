@@ -1,0 +1,869 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Daily Practice Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@3.6.0/cdn.min.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                900: "#0c4a6e",
+              },
+              ui: {
+                bg: "#f8fafc",
+                card: "rgba(255, 255, 255, 0.7)",
+                border: "rgba(255, 255, 255, 0.4)",
+              },
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              display: ["Outfit", "sans-serif"],
+            },
+            animation: {
+              "fade-in": "fadeIn 0.4s ease-out forwards",
+              "slide-up": "slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+              "scale-in": "scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+            },
+            keyframes: {
+              fadeIn: {
+                "0%": { opacity: "0" },
+                "100%": { opacity: "1" },
+              },
+              slideUp: {
+                "0%": { transform: "translateY(20px)", opacity: "0" },
+                "100%": { transform: "translateY(0)", opacity: "1" },
+              },
+              scaleIn: {
+                "0%": { transform: "scale(0.95)", opacity: "0" },
+                "100%": { transform: "scale(1)", opacity: "1" },
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        background-color: #f8fafc;
+        background-image:
+          radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.08) 0px, transparent 50%),
+          radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.08) 0px, transparent 50%),
+          radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.08) 0px, transparent 50%);
+        min-height: 100vh;
+        background-attachment: fixed;
+      }
+
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        box-shadow:
+          0 4px 6px -1px rgba(0, 0, 0, 0.05),
+          0 2px 4px -1px rgba(0, 0, 0, 0.03),
+          inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      }
+
+      .task-card {
+        transition: all 0.2s ease-in-out;
+      }
+
+      .task-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px -8px rgba(14, 165, 233, 0.15);
+        border-color: rgba(14, 165, 233, 0.3);
+      }
+
+      .progress-ring-circle {
+        transition: stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        transform: rotate(-90deg);
+        transform-origin: 50% 50%;
+      }
+
+      /* Custom Scrollbar for sleekness */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      /* Modal Overlay */
+      #timeModal {
+        backdrop-filter: blur(8px);
+      }
+    </style>
+  </head>
+  <body
+    class="font-sans text-slate-800 antialiased selection:bg-brand-200 selection:text-brand-900 pb-20"
+  >
+    <!-- Header Section -->
+    <header class="pt-10 pb-6 px-6 text-center animate-fade-in">
+      <div
+        class="inline-flex items-center justify-center p-3 mb-4 rounded-2xl bg-gradient-to-br from-brand-100 to-indigo-100 text-brand-600 shadow-sm border border-white"
+      >
+        <i data-lucide="target" class="w-8 h-8"></i>
+      </div>
+      <h1
+        class="text-4xl md:text-5xl font-display font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-brand-900 to-slate-900 tracking-tight mb-3"
+      >
+        Daily Practice Tracker
+      </h1>
+      <p class="text-slate-500 max-w-lg mx-auto text-lg font-medium">
+        Build consistency. Track progress. Achieve mastery.
+      </p>
+
+      <div
+        id="dateDisplay"
+        class="mt-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/50 border border-slate-200 text-slate-600 text-sm font-semibold shadow-sm"
+      >
+        <i data-lucide="calendar" class="w-4 h-4 text-brand-500"></i>
+        <span id="currentDateText">Loading date...</span>
+      </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <!-- Left Column: Tasks -->
+      <div class="lg:col-span-8 space-y-8 animate-slide-up" style="animation-delay: 0.1s">
+        <!-- To-Do Section -->
+        <section>
+          <div class="flex items-center justify-between mb-4 px-1">
+            <h2 class="text-2xl font-display font-bold text-slate-900 flex items-center gap-2">
+              <i data-lucide="list-todo" class="w-6 h-6 text-brand-500"></i>
+              To-Do Today
+            </h2>
+            <span
+              id="todoCountBadge"
+              class="px-3 py-1 bg-brand-100 text-brand-700 text-sm font-bold rounded-full"
+              >0</span
+            >
+          </div>
+
+          <div id="todoList" class="space-y-3">
+            <!-- JS will populate To-Do tasks here -->
+          </div>
+
+          <div
+            id="emptyTodoState"
+            class="hidden glass-panel rounded-2xl p-8 text-center border-dashed border-2 border-slate-300"
+          >
+            <div
+              class="w-16 h-16 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4"
+            >
+              <i data-lucide="check-circle" class="w-8 h-8"></i>
+            </div>
+            <h3 class="text-slate-800 font-bold text-lg mb-1">All caught up!</h3>
+            <p class="text-slate-500">You've completed all your targeted tasks for today.</p>
+          </div>
+        </section>
+
+        <!-- Done Section -->
+        <section class="opacity-90">
+          <div class="flex items-center justify-between mb-4 px-1 mt-10">
+            <h2 class="text-xl font-display font-bold text-slate-700 flex items-center gap-2">
+              <i data-lucide="check-square" class="w-5 h-5 text-emerald-500"></i>
+              Completed
+            </h2>
+            <span
+              id="doneCountBadge"
+              class="px-3 py-1 bg-emerald-100 text-emerald-700 text-sm font-bold rounded-full"
+              >0</span
+            >
+          </div>
+
+          <div id="doneList" class="space-y-3">
+            <!-- JS will populate Done tasks here -->
+          </div>
+
+          <div id="emptyDoneState" class="hidden glass-panel rounded-2xl p-6 text-center">
+            <p class="text-slate-400 font-medium">No tasks completed yet today.</p>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right Column: Statistics & Analytics -->
+      <aside class="lg:col-span-4 space-y-6 animate-slide-up" style="animation-delay: 0.2s">
+        <!-- Today's Progress Card -->
+        <div class="glass-panel rounded-3xl p-6 relative overflow-hidden group">
+          <div
+            class="absolute top-0 right-0 w-32 h-32 bg-brand-500/10 rounded-bl-full -z-10 transition-transform group-hover:scale-110"
+          ></div>
+
+          <h2 class="text-lg font-display font-bold text-slate-900 mb-6 flex items-center">
+            <i data-lucide="trending-up" class="w-5 h-5 mr-2 text-brand-500"></i>
+            Today's Progress
+          </h2>
+
+          <div class="flex justify-center mb-6 relative">
+            <svg class="w-40 h-40">
+              <circle
+                class="text-slate-100"
+                stroke-width="12"
+                stroke="currentColor"
+                fill="transparent"
+                r="70"
+                cx="80"
+                cy="80"
+              />
+              <circle
+                id="progressRing"
+                class="text-brand-500 progress-ring-circle"
+                stroke-width="12"
+                stroke-linecap="round"
+                stroke="currentColor"
+                fill="transparent"
+                r="70"
+                cx="80"
+                cy="80"
+                stroke-dasharray="439.8"
+                stroke-dashoffset="439.8"
+              />
+            </svg>
+            <div class="absolute inset-0 flex flex-col items-center justify-center">
+              <span
+                id="progressPercentage"
+                class="text-3xl font-display font-black text-slate-900 tracking-tight"
+                >0%</span
+              >
+              <span class="text-xs font-semibold text-slate-500 uppercase tracking-widest mt-1"
+                >Completed</span
+              >
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white/60 rounded-2xl p-4 border border-white text-center">
+              <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Tasks</p>
+              <p class="text-2xl font-display font-bold text-slate-800">
+                <span id="statTasksDone" class="text-brand-600">0</span
+                ><span class="text-lg text-slate-400">/<span id="statTasksTotal">0</span></span>
+              </p>
+            </div>
+            <div class="bg-white/60 rounded-2xl p-4 border border-white text-center">
+              <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
+                Time Spent
+              </p>
+              <p class="text-2xl font-display font-bold text-slate-800">
+                <span id="statTimeSpent" class="text-brand-600">0</span
+                ><span class="text-lg text-slate-400">m</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Performance Analytics Card -->
+        <div class="glass-panel rounded-3xl p-6">
+          <h2 class="text-lg font-display font-bold text-slate-900 mb-5 flex items-center">
+            <i data-lucide="bar-chart-2" class="w-5 h-5 mr-2 text-indigo-500"></i>
+            Performance Analytics
+          </h2>
+
+          <div class="space-y-5">
+            <!-- Daily Avg -->
+            <div>
+              <div class="flex justify-between items-end mb-1.5">
+                <span class="text-sm font-semibold text-slate-600">Daily Average</span>
+                <span class="text-sm font-bold text-slate-900"
+                  ><span id="statAvgDaily">0</span>
+                  <span class="text-slate-500 font-normal">min</span></span
+                >
+              </div>
+              <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                <div
+                  id="barDaily"
+                  class="bg-indigo-400 h-full rounded-full w-0 transition-all duration-1000"
+                ></div>
+              </div>
+            </div>
+
+            <!-- Weekly Total -->
+            <div>
+              <div class="flex justify-between items-end mb-1.5">
+                <span class="text-sm font-semibold text-slate-600">This Week Total</span>
+                <span class="text-sm font-bold text-slate-900"
+                  ><span id="statTotalWeekly">0</span>
+                  <span class="text-slate-500 font-normal">min</span></span
+                >
+              </div>
+              <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                <div
+                  id="barWeekly"
+                  class="bg-brand-400 h-full rounded-full w-0 transition-all duration-1000 delay-100"
+                ></div>
+              </div>
+            </div>
+
+            <!-- Monthly Total -->
+            <div>
+              <div class="flex justify-between items-end mb-1.5">
+                <span class="text-sm font-semibold text-slate-600">This Month Total</span>
+                <span class="text-sm font-bold text-slate-900"
+                  ><span id="statTotalMonthly">0</span>
+                  <span class="text-slate-500 font-normal">min</span></span
+                >
+              </div>
+              <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                <div
+                  id="barMonthly"
+                  class="bg-emerald-400 h-full rounded-full w-0 transition-all duration-1000 delay-200"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-5 border-t border-slate-200 text-center">
+            <span
+              class="inline-flex items-center text-xs text-slate-500 font-medium bg-slate-100 px-3 py-1 rounded-full"
+            >
+              <i data-lucide="refresh-cw" class="w-3 h-3 mr-1.5"></i> Resets at 6:00 AM Bangladesh
+              Time
+            </span>
+          </div>
+        </div>
+
+        <!-- Developer Tools (Hidden normally, useful for testing resets) -->
+        <div class="text-center opacity-30 hover:opacity-100 transition-opacity">
+          <button
+            onclick="forceReset()"
+            class="text-xs font-semibold bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 px-4 py-1.5 rounded-full shadow-sm"
+          >
+            Simulate Next Day (Test Data)
+          </button>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Time Input Modal (Hidden by default) -->
+    <div
+      id="timeModal"
+      class="fixed inset-0 bg-slate-900/40 z-50 hidden items-center justify-center p-4"
+    >
+      <div
+        class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 animate-scale-in border border-slate-100"
+      >
+        <div class="flex justify-between items-start mb-4">
+          <div
+            class="w-12 h-12 rounded-full bg-gradient-to-br from-rose-400 to-orange-500 text-white shadow-md shadow-orange-500/20 flex items-center justify-center mb-2"
+          >
+            <i data-lucide="clock" class="w-6 h-6"></i>
+          </div>
+          <button
+            onclick="closeModal()"
+            class="text-slate-400 hover:text-slate-600 transition-colors"
+          >
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <h3 class="text-xl font-display font-bold text-slate-900 mb-1">Log Practice Time</h3>
+        <p id="modalTaskName" class="text-slate-500 text-sm mb-6 font-medium line-clamp-2">
+          Task Name goes here
+        </p>
+
+        <div class="mb-6">
+          <label for="timeInput" class="block text-sm font-bold text-slate-700 mb-2"
+            >Time spent (minutes)</label
+          >
+          <div class="relative">
+            <input
+              type="number"
+              id="timeInput"
+              min="0"
+              step="1"
+              class="block w-full rounded-xl border-slate-300 bg-slate-50 border px-4 py-3 text-lg font-bold text-slate-900 focus:border-brand-500 focus:ring-brand-500 focus:bg-white transition-colors"
+              placeholder="e.g. 30"
+            />
+            <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+              <span class="text-slate-400 font-medium">min</span>
+            </div>
+          </div>
+          <p id="modalTargetTimeHelper" class="mt-2 text-xs text-brand-600 font-medium"></p>
+        </div>
+
+        <div class="flex gap-3">
+          <button
+            onclick="closeModal()"
+            class="flex-1 px-4 py-3 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            onclick="submitTaskCompletion()"
+            class="flex-1 px-4 py-3 rounded-xl bg-brand-600 text-white font-bold hover:bg-brand-700 shadow-lg shadow-brand-500/30 transition-all hover:-translate-y-0.5"
+          >
+            Save Task
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Core App Logic -->
+    <script>
+      // --- Data Definitions ---
+      const INITIAL_TASKS = [
+        { id: "t1", name: "Watching movies/series", targetTime: null, targetStr: "Unlimited" },
+        { id: "t2", name: "Duolingo", targetTime: 30, targetStr: "30 min" },
+        { id: "t3", name: "Talk with AI", targetTime: 30, targetStr: "30 min" },
+        {
+          id: "t4",
+          name: "Read technological articles/news/documentation",
+          targetTime: 30,
+          targetStr: "30 min",
+        },
+        {
+          id: "t5",
+          name: "Call Sreaa and speak in English",
+          targetTime: null,
+          targetStr: "Sometimes",
+        },
+        { id: "t6", name: "Listen podcast", targetTime: 20, targetStr: "20 min" },
+        { id: "t7", name: "Watch youtube videos", targetTime: 20, targetStr: "20 min" },
+        { id: "t8", name: "Self talk in front of camera", targetTime: 10, targetStr: "5-10 min" },
+      ];
+
+      // --- State Management ---
+      let appState = {
+        tasks: [],
+        history: [], // Array of { dateKey: 'YYYY-MM-DD', totalTime: 0, completedTasks: 0, totalTasks: 8 }
+        lastResetTime: null, // Timestamp of the last reset (based on 6AM BD time relative logic)
+      };
+
+      let currentActiveTaskId = null;
+
+      // --- Utility Functions ---
+
+      // Get current time in Bangladesh (UTC+6)
+      function getBDTime() {
+        const now = new Date();
+        // Convert to UTC+6 offset manually to be perfectly safe regardless of user local tz
+        const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+        return new Date(utc + 3600000 * 6);
+      }
+
+      // Get a string key for the BD date (YYYY-MM-DD), adjusted for the 6AM boundary.
+      // If it's before 6 AM, it counts as the previous day.
+      function getEffectiveBDDateStr() {
+        const bdTime = getBDTime();
+        // If before 6 AM, subtract 1 day
+        if (bdTime.getHours() < 6) {
+          bdTime.setDate(bdTime.getDate() - 1);
+        }
+        return `${bdTime.getFullYear()}-${String(bdTime.getMonth() + 1).padStart(2, "0")}-${String(bdTime.getDate()).padStart(2, "0")}`;
+      }
+
+      // Check if a reset is required based on the effective date string
+      function checkDailyReset() {
+        const currentDateStr = getEffectiveBDDateStr();
+        let didReset = false;
+
+        if (appState.lastResetTime !== currentDateStr) {
+          console.log("New day detected. Resetting tasks/history.");
+
+          // If we have previous tasks, save their stats to history before resetting
+          if (appState.tasks.length > 0 && appState.lastResetTime) {
+            const totalTime = appState.tasks.reduce(
+              (sum, t) => sum + (t.status === "DONE" ? t.actualTime || 0 : 0),
+              0,
+            );
+            const completedTasks = appState.tasks.filter((t) => t.status === "DONE").length;
+
+            appState.history.push({
+              dateKey: appState.lastResetTime,
+              totalTime: totalTime,
+              completedTasks: completedTasks,
+              totalTasks: appState.tasks.length,
+            });
+          }
+
+          // Reset tasks to TODO
+          appState.tasks = INITIAL_TASKS.map((t) => ({
+            ...t,
+            status: "TODO",
+            actualTime: 0,
+            completedAt: null,
+          }));
+
+          appState.lastResetTime = currentDateStr;
+          didReset = true;
+        }
+        return didReset;
+      }
+
+      function loadState() {
+        const saved = localStorage.getItem("practiceTrackerState");
+        let needsSave = false;
+
+        if (saved) {
+          try {
+            const parsed = JSON.parse(saved);
+            appState.tasks = parsed.tasks || [];
+            appState.history = parsed.history || [];
+            appState.lastResetTime = parsed.lastResetTime || null;
+
+            // Fallback to defaults if broken or user cleared items inside storage explicitly
+            if (!appState.tasks || appState.tasks.length === 0) {
+              appState.tasks = INITIAL_TASKS.map((t) => ({
+                ...t,
+                status: "TODO",
+                actualTime: 0,
+                completedAt: null,
+              }));
+              appState.lastResetTime = null;
+              needsSave = true;
+            }
+          } catch (e) {
+            console.error("Error parsing local storage", e);
+            needsSave = true;
+          }
+        } else {
+          needsSave = true;
+        }
+
+        // If completely new state
+        if (!appState.tasks || appState.tasks.length === 0) {
+          appState.tasks = INITIAL_TASKS.map((t) => ({
+            ...t,
+            status: "TODO",
+            actualTime: 0,
+            completedAt: null,
+          }));
+        }
+
+        const didReset = checkDailyReset();
+
+        // Fix: UI wasn't updating on initial load if we didn't force a save!
+        if (needsSave || didReset) {
+          saveState(); // Internally updates UI
+        } else {
+          updateUI(); // Was previously missing, leading to an empty screen
+        }
+      }
+
+      function saveState() {
+        localStorage.setItem("practiceTrackerState", JSON.stringify(appState));
+        updateUI();
+      }
+
+      // --- UI Rendering ---
+
+      function updateUI() {
+        renderHeaderDate();
+        renderTasks();
+        updateStatistics();
+
+        // Render icons safely after DOM updates
+        if (window.lucide) {
+          lucide.createIcons();
+        }
+      }
+
+      function renderHeaderDate() {
+        const bdTime = getBDTime();
+        const dateEl = document.getElementById("currentDateText");
+        // Using date-fns as requested by global rules
+        if (dateEl && window.dateFns) {
+          dateEl.innerText = window.dateFns.format(bdTime, "EEEE, MMMM d, yyyy");
+        } else if (dateEl) {
+          // Fallback just in case CDN is blocked
+          dateEl.innerText = bdTime.toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
+        }
+      }
+
+      function formatTaskIcon(targetStr) {
+        if (targetStr === "Unlimited")
+          return '<i data-lucide="infinity" class="w-4 h-4 mr-1 text-indigo-500"></i>';
+        if (targetStr === "Sometimes")
+          return '<i data-lucide="shuffle" class="w-4 h-4 mr-1 text-amber-500"></i>';
+        return '<i data-lucide="clock" class="w-4 h-4 mr-1 text-rose-500"></i>';
+      }
+
+      function renderTasks() {
+        const todoContainer = document.getElementById("todoList");
+        const doneContainer = document.getElementById("doneList");
+        if (!todoContainer || !doneContainer) return;
+
+        const todoTasks = appState.tasks.filter((t) => t.status === "TODO");
+        const doneTasks = appState.tasks
+          .filter((t) => t.status === "DONE")
+          .sort((a, b) => b.completedAt - a.completedAt);
+
+        document.getElementById("todoCountBadge").innerText = todoTasks.length;
+        document.getElementById("doneCountBadge").innerText = doneTasks.length;
+
+        document.getElementById("emptyTodoState").classList.toggle("hidden", todoTasks.length > 0);
+        document.getElementById("emptyDoneState").classList.toggle("hidden", doneTasks.length > 0);
+
+        // Render TODOs
+        todoContainer.innerHTML = todoTasks
+          .map(
+            (t, index) => `
+                <div class="glass-panel task-card rounded-2xl p-4 flex items-center justify-between gap-4 group" style="animation: slideUp 0.3s ease-out forwards; animation-delay: ${index * 0.05}s; opacity: 0; transform: translateY(10px);">
+                    <div class="flex-1">
+                        <h3 class="font-bold text-slate-800 text-base leading-tight group-hover:text-brand-700 transition-colors">${t.name}</h3>
+                        <p class="text-slate-500 text-xs mt-1.5 flex items-center font-medium">
+                            ${formatTaskIcon(t.targetStr)}
+                            ${t.targetStr}
+                        </p>
+                    </div>
+                    <button onclick="openTimeModal('${t.id}')" class="shrink-0 w-10 h-10 rounded-full bg-white border-2 border-slate-200 flex items-center justify-center text-slate-400 hover:border-emerald-400 hover:text-emerald-500 hover:bg-emerald-50 transition-all focus:outline-none focus:ring-4 focus:ring-emerald-100 shadow-sm hover:shadow-md">
+                        <i data-lucide="check" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            `,
+          )
+          .join("");
+
+        // Render DONEs
+        doneContainer.innerHTML = doneTasks
+          .map(
+            (t, index) => `
+                <div class="glass-panel rounded-2xl p-4 flex items-center justify-between gap-4 opacity-80 hover:opacity-100 transition-opacity bg-white/40" style="animation: slideUp 0.3s ease-out forwards; animation-delay: ${index * 0.05}s; opacity: 0; transform: translateY(10px);">
+                    <div class="flex items-center gap-3 flex-1">
+                        <div class="shrink-0 w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                            <i data-lucide="check" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-slate-500 line-through text-sm">${t.name}</h3>
+                            <p class="text-emerald-500 text-xs mt-0.5 font-bold flex items-center">
+                                <i data-lucide="timer" class="w-3 h-3 mr-1 text-emerald-500"></i>
+                                ${t.actualTime} min spent
+                            </p>
+                        </div>
+                    </div>
+                    <button onclick="undoTask('${t.id}')" title="Undo" class="text-slate-300 hover:text-indigo-400 transition-colors p-2 rounded-full hover:bg-white/50">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            `,
+          )
+          .join("");
+      }
+
+      function updateStatistics() {
+        const totalTasks = appState.tasks.length;
+        const doneTasks = appState.tasks.filter((t) => t.status === "DONE");
+        const completedCount = doneTasks.length;
+
+        let todayTime = 0;
+        doneTasks.forEach((t) => (todayTime += t.actualTime || 0));
+
+        // Today's Stats
+        document.getElementById("statTasksDone").innerText = completedCount;
+        document.getElementById("statTasksTotal").innerText = totalTasks;
+        document.getElementById("statTimeSpent").innerText = todayTime;
+
+        // Progress Ring
+        const percentage = totalTasks === 0 ? 0 : Math.round((completedCount / totalTasks) * 100);
+        document.getElementById("progressPercentage").innerText = `${percentage}%`;
+
+        const circle = document.getElementById("progressRing");
+        const radius = circle.r.baseVal.value;
+        const circumference = radius * 2 * Math.PI;
+        const offset = circumference - (percentage / 100) * circumference;
+        circle.style.strokeDasharray = `${circumference} ${circumference}`;
+        circle.style.strokeDashoffset = offset;
+
+        // Historical Stats Analysis
+        calculateHistoricalStats(todayTime);
+      }
+
+      // --- Advanced Analytics ---
+      function calculateHistoricalStats(todayTime) {
+        const currentEffectiveDate = getEffectiveBDDateStr();
+        const bdTime = getBDTime();
+        // Treat hours < 6 as previous day for calculation boundaries
+        if (bdTime.getHours() < 6) bdTime.setDate(bdTime.getDate() - 1);
+
+        const history = appState.history;
+        let totalEverTime = 0;
+        let daysRecorded = history.length;
+
+        let rolling7Total = todayTime; // include today
+        let rolling30Total = todayTime;
+
+        const todayObj = new Date(currentEffectiveDate);
+
+        history.forEach((record) => {
+          totalEverTime += record.totalTime;
+
+          const recDate = new Date(record.dateKey);
+          // Calculate difference in milliseconds, convert to days
+          const diffTime = Math.abs(todayObj - recDate);
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+          if (diffDays <= 7) rolling7Total += record.totalTime;
+          if (diffDays <= 30) rolling30Total += record.totalTime;
+        });
+
+        // Calculate Avg
+        // Include today in average if we have done anything or if it's late in the day.
+        // Average over (history.length + 1) days
+        const overallAvg =
+          daysRecorded === 0
+            ? todayTime
+            : Math.round((totalEverTime + todayTime) / (daysRecorded + 1));
+
+        document.getElementById("statAvgDaily").innerText = overallAvg;
+        document.getElementById("statTotalWeekly").innerText = rolling7Total;
+        document.getElementById("statTotalMonthly").innerText = rolling30Total;
+
+        // Update bars (visual only, max constraints for layout)
+        // Example targets: 120min/day avg, 840min/week, 3600min/month
+        const avgPct = Math.min((overallAvg / 120) * 100, 100);
+        const weekPct = Math.min((rolling7Total / 840) * 100, 100);
+        const monthPct = Math.min((rolling30Total / (120 * 30)) * 100, 100);
+
+        // Add width via timeout to allow initial render 0 to animate to final
+        setTimeout(() => {
+          document.getElementById("barDaily").style.width = `${avgPct}%`;
+          document.getElementById("barWeekly").style.width = `${weekPct}%`;
+          document.getElementById("barMonthly").style.width = `${monthPct}%`;
+        }, 100);
+      }
+
+      // --- Interaction Logic ---
+
+      function openTimeModal(taskId) {
+        currentActiveTaskId = taskId;
+        const task = appState.tasks.find((t) => t.id === taskId);
+
+        document.getElementById("modalTaskName").innerText = task.name;
+        const input = document.getElementById("timeInput");
+        const helper = document.getElementById("modalTargetTimeHelper");
+
+        if (task.targetTime) {
+          input.value = task.targetTime;
+          helper.innerHTML = `<i data-lucide="target" class="w-3 h-3 inline mr-1 -mt-0.5"></i> Target was ${task.targetTime} minutes.`;
+        } else {
+          input.value = "";
+          helper.innerText = "No specific time target. Enter your actual time.";
+        }
+
+        lucide.createIcons(); // Refresh inline icon
+
+        const modal = document.getElementById("timeModal");
+        modal.style.display = "flex";
+
+        // Focus input after modal animation starts
+        setTimeout(() => input.focus(), 50);
+      }
+
+      function closeModal() {
+        document.getElementById("timeModal").style.display = "none";
+        currentActiveTaskId = null;
+      }
+
+      function submitTaskCompletion() {
+        if (!currentActiveTaskId) return;
+
+        const inputVal = document.getElementById("timeInput").value;
+        // Default to 0 if empty
+        const timeSpent = parseInt(inputVal, 10) || 0;
+
+        const taskIndex = appState.tasks.findIndex((t) => t.id === currentActiveTaskId);
+        if (taskIndex !== -1) {
+          appState.tasks[taskIndex].status = "DONE";
+          appState.tasks[taskIndex].actualTime = timeSpent;
+          appState.tasks[taskIndex].completedAt = Date.now();
+          saveState();
+        }
+
+        closeModal();
+        triggerSuccessFeedback();
+      }
+
+      function undoTask(taskId) {
+        const taskIndex = appState.tasks.findIndex((t) => t.id === taskId);
+        if (taskIndex !== -1) {
+          appState.tasks[taskIndex].status = "TODO";
+          appState.tasks[taskIndex].actualTime = 0;
+          appState.tasks[taskIndex].completedAt = null;
+          saveState();
+        }
+      }
+
+      // Simple visual feedback
+      function triggerSuccessFeedback() {
+        const ring = document.getElementById("progressRing");
+        ring.classList.add("text-emerald-400");
+        ring.classList.remove("text-brand-500");
+        setTimeout(() => {
+          ring.classList.add("text-brand-500");
+          ring.classList.remove("text-emerald-400");
+        }, 800);
+      }
+
+      // Support pressing Enter in input
+      document.getElementById("timeInput").addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+          submitTaskCompletion();
+        }
+      });
+
+      // Debug Tool
+      function forceReset() {
+        if (
+          confirm(
+            "This will simulate that a new day has arrived (after 6 AM). Current progress will be saved to history and tasks will reset. Proceed?",
+          )
+        ) {
+          appState.lastResetTime = "2000-01-01"; // Forces next load/check to trigger reset saving history
+          checkDailyReset();
+          // re-render UI explicitely
+          updateUI();
+
+          // Add an explicit UI flash or alert to confirm it worked visually
+          const ring = document.getElementById("progressRing");
+          if (ring) {
+            ring.classList.add("text-indigo-400", "animate-pulse");
+            setTimeout(() => {
+              ring.classList.remove("text-indigo-400", "animate-pulse");
+            }, 800);
+          }
+        }
+      }
+
+      // --- Initialization ---
+      window.addEventListener("DOMContentLoaded", () => {
+        loadState();
+
+        // Check for reset every minute while tab is open just in case they leave it open through 6 AM
+        setInterval(() => {
+          checkDailyReset();
+          renderHeaderDate(); // Keep date fresh
+        }, 60000);
+      });
+    </script>
+  </body>
+</html>
