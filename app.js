@@ -50,73 +50,6 @@ function signOutUser() {
   firebase.auth().signOut();
 }
 
-// --- Data Definitions ---
-const INITIAL_TASKS = [
-  {
-    id: "t1",
-    name: "Watch movies/series/youtube videos",
-    targetTime: null,
-    targetStr: "Unlimited",
-    icon: "film",
-    colorClass: "bg-indigo-50 text-indigo-600",
-    desc: "Relax and enjoy visual content while staying updated with trends, entertainment, and useful ideas.",
-  },
-  {
-    id: "t2",
-    name: "Read technological articles/news/documentation",
-    targetTime: 30,
-    targetStr: "30 min",
-    icon: "book-open",
-    colorClass: "bg-blue-50 text-blue-600",
-    desc: "Stay updated with technology trends, improve knowledge, and sharpen problem-solving skills.",
-  },
-  {
-    id: "t3",
-    name: "Explore with AI",
-    targetTime: 30,
-    targetStr: "30 min",
-    icon: "bot",
-    colorClass: "bg-sky-50 text-sky-600",
-    desc: "Ask questions, explore ideas, and get help with learning, work, or daily challenges.",
-  },
-  {
-    id: "t4",
-    name: "Duolingo",
-    targetTime: 30,
-    targetStr: "30 min",
-    icon: "graduation-cap",
-    colorClass: "bg-emerald-50 text-emerald-600",
-    desc: "Maintain a consistent learning habit with short and engaging lessons every day.",
-  },
-  {
-    id: "t5",
-    name: "Listen podcast",
-    targetTime: 20,
-    targetStr: "20 min",
-    icon: "headphones",
-    colorClass: "bg-fuchsia-50 text-fuchsia-600",
-    desc: "Learn new ideas, stories, and insights while relaxing or doing other activities.",
-  },
-  {
-    id: "t6",
-    name: "Self talk in front of camera",
-    targetTime: 10,
-    targetStr: "5-10 min",
-    icon: "video",
-    colorClass: "bg-orange-50 text-orange-600",
-    desc: "Record yourself sharing thoughts, reflecting on the day, or practicing confidence on camera.",
-  },
-  {
-    id: "t7",
-    name: "Call family, frields and relatives",
-    targetTime: null,
-    targetStr: "Sometimes",
-    icon: "phone-call",
-    colorClass: "bg-purple-50 text-purple-600",
-    desc: "Connect with friends or colleagues through meaningful conversations and stay socially active.",
-  },
-];
-
 // --- State Management ---
 let appState = {
   tasks: [],
@@ -558,62 +491,6 @@ function deleteTask(taskId) {
 }
 
 // Add Task Modal Logic
-const AVAILABLE_ICONS = [
-  "star",
-  "zap",
-  "compass",
-  "book",
-  "coffee",
-  "sun",
-  "heart",
-  "moon",
-  "music",
-  "smile",
-  "pen-tool",
-  "target",
-  "flag",
-  "code",
-  "film",
-  "book-open",
-  "bot",
-  "graduation-cap",
-  "headphones",
-  "video",
-  "phone-call",
-  // Goals & Productivity
-  "trending-up",
-  "check-circle",
-  "award",
-  "medal",
-  "flame",
-  "activity",
-  "crosshair",
-  "dumbbell",
-  "calendar",
-  // Students
-  "pencil",
-  "edit",
-  "library",
-  "backpack",
-  "microscope",
-  "calculator",
-  "book-open-check",
-  "file-text",
-  "brain",
-  // Office Workers
-  "briefcase",
-  "monitor",
-  "keyboard",
-  "mail",
-  "pie-chart",
-  "bar-chart",
-  "presentation",
-  "users",
-  "file-spreadsheet",
-  "inbox",
-  "printer",
-  "wallet",
-];
 let selectedNewTaskIcon = AVAILABLE_ICONS[0];
 let isIconSelectorExpanded = false;
 let editingTaskId = null;
@@ -622,7 +499,7 @@ function renderIconSelector() {
   const container = document.getElementById("iconSelectorContainer");
   if (!container) return;
 
-  const displayIcons = isIconSelectorExpanded ? AVAILABLE_ICONS : AVAILABLE_ICONS.slice(0, 13);
+  const displayIcons = isIconSelectorExpanded ? AVAILABLE_ICONS : AVAILABLE_ICONS.slice(0, 22);
   let html = displayIcons
     .map(
       (icon) => `
@@ -637,10 +514,10 @@ function renderIconSelector() {
     )
     .join("");
 
-  if (!isIconSelectorExpanded && AVAILABLE_ICONS.length > 13) {
+  if (!isIconSelectorExpanded && AVAILABLE_ICONS.length > 22) {
     html += `
       <button onclick="toggleIconSelector()" type="button" class="w-auto px-3 h-10 rounded-xl flex items-center justify-center border-2 border-slate-200 bg-slate-50 text-slate-500 hover:text-brand-600 hover:border-brand-300 transition-all shadow-sm font-semibold text-xs cursor-pointer shrink-0">
-        +${AVAILABLE_ICONS.length - 13} More
+        +${AVAILABLE_ICONS.length - 22} More
       </button>
     `;
   } else if (isIconSelectorExpanded) {
