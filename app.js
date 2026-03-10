@@ -260,10 +260,15 @@ function renderTasks() {
                   </div>
                   <p class="text-slate-500 text-sm leading-relaxed truncate group-hover:text-slate-600 transition-colors">${t.desc}</p>
               </div>
-              <div class="shrink-0 w-full sm:w-auto mt-2 sm:mt-0 flex justify-end gap-2 sm:ml-1">
-                  <button onclick="deleteTask('${t.id}')" class="flex sm:w-10 sm:h-10 w-full py-2.5 sm:py-0 shrink-0 rounded-xl sm:rounded-full bg-slate-50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-rose-400 hover:text-rose-500 hover:bg-rose-50 shadow-sm transition-all focus:ring-4 focus:ring-rose-100 font-semibold sm:font-normal gap-2 sm:gap-0" title="Delete Task">
-                      <i data-lucide="trash-2" class="w-4 h-4"></i> <span class="sm:hidden text-sm">Delete</span>
+              <div class="shrink-0 w-full sm:w-auto mt-2 sm:mt-0 flex justify-end gap-2 sm:ml-1 items-center">
+               <div class="shrink-0 flex gap-2">
+                  <button onclick="editTask('${t.id}')" class="flex w-6 h-6 shrink-0 rounded-lg bg-slate-50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-indigo-400 hover:text-indigo-500 hover:bg-indigo-50 shadow-sm transition-all focus:ring-2 focus:ring-indigo-100" title="Edit Task">
+                      <i data-lucide="edit-2" class="w-2.5 h-2.5"></i>
                   </button>
+                  <button onclick="deleteTask('${t.id}')" class="flex w-6 h-6 shrink-0 rounded-lg bg-slate-50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-rose-400 hover:text-rose-500 hover:bg-rose-50 shadow-sm transition-all focus:ring-2 focus:ring-rose-100" title="Delete Task">
+                      <i data-lucide="trash-2" class="w-2.5 h-2.5"></i>
+                  </button>
+                   </div>
                   <button onclick="openTimeModal('${t.id}')" class="flex sm:w-10 sm:h-10 w-full py-2.5 sm:py-0 shrink-0 rounded-xl sm:rounded-full bg-slate-50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-emerald-400 hover:text-emerald-500 hover:bg-emerald-50 shadow-sm transition-all focus:ring-4 focus:ring-emerald-100 font-semibold sm:font-normal gap-2 sm:gap-0" title="Mark Done">
                       <i data-lucide="check" class="w-5 h-5"></i> <span class="sm:hidden text-sm">Mark Done</span>
                   </button>
@@ -290,9 +295,12 @@ function renderTasks() {
                   </div>
                   <p class="text-slate-400 text-sm leading-relaxed truncate">${t.desc}</p>
               </div>
-              <div class="shrink-0 w-full sm:w-auto mt-2 sm:mt-0 flex justify-end gap-2 sm:ml-1">
-                   <button onclick="deleteTask('${t.id}')" class="flex sm:w-10 sm:h-10 w-full py-2.5 sm:py-0 shrink-0 rounded-xl sm:rounded-full bg-white/50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-rose-400 hover:text-rose-500 hover:bg-rose-50 shadow-sm transition-all focus:ring-4 focus:ring-rose-100 font-semibold sm:font-normal gap-2 sm:gap-0" title="Delete Task">
-                      <i data-lucide="trash-2" class="w-4 h-4"></i> <span class="sm:hidden text-sm">Delete</span>
+              <div class="shrink-0 w-full sm:w-auto mt-2 sm:mt-0 flex justify-end gap-2 sm:ml-1 items-center">
+                  <button onclick="editTask('${t.id}')" class="flex w-8 h-8 shrink-0 rounded-lg bg-white/50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-indigo-400 hover:text-indigo-500 hover:bg-indigo-50 shadow-sm transition-all focus:ring-2 focus:ring-indigo-100" title="Edit Task">
+                      <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
+                  </button>
+                  <button onclick="deleteTask('${t.id}')" class="flex w-8 h-8 shrink-0 rounded-lg bg-white/50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-rose-400 hover:text-rose-500 hover:bg-rose-50 shadow-sm transition-all focus:ring-2 focus:ring-rose-100" title="Delete Task">
+                      <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                   </button>
                    <button onclick="undoTask('${t.id}')" title="Undo" class="flex sm:w-10 sm:h-10 w-full py-2.5 sm:py-0 shrink-0 items-center justify-center gap-2 sm:gap-0 text-slate-400 font-semibold sm:font-normal hover:text-indigo-500 transition-colors rounded-xl sm:rounded-full hover:bg-white/50 border border-transparent hover:border-slate-200 shadow-sm">
                       <i data-lucide="rotate-ccw" class="w-4 h-4"></i> <span class="sm:hidden text-sm">Undo</span>
@@ -507,18 +515,20 @@ const AVAILABLE_ICONS = [
   "file-spreadsheet",
   "inbox",
   "printer",
-  "wallet"
+  "wallet",
 ];
 let selectedNewTaskIcon = AVAILABLE_ICONS[0];
 let isIconSelectorExpanded = false;
+let editingTaskId = null;
 
 function renderIconSelector() {
   const container = document.getElementById("iconSelectorContainer");
   if (!container) return;
-  
+
   const displayIcons = isIconSelectorExpanded ? AVAILABLE_ICONS : AVAILABLE_ICONS.slice(0, 13);
-  let html = displayIcons.map(
-    (icon) => `
+  let html = displayIcons
+    .map(
+      (icon) => `
     <button onclick="selectNewTaskIcon('${icon}')" type="button" class="w-10 h-10 rounded-xl flex items-center justify-center border-2 transition-all shrink-0 ${
       selectedNewTaskIcon === icon
         ? "border-brand-500 bg-brand-50 text-brand-600 cursor-default shadow-sm"
@@ -527,8 +537,9 @@ function renderIconSelector() {
       <i data-lucide="${icon}" class="w-5 h-5"></i>
     </button>
   `,
-  ).join("");
-  
+    )
+    .join("");
+
   if (!isIconSelectorExpanded && AVAILABLE_ICONS.length > 13) {
     html += `
       <button onclick="toggleIconSelector()" type="button" class="w-auto px-3 h-10 rounded-xl flex items-center justify-center border-2 border-slate-200 bg-slate-50 text-slate-500 hover:text-brand-600 hover:border-brand-300 transition-all shadow-sm font-semibold text-xs cursor-pointer shrink-0">
@@ -558,6 +569,14 @@ function selectNewTaskIcon(icon) {
 }
 
 function openAddTaskModal() {
+  editingTaskId = null;
+  const titleEl = document.getElementById("addTaskModalTitle");
+  if (titleEl) titleEl.innerText = "New Task";
+  const btnEl =
+    document.getElementById("submitTaskBtn") ||
+    document.querySelector("#addTaskModal button[onclick='submitNewTask()']");
+  if (btnEl) btnEl.innerText = "Create Task";
+
   document.getElementById("addTaskName").value = "";
   document.getElementById("addTaskTime").value = "";
   document.getElementById("addTaskDesc").value = "";
@@ -567,6 +586,30 @@ function openAddTaskModal() {
   isIconSelectorExpanded = false; // Reset to collapsed view on open
   renderIconSelector();
 
+  setTimeout(() => document.getElementById("addTaskName").focus(), 50);
+}
+
+function editTask(taskId) {
+  const task = appState.tasks.find((t) => t.id === taskId);
+  if (!task) return;
+
+  editingTaskId = taskId;
+  const titleEl = document.getElementById("addTaskModalTitle");
+  if (titleEl) titleEl.innerText = "Edit Task";
+  const btnEl =
+    document.getElementById("submitTaskBtn") ||
+    document.querySelector("#addTaskModal button[onclick='submitNewTask()']");
+  if (btnEl) btnEl.innerText = "Save Changes";
+
+  document.getElementById("addTaskName").value = task.name;
+  document.getElementById("addTaskTime").value = task.targetTime || "";
+  document.getElementById("addTaskDesc").value = task.desc || "";
+
+  selectedNewTaskIcon = task.icon || AVAILABLE_ICONS[0];
+  isIconSelectorExpanded = false;
+  renderIconSelector();
+
+  document.getElementById("addTaskModal").style.display = "flex";
   setTimeout(() => document.getElementById("addTaskName").focus(), 50);
 }
 
@@ -600,20 +643,45 @@ function submitNewTask() {
   // Use the selected icon instead of random
   const icon = selectedNewTaskIcon || AVAILABLE_ICONS[0];
 
-  const newTask = {
-    id: "task_" + Date.now(),
-    name: name,
-    targetTime: targetTime,
-    targetStr: targetStr,
-    icon: icon,
-    colorClass: colorClass,
-    desc: desc || "No description provided.",
-    status: "TODO",
-    actualTime: 0,
-    completedAt: null,
-  };
+  if (editingTaskId) {
+    const taskIndex = appState.tasks.findIndex((t) => t.id === editingTaskId);
+    if (taskIndex !== -1) {
+      appState.tasks[taskIndex].name = name;
+      appState.tasks[taskIndex].targetTime = targetTime;
+      appState.tasks[taskIndex].targetStr = targetStr;
+      appState.tasks[taskIndex].desc = desc || "No description provided.";
+      appState.tasks[taskIndex].icon = icon;
+    }
+  } else {
+    // Pick a random color for custom tasks
+    const colors = [
+      "bg-indigo-50 text-indigo-600",
+      "bg-emerald-50 text-emerald-600",
+      "bg-sky-50 text-sky-600",
+      "bg-blue-50 text-blue-600",
+      "bg-purple-50 text-purple-600",
+      "bg-fuchsia-50 text-fuchsia-600",
+      "bg-red-50 text-red-600",
+      "bg-orange-50 text-orange-600",
+    ];
+    const colorClass = colors[Math.floor(Math.random() * colors.length)];
 
-  appState.tasks.push(newTask);
+    const newTask = {
+      id: "task_" + Date.now(),
+      name: name,
+      targetTime: targetTime,
+      targetStr: targetStr,
+      icon: icon,
+      colorClass: colorClass,
+      desc: desc || "No description provided.",
+      status: "TODO",
+      actualTime: 0,
+      completedAt: null,
+    };
+
+    appState.tasks.push(newTask);
+  }
+
   saveState();
   closeAddTaskModal();
 }
@@ -690,6 +758,7 @@ window.closeModal = closeModal;
 window.submitTaskCompletion = submitTaskCompletion;
 window.undoTask = undoTask;
 window.deleteTask = deleteTask;
+window.editTask = editTask;
 window.openAddTaskModal = openAddTaskModal;
 window.closeAddTaskModal = closeAddTaskModal;
 window.submitNewTask = submitNewTask;
