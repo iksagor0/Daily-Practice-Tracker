@@ -1,0 +1,486 @@
+// --- Data Definitions ---
+const INITIAL_TASKS = [
+  {
+    id: "t1",
+    name: "Watch movies/series/youtube videos",
+    targetTime: null,
+    targetStr: "Unlimited",
+    icon: "film",
+    colorClass: "bg-indigo-50 text-indigo-600",
+    desc: "Visual learning for vocabulary, pronunciation and improves listening comprehension.",
+  },
+  {
+    id: "t2",
+    name: "Read technological articles/news/documentation",
+    targetTime: 30,
+    targetStr: "30 min",
+    icon: "book-open",
+    colorClass: "bg-blue-50 text-blue-600",
+    desc: "Effective for vocabulary expansion and understanding industry context.",
+  },
+  {
+    id: "t3",
+    name: "Talk with AI",
+    targetTime: 30,
+    targetStr: "30 min",
+    icon: "bot",
+    colorClass: "bg-sky-50 text-sky-600",
+    desc: "Practicing conversational skills and real-time response formulation.",
+  },
+  {
+    id: "t4",
+    name: "Duolingo",
+    targetTime: 30,
+    targetStr: "30 min",
+    icon: "graduation-cap",
+    colorClass: "bg-emerald-50 text-emerald-600",
+    desc: "Consistent daily learning for foundational vocabulary and grammar structure.",
+  },
+  {
+    id: "t5",
+    name: "Listen podcast",
+    targetTime: 20,
+    targetStr: "20 min",
+    icon: "headphones",
+    colorClass: "bg-fuchsia-50 text-fuchsia-600",
+    desc: "Improves listening comprehension and exposure to natural speech patterns.",
+  },
+  {
+    id: "t6",
+    name: "Self talk in front of camera",
+    targetTime: 10,
+    targetStr: "5-10 min",
+    icon: "video",
+    colorClass: "bg-orange-50 text-orange-600",
+    desc: "A powerful technique for improving pronunciation, rhythm, and confidence.",
+  },
+  {
+    id: "t7",
+    name: "Call someone and speak in English",
+    targetTime: null,
+    targetStr: "Sometimes",
+    icon: "phone-call",
+    colorClass: "bg-purple-50 text-purple-600",
+    desc: "Building fluency and confidence through live speaking practice.",
+  },
+];
+
+// --- State Management ---
+let appState = {
+  tasks: [],
+  history: [], // Array of { dateKey: 'YYYY-MM-DD', totalTime: 0, completedTasks: 0, totalTasks: 8 }
+  lastResetTime: null, // Timestamp of the last reset (based on 6AM BD time relative logic)
+};
+
+let currentActiveTaskId = null;
+
+// --- Utility Functions ---
+
+// Get current time in Bangladesh (UTC+6)
+function getBDTime() {
+  const now = new Date();
+  // Convert to UTC+6 offset manually to be perfectly safe regardless of user local tz
+  const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+  return new Date(utc + 3600000 * 6);
+}
+
+// Get a string key for the BD date (YYYY-MM-DD), adjusted for the 6AM boundary.
+// If it's before 6 AM, it counts as the previous day.
+function getEffectiveBDDateStr() {
+  const bdTime = getBDTime();
+  // If before 6 AM, subtract 1 day
+  if (bdTime.getHours() < 6) {
+    bdTime.setDate(bdTime.getDate() - 1);
+  }
+  return `${bdTime.getFullYear()}-${String(bdTime.getMonth() + 1).padStart(2, "0")}-${String(bdTime.getDate()).padStart(2, "0")}`;
+}
+
+// Check if a reset is required based on the effective date string
+function checkDailyReset() {
+  const currentDateStr = getEffectiveBDDateStr();
+  let didReset = false;
+
+  if (appState.lastResetTime !== currentDateStr) {
+    console.log("New day detected. Resetting tasks/history.");
+
+    // If we have previous tasks, save their stats to history before resetting
+    if (appState.tasks.length > 0 && appState.lastResetTime) {
+      const totalTime = appState.tasks.reduce(
+        (sum, t) => sum + (t.status === "DONE" ? t.actualTime || 0 : 0),
+        0,
+      );
+      const completedTasks = appState.tasks.filter((t) => t.status === "DONE").length;
+
+      appState.history.push({
+        dateKey: appState.lastResetTime,
+        totalTime: totalTime,
+        completedTasks: completedTasks,
+        totalTasks: appState.tasks.length,
+      });
+    }
+
+    // Reset tasks to TODO
+    appState.tasks = INITIAL_TASKS.map((t) => ({
+      ...t,
+      status: "TODO",
+      actualTime: 0,
+      completedAt: null,
+    }));
+
+    appState.lastResetTime = currentDateStr;
+    didReset = true;
+  }
+  return didReset;
+}
+
+function loadState() {
+  const saved = localStorage.getItem("practiceTrackerState");
+  let needsSave = false;
+
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      appState.tasks = (parsed.tasks || []).map((t) => {
+        const initial = INITIAL_TASKS.find((i) => i.id === t.id);
+        return initial ? { ...initial, ...t } : t;
+      });
+      appState.history = parsed.history || [];
+      appState.lastResetTime = parsed.lastResetTime || null;
+
+      // Fallback to defaults if broken or user cleared items inside storage explicitly
+      if (!appState.tasks || appState.tasks.length === 0) {
+        appState.tasks = INITIAL_TASKS.map((t) => ({
+          ...t,
+          status: "TODO",
+          actualTime: 0,
+          completedAt: null,
+        }));
+        appState.lastResetTime = null;
+        needsSave = true;
+      }
+    } catch (e) {
+      console.error("Error parsing local storage", e);
+      needsSave = true;
+    }
+  } else {
+    needsSave = true;
+  }
+
+  // If completely new state
+  if (!appState.tasks || appState.tasks.length === 0) {
+    appState.tasks = INITIAL_TASKS.map((t) => ({
+      ...t,
+      status: "TODO",
+      actualTime: 0,
+      completedAt: null,
+    }));
+  }
+
+  const didReset = checkDailyReset();
+
+  // Fix: UI wasn't updating on initial load if we didn't force a save!
+  if (needsSave || didReset) {
+    saveState(); // Internally updates UI
+  } else {
+    updateUI(); // Was previously missing, leading to an empty screen
+  }
+}
+
+function saveState() {
+  localStorage.setItem("practiceTrackerState", JSON.stringify(appState));
+  updateUI();
+}
+
+// --- UI Rendering ---
+
+function updateUI() {
+  renderHeaderDate();
+  renderTasks();
+  updateStatistics();
+
+  // Render icons safely after DOM updates
+  if (window.lucide) {
+    lucide.createIcons();
+  }
+}
+
+function renderHeaderDate() {
+  const bdTime = getBDTime();
+  const dateEl = document.getElementById("currentDateText");
+  // Using date-fns as requested by global rules
+  if (dateEl && window.dateFns) {
+    dateEl.innerText = window.dateFns.format(bdTime, "EEEE, MMMM d, yyyy");
+  } else if (dateEl) {
+    // Fallback just in case CDN is blocked
+    dateEl.innerText = bdTime.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  }
+}
+
+function getTaskTimeBadge(targetStr) {
+  let icon = "clock";
+  let colorClass = "text-amber-500 bg-amber-50 border-amber-100";
+  if (targetStr === "Unlimited") {
+    icon = "infinity";
+    colorClass = "text-indigo-500 bg-indigo-50 border-indigo-100";
+  } else if (targetStr === "Sometimes") {
+    icon = "shuffle";
+    colorClass = "text-rose-500 bg-rose-50 border-rose-100";
+  }
+  return `
+    <div class="${colorClass} font-bold text-xs flex items-center gap-1.5 px-2.5 py-1 rounded-full border">
+        <i data-lucide="${icon}" class="w-3.5 h-3.5"></i> ${targetStr}
+    </div>
+  `;
+}
+
+function renderTasks() {
+  const todoContainer = document.getElementById("todoList");
+  const doneContainer = document.getElementById("doneList");
+  if (!todoContainer || !doneContainer) return;
+
+  const todoTasks = appState.tasks.filter((t) => t.status === "TODO");
+  const doneTasks = appState.tasks
+    .filter((t) => t.status === "DONE")
+    .sort((a, b) => b.completedAt - a.completedAt);
+
+  document.getElementById("todoCountBadge").innerText = todoTasks.length;
+  document.getElementById("doneCountBadge").innerText = doneTasks.length;
+
+  document.getElementById("emptyTodoState").classList.toggle("hidden", todoTasks.length > 0);
+  document.getElementById("emptyDoneState").classList.toggle("hidden", doneTasks.length > 0);
+
+  // Render TODOs
+  todoContainer.innerHTML = todoTasks
+    .map(
+      (t, index) => `
+          <div class="glass-panel task-card rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 group" style="animation: slideUp 0.3s ease-out forwards; animation-delay: ${index * 0.05}s; opacity: 0; transform: translateY(10px);">
+              <div class="shrink-0 w-12 h-12 rounded-xl ${t.colorClass} flex items-center justify-center shadow-sm">
+                  <i data-lucide="${t.icon}" class="w-6 h-6"></i>
+              </div>
+              <div class="flex-1 min-w-0 w-full">
+                  <div class="flex flex-wrap sm:flex-nowrap justify-between items-start gap-2 mb-0.5">
+                      <h3 class="font-bold text-slate-800 text-base leading-tight group-hover:text-brand-700 transition-colors truncate">${t.name}</h3>
+                      <div class="shrink-0 sm:ml-2">
+                          ${getTaskTimeBadge(t.targetStr)}
+                      </div>
+                  </div>
+                  <p class="text-slate-500 text-sm leading-relaxed truncate group-hover:text-slate-600 transition-colors">${t.desc}</p>
+              </div>
+              <div class="shrink-0 w-full sm:w-auto mt-2 sm:mt-0 flex justify-end sm:ml-1">
+                  <button onclick="openTimeModal('${t.id}')" class="flex sm:w-10 sm:h-10 w-full py-2.5 sm:py-0 shrink-0 rounded-xl sm:rounded-full bg-slate-50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-emerald-400 hover:text-emerald-500 hover:bg-emerald-50 shadow-sm transition-all focus:ring-4 focus:ring-emerald-100 font-semibold sm:font-normal gap-2 sm:gap-0">
+                      <i data-lucide="check" class="w-5 h-5"></i> <span class="sm:hidden text-sm">Mark Done</span>
+                  </button>
+              </div>
+          </div>
+      `,
+    )
+    .join("");
+
+  // Render DONEs
+  doneContainer.innerHTML = doneTasks
+    .map(
+      (t, index) => `
+          <div class="glass-panel rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 opacity-80 hover:opacity-100 transition-opacity bg-white/40 group relative" style="animation: slideUp 0.3s ease-out forwards; animation-delay: ${index * 0.05}s; opacity: 0; transform: translateY(10px);">
+              <div class="shrink-0 w-12 h-12 rounded-xl bg-slate-100 text-slate-400 flex items-center justify-center">
+                  <i data-lucide="check" class="w-6 h-6"></i>
+              </div>
+              <div class="flex-1 min-w-0 w-full">
+                  <div class="flex flex-wrap sm:flex-nowrap justify-between items-start gap-2 mb-0.5">
+                      <h3 class="font-bold text-slate-500 text-base line-through leading-tight truncate w-full sm:w-auto">${t.name}</h3>
+                      <div class="text-emerald-600 font-bold text-xs flex items-center gap-1.5 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100 shrink-0 sm:ml-2">
+                          <i data-lucide="timer" class="w-3.5 h-3.5"></i> ${t.actualTime} min
+                      </div>
+                  </div>
+                  <p class="text-slate-400 text-sm leading-relaxed truncate">${t.desc}</p>
+              </div>
+              <div class="shrink-0 w-full sm:w-auto mt-2 sm:mt-0 flex justify-end sm:ml-1">
+                   <button onclick="undoTask('${t.id}')" title="Undo" class="flex sm:w-10 sm:h-10 w-full py-2.5 sm:py-0 shrink-0 items-center justify-center gap-2 sm:gap-0 text-slate-400 font-semibold sm:font-normal hover:text-indigo-500 transition-colors rounded-xl sm:rounded-full hover:bg-white/50 border border-transparent hover:border-slate-200">
+                      <i data-lucide="rotate-ccw" class="w-4 h-4"></i> <span class="sm:hidden text-sm">Undo</span>
+                  </button>
+              </div>
+          </div>
+      `,
+    )
+    .join("");
+}
+
+function updateStatistics() {
+  const totalTasks = appState.tasks.length;
+  const doneTasks = appState.tasks.filter((t) => t.status === "DONE");
+  const completedCount = doneTasks.length;
+
+  let todayTime = 0;
+  doneTasks.forEach((t) => (todayTime += t.actualTime || 0));
+
+  // Today's Stats
+  document.getElementById("statTasksDone").innerText = completedCount;
+  document.getElementById("statTasksTotal").innerText = totalTasks;
+  document.getElementById("statTimeSpent").innerText = todayTime;
+
+  // Progress Ring
+  const percentage = totalTasks === 0 ? 0 : Math.round((completedCount / totalTasks) * 100);
+  document.getElementById("progressPercentage").innerText = `${percentage}%`;
+
+  const circle = document.getElementById("progressRing");
+  const radius = circle.r.baseVal.value;
+  const circumference = radius * 2 * Math.PI;
+  const offset = circumference - (percentage / 100) * circumference;
+  circle.style.strokeDasharray = `${circumference} ${circumference}`;
+  circle.style.strokeDashoffset = offset;
+
+  // Historical Stats Analysis
+  calculateHistoricalStats(todayTime);
+}
+
+// --- Advanced Analytics ---
+function calculateHistoricalStats(todayTime) {
+  const currentEffectiveDate = getEffectiveBDDateStr();
+  const bdTime = getBDTime();
+  // Treat hours < 6 as previous day for calculation boundaries
+  if (bdTime.getHours() < 6) bdTime.setDate(bdTime.getDate() - 1);
+
+  const history = appState.history;
+  let totalEverTime = 0;
+  let daysRecorded = history.length;
+
+  let rolling7Total = todayTime; // include today
+  let rolling30Total = todayTime;
+
+  const todayObj = new Date(currentEffectiveDate);
+
+  history.forEach((record) => {
+    totalEverTime += record.totalTime;
+
+    const recDate = new Date(record.dateKey);
+    // Calculate difference in milliseconds, convert to days
+    const diffTime = Math.abs(todayObj - recDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays <= 7) rolling7Total += record.totalTime;
+    if (diffDays <= 30) rolling30Total += record.totalTime;
+  });
+
+  // Calculate Avg
+  // Include today in average if we have done anything or if it's late in the day.
+  // Average over (history.length + 1) days
+  const overallAvg =
+    daysRecorded === 0 ? todayTime : Math.round((totalEverTime + todayTime) / (daysRecorded + 1));
+
+  document.getElementById("statAvgDaily").innerText = overallAvg;
+  document.getElementById("statTotalWeekly").innerText = rolling7Total;
+  document.getElementById("statTotalMonthly").innerText = rolling30Total;
+
+  // Update bars (visual only, max constraints for layout)
+  // Example targets: 120min/day avg, 840min/week, 3600min/month
+  const avgPct = Math.min((overallAvg / 120) * 100, 100);
+  const weekPct = Math.min((rolling7Total / 840) * 100, 100);
+  const monthPct = Math.min((rolling30Total / (120 * 30)) * 100, 100);
+
+  // Add width via timeout to allow initial render 0 to animate to final
+  setTimeout(() => {
+    document.getElementById("barDaily").style.width = `${avgPct}%`;
+    document.getElementById("barWeekly").style.width = `${weekPct}%`;
+    document.getElementById("barMonthly").style.width = `${monthPct}%`;
+  }, 100);
+}
+
+// --- Interaction Logic ---
+
+function openTimeModal(taskId) {
+  currentActiveTaskId = taskId;
+  const task = appState.tasks.find((t) => t.id === taskId);
+
+  document.getElementById("modalTaskName").innerText = task.name;
+  const input = document.getElementById("timeInput");
+  const helper = document.getElementById("modalTargetTimeHelper");
+
+  if (task.targetTime) {
+    input.value = task.targetTime;
+    helper.innerHTML = `<i data-lucide="target" class="w-3 h-3 inline mr-1 -mt-0.5"></i> Target was ${task.targetTime} minutes.`;
+  } else {
+    input.value = "";
+    helper.innerText = "No specific time target. Enter your actual time.";
+  }
+
+  lucide.createIcons(); // Refresh inline icon
+
+  const modal = document.getElementById("timeModal");
+  modal.style.display = "flex";
+
+  // Focus input after modal animation starts
+  setTimeout(() => input.focus(), 50);
+}
+
+function closeModal() {
+  document.getElementById("timeModal").style.display = "none";
+  currentActiveTaskId = null;
+}
+
+function submitTaskCompletion() {
+  if (!currentActiveTaskId) return;
+
+  const inputVal = document.getElementById("timeInput").value;
+  // Default to 0 if empty
+  const timeSpent = parseInt(inputVal, 10) || 0;
+
+  const taskIndex = appState.tasks.findIndex((t) => t.id === currentActiveTaskId);
+  if (taskIndex !== -1) {
+    appState.tasks[taskIndex].status = "DONE";
+    appState.tasks[taskIndex].actualTime = timeSpent;
+    appState.tasks[taskIndex].completedAt = Date.now();
+    saveState();
+  }
+
+  closeModal();
+  triggerSuccessFeedback();
+}
+
+function undoTask(taskId) {
+  const taskIndex = appState.tasks.findIndex((t) => t.id === taskId);
+  if (taskIndex !== -1) {
+    appState.tasks[taskIndex].status = "TODO";
+    appState.tasks[taskIndex].actualTime = 0;
+    appState.tasks[taskIndex].completedAt = null;
+    saveState();
+  }
+}
+
+// Simple visual feedback
+function triggerSuccessFeedback() {
+  const ring = document.getElementById("progressRing");
+  ring.classList.add("text-emerald-400");
+  ring.classList.remove("text-brand-500");
+  setTimeout(() => {
+    ring.classList.add("text-brand-500");
+    ring.classList.remove("text-emerald-400");
+  }, 800);
+}
+
+// Support pressing Enter in input
+const timeInputEl = document.getElementById("timeInput");
+if (timeInputEl) {
+  timeInputEl.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+      submitTaskCompletion();
+    }
+  });
+}
+
+// --- Initialization ---
+window.addEventListener("DOMContentLoaded", () => {
+  loadState();
+
+  // Check for reset every minute while tab is open just in case they leave it open through 6 AM
+  setInterval(() => {
+    checkDailyReset();
+    // Keep date fresh, but checking if the element exists
+    if (document.getElementById("currentDateText")) {
+      renderHeaderDate();
+    }
+  }, 60000);
+});
