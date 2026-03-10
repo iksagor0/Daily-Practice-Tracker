@@ -215,14 +215,20 @@
             </div>
           </div>
 
-          <div id="emptyTodoState" class="hidden glass-panel rounded-2xl p-8 text-center">
-            <div
-              class="w-16 h-16 bg-slate-100 text-slate-400 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-slate-200"
-            >
-              <i data-lucide="check-circle-2" class="w-8 h-8"></i>
-            </div>
-            <h3 class="text-slate-800 font-bold text-lg mb-1">Looking empty...</h3>
-            <p class="text-slate-500">You don't have any tasks in your To-Do list.</p>
+          <div id="emptyTodoState" class="hidden glass-panel rounded-3xl p-10 text-center">
+            <svg class="w-48 h-48 mx-auto mb-6 drop-shadow-sm" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path opacity="0.4" fill="#E0F2FE" d="M156.5,-162.9C198.8,-115.3,226.7,-57.6,228.6,1.8C230.5,61.3,206.4,122.5,164.1,161.7C121.8,200.8,60.9,217.9,5.8,212.1C-49.3,206.3,-98.6,177.5,-139.6,138.3C-180.7,99.1,-213.3,49.5,-216,-2.7C-218.7,-54.9,-191.3,-109.8,-150.2,-157.4C-109.1,-205,-54.5,-245.3,1.5,-246.8C57.6,-248.3,114.2,-210.6,156.5,-162.9Z" transform="translate(100 100) scale(0.4)"/>
+              <rect x="60" y="45" width="80" height="110" rx="12" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="4"/>
+              <rect x="85" y="35" width="30" height="20" rx="4" fill="#94A3B8"/>
+              <circle cx="100" cy="45" r="4" fill="#FFFFFF"/>
+              <path d="M80 100L95 115L125 75" stroke="#10B981" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" class="animate-[pulse_2s_ease-out_infinite]"/>
+              <path d="M75 135H125" stroke="#E2E8F0" stroke-width="4" stroke-linecap="round"/>
+              <path d="M75 145H110" stroke="#E2E8F0" stroke-width="4" stroke-linecap="round"/>
+              <path d="M40 70 L45 55 L60 50 L45 45 L40 30 L35 45 L20 50 L35 55 Z" fill="#FBBF24" class="animate-pulse"/>
+              <path d="M150 120 L153 108 L165 105 L153 102 L150 90 L147 102 L135 105 L147 108 Z" fill="#FBBF24" class="animate-pulse" style="animation-delay: 0.5s"/>
+            </svg>
+            <h3 class="text-slate-800 font-bold text-xl mb-2">Looking effortlessly clean!</h3>
+            <p class="text-slate-500 max-w-sm mx-auto">Your To-Do list is completely clear. Time to chill, or add a new task if you're feeling ambitious.</p>
           </div>
 
           <div id="todoList" class="space-y-3">
@@ -246,9 +252,20 @@
 
           <div
             id="emptyDoneState"
-            class="hidden glass-panel rounded-2xl p-6 text-center border-dashed border-2 border-slate-200"
+            class="hidden glass-panel rounded-3xl p-8 text-center border-dashed border-2 border-slate-200"
           >
-            <p class="text-slate-400 font-medium">No tasks completed yet today.</p>
+            <svg class="w-40 h-40 mx-auto mb-4 opacity-80" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path opacity="0.4" fill="#F1F5F9" d="M141.5,-155.8C183.8,-115.3,218.7,-64.6,224.6,-5.9C230.5,52.8,207.4,119.5,160.1,162.7C112.8,205.8,40.9,225.4,-17.8,243.2C-76.5,261,-122.1,277,-158.6,248.8C-195.1,220.6,-222.6,148.3,-229.6,78.7C-236.6,9.1,-223.2,-57.8,-185.1,-105.4C-147,-153,-84.5,-181.3,-24.5,-156.8C35.5,-132.3,99.2,-196.3,141.5,-155.8Z" transform="translate(100 100) scale(0.4)"/>
+              <path d="M50 110L100 140L150 110V70L100 100L50 70V110Z" fill="#CBD5E1"/>
+              <path d="M100 140V100" stroke="#94A3B8" stroke-width="4" stroke-linecap="round"/>
+              <path d="M50 70L100 100L150 70" stroke="#94A3B8" stroke-width="4" stroke-linecap="round"/>
+              <path d="M100 40L150 70" stroke="#94A3B8" stroke-width="4" stroke-linecap="round"/>
+              <path d="M100 40L50 70" stroke="#94A3B8" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="100" cy="50" r="15" fill="#E2E8F0" class="animate-bounce" style="animation-duration: 2s;"/>
+              <path d="M130 30L140 20M140 30L130 20" stroke="#CBD5E1" stroke-width="4" stroke-linecap="round" class="animate-pulse"/>
+            </svg>
+            <h3 class="text-slate-600 font-bold text-lg mb-1">Nothing finished yet</h3>
+            <p class="text-slate-400 font-medium">Your completed tasks will magically appear down here.</p>
           </div>
 
           <div id="doneList" class="space-y-3">
