@@ -1,4 +1,4 @@
-import { ITask, IStats } from "@/types";
+import { ITask, IStats } from "@/models";
 
 export const INITIAL_TASKS: readonly ITask[] = [
   {

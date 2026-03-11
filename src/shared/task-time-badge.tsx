@@ -1,10 +1,7 @@
 import React from "react";
 import * as LucideIcons from "lucide-react";
 import { cn } from "@/utils/cn";
-
-interface ITaskTimeBadgeProps {
-  targetStr: string;
-}
+import { ITaskTimeBadgeProps } from "@/types";
 
 export const TaskTimeBadge: React.FC<ITaskTimeBadgeProps> = ({ targetStr }) => {
   let iconName = "Clock";

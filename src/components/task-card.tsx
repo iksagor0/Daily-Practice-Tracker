@@ -1,18 +1,9 @@
 import React from "react";
 import * as LucideIcons from "lucide-react";
-import { ITask } from "@/types";
+import { ITaskCardProps } from "@/types";
 import { TaskTimeBadge } from "@/shared/task-time-badge";
 import { Button } from "@/components/atoms";
 import { cn } from "@/utils/cn";
-
-interface ITaskCardProps {
-  task: ITask;
-  index: number;
-  onEdit: (taskId: string) => void;
-  onDelete: (taskId: string) => void;
-  onMarkDone?: (taskId: string) => void;
-  onUndo?: (taskId: string) => void;
-}
 
 export const TaskCard: React.FC<ITaskCardProps> = ({
   task,

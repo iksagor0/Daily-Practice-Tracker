@@ -2,15 +2,10 @@ import React, { useState, useEffect, useMemo } from "react";
 import * as LucideIcons from "lucide-react";
 import { X } from "lucide-react";
 import { AVAILABLE_ICONS } from "@/constants";
-import { ITask } from "@/types";
+import { ITask } from "@/models";
+import { IAddTaskModalProps } from "@/types";
 import { Modal, Button } from "./atoms";
-
-interface IAddTaskModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSubmit: (task: Partial<ITask>) => void;
-  initialTask?: ITask | null;
-}
+import { cn } from "@/utils/cn";
 
 export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
   isOpen,
@@ -162,18 +157,19 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
                     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
                     .join("");
                   const Icon =
-                    (LucideIcons as any)[pascalCaseIcon] || LucideIcons.Target;
+                    (LucideIcons as unknown as Record<string, React.ElementType>)[pascalCaseIcon] || LucideIcons.Target;
                   const isSelected = selectedIcon === iconName;
                   return (
                     <Button
                       key={iconName}
                       type="button"
                       onClick={() => setSelectedIcon(iconName)}
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center border-2 shrink-0 ${
+                      className={cn(
+                        "w-10 h-10 rounded-xl flex items-center justify-center border-2 shrink-0",
                         isSelected
                           ? "border-brand-500 bg-brand-50 text-brand-600 shadow-sm"
                           : "border-slate-200 bg-white text-slate-400 hover:border-brand-300 hover:text-brand-500 hover:bg-slate-50 shadow-sm"
-                      }`}
+                      )}
                     >
                       <Icon className="w-5 h-5" />
                     </Button>

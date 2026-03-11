@@ -4,7 +4,7 @@ import React, { createContext, useContext, useEffect, useReducer, ReactNode } fr
 import { ref, set, onValue, off } from "firebase/database";
 import { db } from "@/utils/firebase";
 import { useAuth } from "./auth-context";
-import { ITask, THistory } from "@/types";
+import { ITask, THistory } from "@/models";
 import { INITIAL_TASKS } from "@/constants";
 import { getEffectiveBDDateStr } from "@/utils/time";
 

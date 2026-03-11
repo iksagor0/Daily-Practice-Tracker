@@ -1,34 +1,40 @@
-export type TTaskStatus = "TODO" | "DONE";
+import { ITask } from "@/models";
 
-export interface ITask {
-  readonly id: string;
-  readonly name: string;
-  readonly targetTime: number | null;
-  readonly targetStr: string;
-  readonly icon: string;
-  readonly colorClass: string;
-  readonly desc: string;
-  readonly status?: TTaskStatus;
-  readonly actualTime?: number;
-  readonly completedAt?: number;
+export interface ITaskCardProps {
+  task: ITask;
+  index: number;
+  onEdit: (taskId: string) => void;
+  onDelete: (taskId: string) => void;
+  onMarkDone?: (taskId: string) => void;
+  onUndo?: (taskId: string) => void;
 }
 
-export interface IHistoryEntry {
-  readonly date?: string; // "yyyy-MM-dd" format
-  readonly timeSpent?: number;
-  readonly dateKey?: string; // legacy format
-  readonly totalTime?: number; // legacy format
-  readonly completedTasks?: number; // legacy format
-  readonly totalTasks?: number; // legacy format
+export interface ITaskListProps {
+  onOpenAddModal: () => void;
+  onEditTask: (taskId: string) => void;
+  onDeleteTask: (taskId: string) => void;
+  onMarkDoneTask: (taskId: string) => void;
+  onUndoTask: (taskId: string) => void;
 }
 
-export type THistory = readonly IHistoryEntry[];
+export interface IAddTaskModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: (task: Partial<ITask>) => void;
+  initialTask?: ITask | null;
+}
 
-export interface IStats {
-  readonly todayTotal: number;
-  readonly todayCompleted: number;
-  readonly todayTime: number;
-  readonly weeklyTime: number;
-  readonly monthlyTime: number;
-  readonly avgDaily?: number;
+export interface ITimeInputModalProps {
+  task: ITask | null;
+  onClose: () => void;
+  onSubmit: (taskId: string, timeSpent: number) => void;
+}
+
+export interface IProgressRingProps {
+  percentage: number;
+  className?: string;
+}
+
+export interface ITaskTimeBadgeProps {
+  targetStr: string;
 }

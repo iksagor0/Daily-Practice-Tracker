@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Target, X } from "lucide-react";
-import { ITask } from "@/types";
+import { ITimeInputModalProps } from "@/types";
 import { Modal, Button } from "./atoms";
-
-interface ITimeInputModalProps {
-  task: ITask | null;
-  onClose: () => void;
-  onSubmit: (taskId: string, timeSpent: number) => void;
-}
 
 export const TimeInputModal: React.FC<ITimeInputModalProps> = ({ task, onClose, onSubmit }) => {
   const [time, setTime] = useState<string>("");

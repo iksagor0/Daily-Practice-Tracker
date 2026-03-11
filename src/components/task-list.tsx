@@ -3,14 +3,7 @@ import { Plus } from "lucide-react";
 import { useAppContext } from "@/context/app-context";
 import { TaskCard } from "./task-card";
 import { Button } from "./atoms";
-
-interface ITaskListProps {
-  onOpenAddModal: () => void;
-  onEditTask: (taskId: string) => void;
-  onDeleteTask: (taskId: string) => void;
-  onMarkDoneTask: (taskId: string) => void;
-  onUndoTask: (taskId: string) => void;
-}
+import { ITaskListProps } from "@/types";
 
 export const TaskList: React.FC<ITaskListProps> = ({
   onOpenAddModal,
@@ -67,10 +60,10 @@ export const TaskList: React.FC<ITaskListProps> = ({
               <span className="text-2xl pt-1">✨</span>
             </div>
             <h3 className="text-slate-700 font-bold mb-1">
-              You're all caught up!
+              You&apos;re all caught up!
             </h3>
             <p className="text-slate-500 text-sm mb-4">
-              You've completed everything for today.
+              You&apos;ve completed everything for today.
             </p>
             <Button
               onClick={onOpenAddModal}
@@ -106,7 +99,7 @@ export const TaskList: React.FC<ITaskListProps> = ({
         {doneTasks.length === 0 && (
           <div className="text-center py-8 px-4 rounded-3xl bg-slate-50/50 border border-transparent">
             <p className="text-slate-400 text-sm font-medium">
-              Tasks you complete will appear here. Let's get started!
+              Tasks you complete will appear here. Let&apos;s get started!
             </p>
           </div>
         )}

@@ -1,5 +1,6 @@
 import React from "react";
 import { LogOut, Target, Music } from "lucide-react";
+import Image from "next/image";
 import { format } from "date-fns";
 import { useAuth } from "@/context/auth-context";
 import { getBDTime } from "@/utils/time";
@@ -46,10 +47,12 @@ export const Header: React.FC = () => {
           <div className="bg-white p-1 rounded-xl shadow-sm border border-slate-200 flex items-center">
             {user ? (
               <div className="flex items-center gap-2 pl-2 pr-1">
-                <img
-                  src={user.photoURL || ""}
+                <Image
+                  src={user.photoURL || "/default-avatar.png"}
                   alt="Profile"
-                  className="w-6 h-6 rounded-full border border-slate-200 shadow-sm"
+                  width={24}
+                  height={24}
+                  className="rounded-full border border-slate-200 shadow-sm"
                 />
                 <span className="text-sm font-bold text-slate-700 max-w-[120px] truncate">
                   {user.displayName}

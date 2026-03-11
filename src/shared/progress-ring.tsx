@@ -1,10 +1,6 @@
 import React from "react";
 import { cn } from "@/utils/cn";
-
-interface IProgressRingProps {
-  percentage: number;
-  className?: string;
-}
+import { IProgressRingProps } from "@/types";
 
 export const ProgressRing: React.FC<IProgressRingProps> = ({ percentage, className = "" }) => {
   const radius = 64;
