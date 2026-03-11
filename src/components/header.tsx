@@ -3,6 +3,7 @@ import { LogOut, Target, Music } from "lucide-react";
 import { format } from "date-fns";
 import { useAuth } from "@/context/auth-context";
 import { getBDTime } from "@/utils/time";
+import { Button } from "./atoms";
 
 export const Header: React.FC = () => {
   const { user, isGuest, isLoading, loginWithGoogle, logout } = useAuth();
@@ -37,14 +38,13 @@ export const Header: React.FC = () => {
               <div className="flex items-center gap-2 pl-2 pr-1">
                 <img src={user.photoURL || ""} alt="Profile" className="w-6 h-6 rounded-full border border-slate-200 shadow-sm" />
                 <span className="text-sm font-bold text-slate-700 max-w-[120px] truncate">{user.displayName}</span>
-                <button
-                  type="button"
+                <Button
                   onClick={logout}
-                  className="p-1.5 ml-1 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 transition-colors"
+                  className="p-1.5 ml-1 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50"
                   title="Sign Out"
                 >
                   <LogOut className="w-4 h-4" />
-                </button>
+                </Button>
               </div>
             ) : isGuest ? (
               <div className="flex items-center gap-2 pl-2 pr-1">
@@ -52,21 +52,19 @@ export const Header: React.FC = () => {
                   <span className="text-xs font-bold text-slate-400">G</span>
                 </div>
                 <span className="text-sm font-bold text-slate-600 italic">Guest</span>
-                <button
-                  type="button"
+                <Button
                   onClick={loginWithGoogle}
-                  className="px-2 py-1 ml-1 rounded-lg text-xs font-bold bg-brand-50 text-brand-600 hover:bg-brand-100 transition-colors"
+                  className="px-2 py-1 ml-1 rounded-lg text-xs font-bold bg-brand-50 text-brand-600 hover:bg-brand-100"
                 >
                   Sync Data
-                </button>
-                <button
-                  type="button"
+                </Button>
+                <Button
                   onClick={logout}
-                  className="p-1.5 ml-1 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 transition-colors"
+                  className="p-1.5 ml-1 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50"
                   title="Clear Guest Data & Exit"
                 >
                   <LogOut className="w-4 h-4" />
-                </button>
+                </Button>
               </div>
             ) : null}
           </div>

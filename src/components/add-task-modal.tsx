@@ -3,6 +3,7 @@ import * as LucideIcons from "lucide-react";
 import { X } from "lucide-react";
 import { AVAILABLE_ICONS } from "@/constants";
 import { ITask } from "@/types";
+import { Modal, Button } from "./atoms";
 
 interface IAddTaskModalProps {
   isOpen: boolean;
@@ -24,6 +25,7 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
   const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
+    /* eslint-disable */
     if (isOpen) {
       if (initialTask) {
         setName(initialTask.name);
@@ -40,13 +42,12 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
       }
       setIsExpanded(false);
     }
+    /* eslint-enable */
   }, [isOpen, initialTask]);
 
   const displayIcons = useMemo(() => {
     return isExpanded ? AVAILABLE_ICONS : AVAILABLE_ICONS.slice(0, 22);
   }, [isExpanded]);
-
-  if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,15 +73,16 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
   };
 
   return (
-    <div
-      className="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-6 animate-fade-in"
-      style={{
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      overlayStyle={{
         backgroundColor: "rgba(0, 0, 0, 0.4)",
         backdropFilter: "blur(2px)",
         WebkitBackdropFilter: "blur(2px)",
       }}
     >
-      <div className="bg-white rounded-4xl shadow-2xl w-full max-w-md border border-white relative overflow-hidden flex flex-col max-h-full animate-scale-in">
+      <div className="bg-white rounded-4xl shadow-2xl w-full max-w-md border border-white relative overflow-hidden flex flex-col h-[800px] max-h-[90vh] animate-scale-in">
         <div className="absolute top-0 right-0 w-32 h-32 bg-brand-50 rounded-bl-[100px] -z-10"></div>
 
         <div className="shrink-0 flex items-center justify-between p-6 sm:p-8 pb-4 sm:pb-6 border-b border-slate-100">
@@ -92,13 +94,13 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
               Organize your priorities.
             </p>
           </div>
-          <button
+          <Button
             type="button"
             onClick={onClose}
-            className="w-10 h-10 -mt-2 -mr-2 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors focus:ring-4 focus:ring-slate-100 outline-none"
+            className="w-10 h-10 -mt-2 -mr-2 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:text-slate-600 hover:bg-slate-100 focus:ring-4 focus:ring-slate-100"
           >
             <X className="w-5 h-5" />
-          </button>
+          </Button>
         </div>
 
         <div className="overflow-y-auto p-6 flex-1 custom-scrollbar">
@@ -155,42 +157,46 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
               </label>
               <div className="flex flex-wrap gap-2.5">
                 {displayIcons.map((iconName) => {
+                  const pascalCaseIcon = iconName
+                    .split("-")
+                    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+                    .join("");
                   const Icon =
-                    (LucideIcons as any)[iconName] || LucideIcons.Target;
+                    (LucideIcons as any)[pascalCaseIcon] || LucideIcons.Target;
                   const isSelected = selectedIcon === iconName;
                   return (
-                    <button
+                    <Button
                       key={iconName}
                       type="button"
                       onClick={() => setSelectedIcon(iconName)}
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center border-2 transition-all shrink-0 ${
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center border-2 shrink-0 ${
                         isSelected
-                          ? "border-brand-500 bg-brand-50 text-brand-600 cursor-default shadow-sm"
-                          : "border-slate-200 bg-white text-slate-400 hover:border-brand-300 hover:text-brand-500 hover:bg-slate-50 cursor-pointer shadow-sm"
+                          ? "border-brand-500 bg-brand-50 text-brand-600 shadow-sm"
+                          : "border-slate-200 bg-white text-slate-400 hover:border-brand-300 hover:text-brand-500 hover:bg-slate-50 shadow-sm"
                       }`}
                     >
                       <Icon className="w-5 h-5" />
-                    </button>
+                    </Button>
                   );
                 })}
 
                 {!isExpanded && AVAILABLE_ICONS.length > 22 && (
-                  <button
+                  <Button
                     onClick={() => setIsExpanded(true)}
                     type="button"
-                    className="w-auto px-3 h-10 rounded-xl flex items-center justify-center border-2 border-slate-200 bg-slate-50 text-slate-500 hover:text-brand-600 hover:border-brand-300 transition-all shadow-sm font-semibold text-xs cursor-pointer shrink-0"
+                    className="w-auto px-3 h-10 rounded-xl flex items-center justify-center border-2 border-slate-200 bg-slate-50 text-slate-500 hover:text-brand-600 hover:border-brand-300 shadow-sm font-semibold text-xs shrink-0"
                   >
                     +{AVAILABLE_ICONS.length - 22} More
-                  </button>
+                  </Button>
                 )}
                 {isExpanded && (
-                  <button
+                  <Button
                     onClick={() => setIsExpanded(false)}
                     type="button"
-                    className="w-auto px-3 h-10 rounded-xl flex items-center justify-center border-2 border-slate-200 bg-slate-50 text-slate-500 hover:text-brand-600 hover:border-brand-300 transition-all shadow-sm font-semibold text-xs cursor-pointer shrink-0"
+                    className="w-auto px-3 h-10 rounded-xl flex items-center justify-center border-2 border-slate-200 bg-slate-50 text-slate-500 hover:text-brand-600 hover:border-brand-300 shadow-sm font-semibold text-xs shrink-0"
                   >
                     Show Less
-                  </button>
+                  </Button>
                 )}
               </div>
             </div>
@@ -198,15 +204,15 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
         </div>
 
         <div className="shrink-0 p-6 sm:px-8 border-t border-slate-100 bg-white shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.05)] rounded-b-[2rem]">
-          <button
+          <Button
             type="submit"
             form="addTaskForm"
-            className="w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-3.5 px-6 rounded-2xl shadow-sm hover:shadow-brand-500/25 transition-all text-[15px] focus:ring-4 focus:ring-brand-200 outline-none"
+            className="w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-3.5 px-6 rounded-2xl shadow-sm hover:shadow-brand-500/25 text-[15px] focus:ring-4 focus:ring-brand-200"
           >
             {initialTask ? "Save Changes" : "Create Task"}
-          </button>
+          </Button>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Target, X } from "lucide-react";
 import { ITask } from "@/types";
+import { Modal, Button } from "./atoms";
 
 interface ITimeInputModalProps {
   task: ITask | null;
@@ -12,6 +13,7 @@ export const TimeInputModal: React.FC<ITimeInputModalProps> = ({ task, onClose, 
   const [time, setTime] = useState<string>("");
 
   useEffect(() => {
+    /* eslint-disable */
     if (task) {
       if (task.targetTime) {
         setTime(String(task.targetTime));
@@ -19,20 +21,24 @@ export const TimeInputModal: React.FC<ITimeInputModalProps> = ({ task, onClose, 
         setTime("");
       }
     }
+    /* eslint-enable */
   }, [task]);
-
-  if (!task) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!task) return;
     const timeSpent = parseInt(time, 10) || 0;
     onSubmit(task.id, timeSpent);
   };
 
+  if (!task) return null;
+
   return (
-    <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 animate-fade-in"
-      style={{ backgroundColor: 'rgba(241, 245, 249, 0.85)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
+    <Modal
+      isOpen={!!task}
+      onClose={onClose}
+      overlayClassName="z-[100]"
+      overlayStyle={{ backgroundColor: 'rgba(241, 245, 249, 0.85)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
     >
       <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-sm border border-white relative overflow-hidden animate-scale-in">
         <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-bl-[100px] -z-10"></div>
@@ -46,13 +52,13 @@ export const TimeInputModal: React.FC<ITimeInputModalProps> = ({ task, onClose, 
               {task.name}
             </h2>
           </div>
-          <button
+          <Button
             type="button"
             onClick={onClose}
-            className="w-10 h-10 -mr-2 -mt-2 shrink-0 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors focus:ring-4 focus:ring-slate-100 outline-none"
+            className="w-10 h-10 -mr-2 -mt-2 shrink-0 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:text-slate-600 hover:bg-slate-100 focus:ring-4 focus:ring-slate-100"
           >
             <X className="w-5 h-5" />
-          </button>
+          </Button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-8">
@@ -85,14 +91,14 @@ export const TimeInputModal: React.FC<ITimeInputModalProps> = ({ task, onClose, 
             )}
           </p>
           
-          <button
+          <Button
             type="submit"
-            className="w-full bg-emerald-500 hover:bg-emerald-400 text-white font-bold py-3.5 px-6 rounded-2xl shadow-sm hover:shadow-emerald-500/25 transition-all focus:ring-4 focus:ring-emerald-100 outline-none flex items-center justify-center gap-2"
+            className="w-full bg-emerald-500 hover:bg-emerald-400 text-white font-bold py-3.5 px-6 rounded-2xl shadow-sm hover:shadow-emerald-500/25 focus:ring-4 focus:ring-emerald-100 flex items-center justify-center gap-2"
           >
             <span>Done</span>
-          </button>
+          </Button>
         </form>
       </div>
-    </div>
+    </Modal>
   );
 };

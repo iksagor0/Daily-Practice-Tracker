@@ -2,6 +2,7 @@ import React from "react";
 import { Plus } from "lucide-react";
 import { useAppContext } from "@/context/app-context";
 import { TaskCard } from "./task-card";
+import { Button } from "./atoms";
 
 interface ITaskListProps {
   onOpenAddModal: () => void;
@@ -39,13 +40,13 @@ export const TaskList: React.FC<ITaskListProps> = ({
             Focus on one task at a time.
           </p>
         </div>
-        <button
+        <Button
           onClick={onOpenAddModal}
-          className="w-full sm:w-auto bg-brand-600 hover:bg-brand-500 text-white font-semibold py-2.5 px-6 rounded-2xl shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 focus:ring-4 focus:ring-brand-200 outline-none cursor-pointer"
+          className="w-full sm:w-auto bg-brand-600 hover:bg-brand-500 text-white font-semibold py-2.5 px-6 rounded-2xl shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 focus:ring-4 focus:ring-brand-200"
         >
           <Plus className="w-5 h-5" />
           <span>Add Task</span>
-        </button>
+        </Button>
       </div>
 
       <div className="space-y-3 relative z-10">
@@ -71,12 +72,12 @@ export const TaskList: React.FC<ITaskListProps> = ({
             <p className="text-slate-500 text-sm mb-4">
               You've completed everything for today.
             </p>
-            <button
+            <Button
               onClick={onOpenAddModal}
               className="text-brand-600 hover:text-brand-700 font-bold text-sm bg-brand-50 hover:bg-brand-100 px-4 py-2 rounded-xl transition-colors"
             >
               + Add a new task
-            </button>
+            </Button>
           </div>
         )}
       </div>

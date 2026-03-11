@@ -2,6 +2,7 @@ import React from "react";
 import * as LucideIcons from "lucide-react";
 import { ITask } from "@/types";
 import { TaskTimeBadge } from "@/shared/task-time-badge";
+import { Button } from "@/components/atoms";
 
 interface ITaskCardProps {
   task: ITask;
@@ -21,7 +22,11 @@ export const TaskCard: React.FC<ITaskCardProps> = ({
   onUndo,
 }) => {
   const isDone = task.status === "DONE";
-  const IconComponent = (LucideIcons as any)[task.icon] || LucideIcons.Target;
+  const pascalCaseIcon = task.icon
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join("");
+  const IconComponent = (LucideIcons as unknown as Record<string, React.ElementType>)[pascalCaseIcon] || LucideIcons.Target;
   const EditIcon = LucideIcons.Edit2;
   const TrashIcon = LucideIcons.Trash2;
   const CheckIcon = LucideIcons.Check;
@@ -53,28 +58,28 @@ export const TaskCard: React.FC<ITaskCardProps> = ({
         </div>
         <div className="shrink-0 w-full sm:w-auto mt-3 sm:mt-0 flex justify-between sm:justify-end gap-2 sm:ml-1 items-center">
           <div className="shrink-0 flex gap-2">
-            <button
+            <Button
               onClick={() => onEdit(task.id)}
-              className="flex w-8 h-8 sm:w-6 sm:h-6 shrink-0 rounded-lg bg-white/50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-indigo-400 hover:text-indigo-500 hover:bg-indigo-50 shadow-sm transition-all focus:ring-2 focus:ring-indigo-100"
+              className="flex w-8 h-8 sm:w-6 sm:h-6 shrink-0 rounded-lg bg-white/50 border border-slate-200 text-slate-400 hover:border-indigo-400 hover:text-indigo-500 hover:bg-indigo-50 shadow-sm focus:ring-2 focus:ring-indigo-100"
               title="Edit Task"
             >
               <EditIcon className="w-4 h-4 sm:w-2.5 sm:h-2.5" />
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => onDelete(task.id)}
-              className="flex w-8 h-8 sm:w-6 sm:h-6 shrink-0 rounded-lg bg-white/50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-rose-400 hover:text-rose-500 hover:bg-rose-50 shadow-sm transition-all focus:ring-2 focus:ring-rose-100"
+              className="flex w-8 h-8 sm:w-6 sm:h-6 shrink-0 rounded-lg bg-white/50 border border-slate-200 text-slate-400 hover:border-rose-400 hover:text-rose-500 hover:bg-rose-50 shadow-sm focus:ring-2 focus:ring-rose-100"
               title="Delete Task"
             >
               <TrashIcon className="w-4 h-4 sm:w-2.5 sm:h-2.5" />
-            </button>
+            </Button>
           </div>
-          <button
+          <Button
             onClick={() => onUndo && onUndo(task.id)}
             title="Undo"
-            className="flex-1 sm:flex-none flex sm:w-10 sm:h-10 py-2.5 sm:py-0 shrink-0 items-center justify-center gap-2 sm:gap-0 text-slate-400 font-semibold sm:font-normal hover:text-indigo-500 transition-colors rounded-xl sm:rounded-full hover:bg-white/50 border border-transparent hover:border-slate-200 shadow-sm"
+            className="flex-1 sm:flex-none flex sm:w-10 sm:h-10 py-2.5 sm:py-0 shrink-0 gap-2 sm:gap-0 text-slate-400 font-semibold sm:font-normal hover:text-indigo-500 rounded-xl sm:rounded-full hover:bg-white/50 border border-transparent hover:border-slate-200 shadow-sm"
           >
             <UndoIcon className="w-4 h-4" /> <span className="sm:hidden text-sm">Undo</span>
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -105,28 +110,28 @@ export const TaskCard: React.FC<ITaskCardProps> = ({
       </div>
       <div className="shrink-0 w-full sm:w-auto mt-3 sm:mt-0 flex justify-between sm:justify-end gap-2 sm:ml-1 items-center">
         <div className="shrink-0 flex gap-2">
-          <button
+          <Button
             onClick={() => onEdit(task.id)}
-            className="flex w-8 h-8 sm:w-6 sm:h-6 shrink-0 rounded-lg bg-slate-50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-indigo-400 hover:text-indigo-500 hover:bg-indigo-50 shadow-sm transition-all focus:ring-2 focus:ring-indigo-100"
+            className="flex w-8 h-8 sm:w-6 sm:h-6 shrink-0 rounded-lg bg-slate-50 border border-slate-200 text-slate-400 hover:border-indigo-400 hover:text-indigo-500 hover:bg-indigo-50 shadow-sm focus:ring-2 focus:ring-indigo-100"
             title="Edit Task"
           >
             <EditIcon className="w-4 h-4 sm:w-2.5 sm:h-2.5" />
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => onDelete(task.id)}
-            className="flex w-8 h-8 sm:w-6 sm:h-6 shrink-0 rounded-lg bg-slate-50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-rose-400 hover:text-rose-500 hover:bg-rose-50 shadow-sm transition-all focus:ring-2 focus:ring-rose-100"
+            className="flex w-8 h-8 sm:w-6 sm:h-6 shrink-0 rounded-lg bg-slate-50 border border-slate-200 text-slate-400 hover:border-rose-400 hover:text-rose-500 hover:bg-rose-50 shadow-sm focus:ring-2 focus:ring-rose-100"
             title="Delete Task"
           >
             <TrashIcon className="w-4 h-4 sm:w-2.5 sm:h-2.5" />
-          </button>
+          </Button>
         </div>
-        <button
+        <Button
           onClick={() => onMarkDone && onMarkDone(task.id)}
-          className="flex-1 sm:flex-none flex sm:w-10 sm:h-10 py-2.5 sm:py-0 shrink-0 rounded-xl sm:rounded-full bg-slate-50 border border-slate-200 text-slate-400 items-center justify-center focus:outline-none hover:border-emerald-400 hover:text-emerald-500 hover:bg-emerald-50 shadow-sm transition-all focus:ring-4 focus:ring-emerald-100 font-semibold sm:font-normal gap-2 sm:gap-0"
+          className="flex-1 sm:flex-none flex sm:w-10 sm:h-10 py-2.5 sm:py-0 shrink-0 rounded-xl sm:rounded-full bg-slate-50 border border-slate-200 text-slate-400 hover:border-emerald-400 hover:text-emerald-500 hover:bg-emerald-50 shadow-sm focus:ring-4 focus:ring-emerald-100 font-semibold sm:font-normal gap-2 sm:gap-0"
           title="Mark Done"
         >
           <CheckIcon className="w-5 h-5" /> <span className="sm:hidden text-sm">Mark Done</span>
-        </button>
+        </Button>
       </div>
     </div>
   );
