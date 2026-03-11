@@ -18,7 +18,7 @@ interface IAppState {
 type TAppAction =
   | { type: "LOAD_STATE"; payload: Partial<IAppState> }
   | { type: "ADD_TASK"; payload: ITask }
-  | { type: "EDIT_TASK"; payload: Pick<ITask, "id" | "name" | "desc" | "targetTime" | "targetStr" | "icon"> }
+  | { type: "EDIT_TASK"; payload: Pick<ITask, "id" | "name" | "desc" | "targetTime" | "targetStr" | "icon" | "repeatDaily"> }
   | { type: "DELETE_TASK"; payload: string }
   | { type: "COMPLETE_TASK"; payload: { id: string; timeSpent: number } }
   | { type: "UNDO_TASK"; payload: string }
@@ -86,7 +86,11 @@ function appReducer(state: IAppState, action: TAppAction): IAppState {
       return {
         ...state,
         history: newHistory,
-        tasks: state.tasks.map(t => ({ ...t, status: "TODO", actualTime: 0, completedAt: undefined })),
+        tasks: state.tasks.map(t => 
+          t.repeatDaily 
+            ? { ...t, status: "TODO", actualTime: 0, completedAt: undefined } 
+            : t
+        ),
         lastResetTime: todayStr,
       };
     }

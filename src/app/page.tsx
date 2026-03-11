@@ -11,14 +11,15 @@ import { useAppContext } from "@/context/app-context";
 import { ITask } from "@/models";
 
 export default function Home() {
+  // 1. Hooks
   const { state, dispatch } = useAppContext();
 
+  // 2. States
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<ITask | null>(null);
-  const [activeTaskForTime, setActiveTaskForTime] = useState<ITask | null>(
-    null,
-  );
+  const [activeTaskForTime, setActiveTaskForTime] = useState<ITask | null>(null);
 
+  // 3. Variables & Handlers
   const handleOpenAddModal = () => {
     setEditingTask(null);
     setIsAddModalOpen(true);
@@ -48,6 +49,7 @@ export default function Home() {
           targetStr: taskData.targetStr!,
           desc: taskData.desc!,
           icon: taskData.icon!,
+          repeatDaily: taskData.repeatDaily!,
         },
       });
     } else {
@@ -71,7 +73,11 @@ export default function Home() {
         desc: taskData.desc!,
         icon: taskData.icon!,
         colorClass,
+        repeatDaily: taskData.repeatDaily!,
+        status: "TODO",
+        actualTime: 0,
       };
+      
       dispatch({ type: "ADD_TASK", payload: newTask });
     }
     handleCloseAddModal();
@@ -92,12 +98,14 @@ export default function Home() {
 
   const handleSubmitTime = (taskId: string, timeSpent: number) => {
     dispatch({ type: "COMPLETE_TASK", payload: { id: taskId, timeSpent } });
-    setActiveTaskForTime(null);
+    setActiveTaskForTime(null,);
   };
 
   const handleUndoTask = (taskId: string) => {
     dispatch({ type: "UNDO_TASK", payload: taskId });
   };
+
+  // 4. Effects (None in Home currently)
 
   return (
     <main className="max-w-[1280px] mx-auto min-h-screen flex flex-col pt-4">

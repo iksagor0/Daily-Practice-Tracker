@@ -98,14 +98,20 @@ export const TaskCard: React.FC<ITaskCardProps> = ({
       </div>
       <div className="flex-1 min-w-0 w-full">
         <div className="flex flex-wrap sm:flex-nowrap justify-between items-start gap-2 mb-0.5">
-          <h3 className="font-bold text-slate-800 text-base leading-tight group-hover:text-brand-700 transition-colors truncate">
+          <h3
+            title={task.name}
+            className="font-bold text-slate-800 text-base leading-tight group-hover:text-brand-700 transition-colors md:truncate"
+          >
             {task.name}
           </h3>
           <div className="shrink-0 sm:ml-2">
             <TaskTimeBadge targetStr={task.targetStr} />
           </div>
         </div>
-        <p className="text-slate-500 text-sm leading-relaxed truncate group-hover:text-slate-600 transition-colors">
+        <p
+          title={task.desc}
+          className="text-slate-500 text-sm leading-relaxed md:truncate group-hover:text-slate-600 transition-colors"
+        >
           {task.desc}
         </p>
       </div>

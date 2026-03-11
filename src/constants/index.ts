@@ -9,6 +9,7 @@ export const INITIAL_TASKS: readonly ITask[] = [
     icon: "film",
     colorClass: "bg-indigo-50 text-indigo-600",
     desc: "Relax and enjoy visual content while staying updated with trends, entertainment, and useful ideas.",
+    repeatDaily: true,
   },
   {
     id: "t2",
@@ -18,6 +19,7 @@ export const INITIAL_TASKS: readonly ITask[] = [
     icon: "book-open",
     colorClass: "bg-blue-50 text-blue-600",
     desc: "Stay updated with technology trends, improve knowledge, and sharpen problem-solving skills.",
+    repeatDaily: true,
   },
   {
     id: "t3",
@@ -27,6 +29,7 @@ export const INITIAL_TASKS: readonly ITask[] = [
     icon: "bot",
     colorClass: "bg-sky-50 text-sky-600",
     desc: "Ask questions, explore ideas, and get help with learning, work, or daily challenges.",
+    repeatDaily: true,
   },
   {
     id: "t4",
@@ -36,6 +39,7 @@ export const INITIAL_TASKS: readonly ITask[] = [
     icon: "graduation-cap",
     colorClass: "bg-emerald-50 text-emerald-600",
     desc: "Maintain a consistent learning habit with short and engaging lessons every day.",
+    repeatDaily: true,
   },
   {
     id: "t5",
@@ -45,6 +49,7 @@ export const INITIAL_TASKS: readonly ITask[] = [
     icon: "headphones",
     colorClass: "bg-fuchsia-50 text-fuchsia-600",
     desc: "Learn new ideas, stories, and insights while relaxing or doing other activities.",
+    repeatDaily: true,
   },
   {
     id: "t6",
@@ -54,6 +59,7 @@ export const INITIAL_TASKS: readonly ITask[] = [
     icon: "video",
     colorClass: "bg-orange-50 text-orange-600",
     desc: "Record yourself sharing thoughts, reflecting on the day, or practicing confidence on camera.",
+    repeatDaily: true,
   },
   {
     id: "t7",
@@ -63,6 +69,7 @@ export const INITIAL_TASKS: readonly ITask[] = [
     icon: "phone-call",
     colorClass: "bg-purple-50 text-purple-600",
     desc: "Connect with friends or colleagues through meaningful conversations and stay socially active.",
+    repeatDaily: true,
   },
 ];
 

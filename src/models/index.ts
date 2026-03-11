@@ -11,6 +11,7 @@ export interface ITask {
   readonly status?: TTaskStatus;
   readonly actualTime?: number;
   readonly completedAt?: number;
+  readonly repeatDaily: boolean;
 }
 
 export interface IHistoryEntry {
