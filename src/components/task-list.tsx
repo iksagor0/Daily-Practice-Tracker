@@ -19,7 +19,7 @@ export const TaskList: React.FC<ITaskListProps> = ({
   onUndoTask,
 }) => {
   const { state } = useAppContext();
-  
+
   const todoTasks = state.tasks.filter((t) => t.status === "TODO");
   const doneTasks = state.tasks
     .filter((t) => t.status === "DONE")
@@ -41,7 +41,7 @@ export const TaskList: React.FC<ITaskListProps> = ({
         </div>
         <button
           onClick={onOpenAddModal}
-          className="w-full sm:w-auto bg-brand-600 hover:bg-brand-500 text-white font-semibold py-2.5 px-6 rounded-2xl shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 focus:ring-4 focus:ring-brand-200 outline-none hover:-translate-y-0.5"
+          className="w-full sm:w-auto bg-brand-600 hover:bg-brand-500 text-white font-semibold py-2.5 px-6 rounded-2xl shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 focus:ring-4 focus:ring-brand-200 outline-none cursor-pointer"
         >
           <Plus className="w-5 h-5" />
           <span>Add Task</span>
@@ -65,8 +65,12 @@ export const TaskList: React.FC<ITaskListProps> = ({
             <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-100 shadow-sm">
               <span className="text-2xl pt-1">✨</span>
             </div>
-            <h3 className="text-slate-700 font-bold mb-1">You're all caught up!</h3>
-            <p className="text-slate-500 text-sm mb-4">You've completed everything for today.</p>
+            <h3 className="text-slate-700 font-bold mb-1">
+              You're all caught up!
+            </h3>
+            <p className="text-slate-500 text-sm mb-4">
+              You've completed everything for today.
+            </p>
             <button
               onClick={onOpenAddModal}
               className="text-brand-600 hover:text-brand-700 font-bold text-sm bg-brand-50 hover:bg-brand-100 px-4 py-2 rounded-xl transition-colors"

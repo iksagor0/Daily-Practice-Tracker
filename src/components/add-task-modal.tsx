@@ -27,7 +27,9 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
     if (isOpen) {
       if (initialTask) {
         setName(initialTask.name);
-        setTargetTime(initialTask.targetTime ? String(initialTask.targetTime) : "");
+        setTargetTime(
+          initialTask.targetTime ? String(initialTask.targetTime) : "",
+        );
         setDesc(initialTask.desc);
         setSelectedIcon(initialTask.icon);
       } else {
@@ -52,7 +54,7 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
 
     const parsedTime = targetTime ? parseInt(targetTime, 10) : null;
     const targetStr = parsedTime ? `${parsedTime} min` : "Unlimited";
-    
+
     // Auto assign a random color class if it's a new custom task
     // (Existing task gets its old color in typical logic handled by parent, we just pass what changed)
     const taskData: Partial<ITask> = {
@@ -62,24 +64,33 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
       desc: desc.trim() || "No description provided.",
       icon: selectedIcon,
     };
-    
-    // For new task ONLY, parent needs to know color class, but AppReducer can do it, or we do it here. 
+
+    // For new task ONLY, parent needs to know color class, but AppReducer can do it, or we do it here.
     // We will pass it, and parent or reducer merges it.
-    
+
     onSubmit(taskData);
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 animate-fade-in" style={{ backgroundColor: 'rgba(241, 245, 249, 0.85)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
-      <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-md border border-white relative overflow-hidden flex flex-col max-h-full animate-scale-in">
+    <div
+      className="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-6 animate-fade-in"
+      style={{
+        backgroundColor: "rgba(0, 0, 0, 0.4)",
+        backdropFilter: "blur(2px)",
+        WebkitBackdropFilter: "blur(2px)",
+      }}
+    >
+      <div className="bg-white rounded-4xl shadow-2xl w-full max-w-md border border-white relative overflow-hidden flex flex-col max-h-full animate-scale-in">
         <div className="absolute top-0 right-0 w-32 h-32 bg-brand-50 rounded-bl-[100px] -z-10"></div>
-        
+
         <div className="shrink-0 flex items-center justify-between p-6 sm:p-8 pb-4 sm:pb-6 border-b border-slate-100">
           <div>
             <h2 className="text-2xl font-display font-black text-slate-800 tracking-tight leading-tight">
               {initialTask ? "Edit Task" : "New Task"}
             </h2>
-            <p className="text-slate-500 text-sm font-medium mt-1">Organize your priorities.</p>
+            <p className="text-slate-500 text-sm font-medium mt-1">
+              Organize your priorities.
+            </p>
           </div>
           <button
             type="button"
@@ -93,7 +104,9 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
         <div className="overflow-y-auto p-6 flex-1 custom-scrollbar">
           <form id="addTaskForm" onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-extrabold tracking-tight text-slate-700 mb-2">Task Name <span className="text-rose-500">*</span></label>
+              <label className="block text-sm font-extrabold tracking-tight text-slate-700 mb-2">
+                Task Name <span className="text-rose-500">*</span>
+              </label>
               <input
                 type="text"
                 value={name}
@@ -105,7 +118,9 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-sm font-extrabold tracking-tight text-slate-700 mb-2">Target Time (Optional)</label>
+              <label className="block text-sm font-extrabold tracking-tight text-slate-700 mb-2">
+                Target Time (Optional)
+              </label>
               <div className="relative">
                 <input
                   type="number"
@@ -122,7 +137,9 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-sm font-extrabold tracking-tight text-slate-700 mb-2">Description</label>
+              <label className="block text-sm font-extrabold tracking-tight text-slate-700 mb-2">
+                Description
+              </label>
               <textarea
                 value={desc}
                 onChange={(e) => setDesc(e.target.value)}
@@ -133,10 +150,13 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-sm font-extrabold tracking-tight text-slate-700 mb-3">Choose an Icon</label>
+              <label className="block text-sm font-extrabold tracking-tight text-slate-700 mb-3">
+                Choose an Icon
+              </label>
               <div className="flex flex-wrap gap-2.5">
                 {displayIcons.map((iconName) => {
-                  const Icon = (LucideIcons as any)[iconName] || LucideIcons.Target;
+                  const Icon =
+                    (LucideIcons as any)[iconName] || LucideIcons.Target;
                   const isSelected = selectedIcon === iconName;
                   return (
                     <button
@@ -176,7 +196,7 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
             </div>
           </form>
         </div>
-        
+
         <div className="shrink-0 p-6 sm:px-8 border-t border-slate-100 bg-white shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.05)] rounded-b-[2rem]">
           <button
             type="submit"
