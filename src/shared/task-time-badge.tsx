@@ -1,5 +1,6 @@
 import React from "react";
 import * as LucideIcons from "lucide-react";
+import { cn } from "@/utils/cn";
 
 interface ITaskTimeBadgeProps {
   targetStr: string;
@@ -17,11 +18,11 @@ export const TaskTimeBadge: React.FC<ITaskTimeBadgeProps> = ({ targetStr }) => {
     colorClass = "text-rose-500 bg-rose-50 border-rose-100";
   }
 
-  const IconComponent = (LucideIcons as any)[iconName] || LucideIcons.Clock;
+  const IconComponent = (LucideIcons as unknown as Record<string, React.ElementType>)[iconName] || LucideIcons.Clock;
 
   return (
     <div
-      className={`font-semibold text-xs flex items-center gap-1.5 px-2.5 py-1 rounded-full border ${colorClass}`}
+      className={cn("font-semibold text-xs flex items-center gap-1.5 px-2.5 py-1 rounded-full border", colorClass)}
     >
       <IconComponent className="w-3.5 h-3.5" />
       {targetStr}

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Outfit } from "next/font/google";
 import { AuthProvider } from "@/context/auth-context";
 import { AppProvider } from "@/context/app-context";
+import { cn } from "@/utils/cn";
 import "./globals.css";
 
 const inter = Inter({
@@ -43,7 +44,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${outfit.variable} font-sans text-slate-800 antialiased selection:bg-brand-200 selection:text-brand-900 pb-20 overflow-x-hidden`}
+        className={cn(
+          inter.variable,
+          outfit.variable,
+          "font-sans text-slate-800 antialiased selection:bg-brand-200 selection:text-brand-900 pb-20 overflow-x-hidden"
+        )}
       >
         <AuthProvider>
           <AppProvider>

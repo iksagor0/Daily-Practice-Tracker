@@ -1,4 +1,5 @@
 import React from "react";
+import { cn } from "@/utils/cn";
 
 interface IProgressRingProps {
   percentage: number;
@@ -11,7 +12,7 @@ export const ProgressRing: React.FC<IProgressRingProps> = ({ percentage, classNa
   const offset = circumference - (percentage / 100) * circumference;
 
   return (
-    <div className={`relative w-40 h-40 flex items-center justify-center shrink-0 ${className}`}>
+    <div className={cn("relative w-40 h-40 flex items-center justify-center shrink-0", className)}>
       {/* Background Track */}
       <svg className="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 160 160">
         <circle cx="80" cy="80" r={radius} fill="none" strokeWidth="12" className="stroke-slate-100" />
@@ -25,7 +26,7 @@ export const ProgressRing: React.FC<IProgressRingProps> = ({ percentage, classNa
           fill="none"
           strokeWidth="12"
           strokeLinecap="round"
-          className="stroke-brand-500 transition-colors duration-700 progress-ring-circle"
+          className="stroke-brand-500 transition-[stroke-dashoffset] duration-800 ease-[cubic-bezier(0.16,1,0.3,1)] -rotate-90 origin-center"
           style={{
             strokeDasharray: `${circumference} ${circumference}`,
             strokeDashoffset: offset,

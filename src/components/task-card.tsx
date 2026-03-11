@@ -3,6 +3,7 @@ import * as LucideIcons from "lucide-react";
 import { ITask } from "@/types";
 import { TaskTimeBadge } from "@/shared/task-time-badge";
 import { Button } from "@/components/atoms";
+import { cn } from "@/utils/cn";
 
 interface ITaskCardProps {
   task: ITask;
@@ -87,11 +88,11 @@ export const TaskCard: React.FC<ITaskCardProps> = ({
 
   return (
     <div
-      className="bg-white border border-slate-200 task-card rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 group animate-slide-up opacity-0 fill-mode-forwards"
+      className="bg-white border border-slate-200 transition-all duration-200 ease-in-out hover:-translate-y-[2px] hover:shadow-[0_12px_24px_-8px_rgba(14,165,233,0.15)] hover:border-brand-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 group animate-slide-up opacity-0 fill-mode-forwards"
       style={{ animationDelay: delay }}
     >
       <div
-        className={`shrink-0 w-12 h-12 rounded-xl ${task.colorClass} flex items-center justify-center shadow-sm`}
+        className={cn("shrink-0 w-12 h-12 rounded-xl flex items-center justify-center shadow-sm", task.colorClass)}
       >
         <IconComponent className="w-6 h-6" />
       </div>

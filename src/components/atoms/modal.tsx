@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { cn } from "@/utils/cn";
 
 export interface ModalProps {
   isOpen: boolean;
@@ -47,7 +48,7 @@ export const Modal: React.FC<ModalProps> = ({
     <div
       ref={overlayRef}
       onClick={handleOverlayClick}
-      className={`fixed inset-0 z-100 flex items-center justify-center animate-fade-in ${overlayClassName}`}
+      className={cn("fixed inset-0 z-100 flex items-center justify-center animate-fade-in", overlayClassName)}
       style={overlayStyle}
     >
       {children}

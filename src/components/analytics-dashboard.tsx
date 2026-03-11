@@ -96,11 +96,10 @@ export const AnalyticsDashboard: React.FC = () => {
 
   return (
     <aside
-      className="lg:w-[420px] lg:col-span-4 shrink-0 space-y-6 animate-slide-up fill-mode-forwards"
-      style={{ animationDelay: "0.2s" }}
+      className="lg:w-[420px] lg:col-span-4 shrink-0 space-y-6 animate-slide-up delay-200 fill-mode-forwards"
     >
       {/* Today's Progress Card */}
-      <div className="glass-panel bg-white/50 backdrop-blur-xl rounded-3xl p-6 relative overflow-hidden group border border-white/60 shadow-xl shadow-slate-200/40">
+      <div className="bg-white/50 backdrop-blur-xl rounded-3xl p-6 relative overflow-hidden group border border-white/60 shadow-xl shadow-slate-200/40">
         <div className="absolute top-0 right-0 w-32 h-32 bg-brand-500/10 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
 
         <h2 className="text-lg font-display font-bold text-slate-900 mb-6 flex items-center">
@@ -172,8 +171,7 @@ export const AnalyticsDashboard: React.FC = () => {
           <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-linear-to-tr from-orange-200/40 to-transparent rounded-full pointer-events-none blur-xl"></div>
 
           <div
-            className="shrink-0 w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-amber-100 flex items-center justify-center text-4xl sm:text-5xl group-hover:scale-105 transition-transform duration-300 relative z-10"
-            style={{ animation: "toastBounce 0.6s ease-out 0.3s both" }}
+            className="shrink-0 w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-amber-100 flex items-center justify-center text-4xl sm:text-5xl group-hover:scale-105 transition-transform duration-300 relative z-10 animate-toast-bounce"
           >
             {activeToast.label.split(" ")[0] || "🏆"}
           </div>
@@ -198,7 +196,7 @@ export const AnalyticsDashboard: React.FC = () => {
       )}
 
       {/* Performance Analytics Card */}
-      <div className="glass-panel bg-white/50 backdrop-blur-xl rounded-3xl p-6 border border-white/60 shadow-xl shadow-slate-200/40">
+      <div className="bg-white/50 backdrop-blur-xl rounded-3xl p-6 border border-white/60 shadow-xl shadow-slate-200/40">
         <h2 className="text-lg font-display font-bold text-slate-900 mb-5 flex items-center">
           <BarChart2 className="w-5 h-5 mr-2 text-indigo-500" />
           Performance Analytics
@@ -272,7 +270,7 @@ export const AnalyticsDashboard: React.FC = () => {
       </div>
 
       {/* Lifetime Milestones Card */}
-      <div className="glass-panel bg-white/50 backdrop-blur-xl rounded-3xl p-6 border border-white/60 shadow-xl shadow-slate-200/40">
+      <div className="bg-white/50 backdrop-blur-xl rounded-3xl p-6 border border-white/60 shadow-xl shadow-slate-200/40">
         <h2 className="text-lg font-display font-bold text-slate-900 mb-5 flex items-center">
           <Award className="w-5 h-5 mr-2 text-rose-500" />
           Lifetime Milestones
