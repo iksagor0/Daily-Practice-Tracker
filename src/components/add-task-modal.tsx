@@ -77,7 +77,7 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
         WebkitBackdropFilter: "blur(2px)",
       }}
     >
-      <div className="bg-white rounded-4xl shadow-2xl w-full max-w-md border border-white relative overflow-hidden flex flex-col h-[800px] max-h-[90vh] animate-scale-in">
+      <div className="bg-white rounded-4xl shadow-2xl w-[90%] max-w-md border border-white relative overflow-hidden flex flex-col h-[800px] max-h-[90vh] animate-scale-in">
         <div className="absolute top-0 right-0 w-32 h-32 bg-brand-50 rounded-bl-[100px] -z-10"></div>
 
         <div className="shrink-0 flex items-center justify-between p-6 sm:p-8 pb-4 sm:pb-6 border-b border-slate-100">
@@ -127,7 +127,7 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
                   min="1"
                   className="w-full pl-4 pr-16 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-brand-100 focus:border-brand-500 hover:border-brand-300 outline-none transition-all placeholder:text-slate-400 font-medium text-slate-800 appearance-none"
                 />
-                <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400 font-bold text-sm bg-gradient-to-l from-slate-50 via-slate-50 rounded-r-2xl pl-2">
+                <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400 font-bold text-sm bg-linear-to-l from-slate-50 via-slate-50 rounded-r-2xl pl-2">
                   min
                 </div>
               </div>
@@ -157,7 +157,12 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
                     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
                     .join("");
                   const Icon =
-                    (LucideIcons as unknown as Record<string, React.ElementType>)[pascalCaseIcon] || LucideIcons.Target;
+                    (
+                      LucideIcons as unknown as Record<
+                        string,
+                        React.ElementType
+                      >
+                    )[pascalCaseIcon] || LucideIcons.Target;
                   const isSelected = selectedIcon === iconName;
                   return (
                     <Button
@@ -168,7 +173,7 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
                         "w-10 h-10 rounded-xl flex items-center justify-center border-2 shrink-0",
                         isSelected
                           ? "border-brand-500 bg-brand-50 text-brand-600 shadow-sm"
-                          : "border-slate-200 bg-white text-slate-400 hover:border-brand-300 hover:text-brand-500 hover:bg-slate-50 shadow-sm"
+                          : "border-slate-200 bg-white text-slate-400 hover:border-brand-300 hover:text-brand-500 hover:bg-slate-50 shadow-sm",
                       )}
                     >
                       <Icon className="w-5 h-5" />
@@ -199,7 +204,7 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
           </form>
         </div>
 
-        <div className="shrink-0 p-6 sm:px-8 border-t border-slate-100 bg-white shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.05)] rounded-b-[2rem]">
+        <div className="shrink-0 p-6 sm:px-8 border-t border-slate-100 bg-white shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.05)] rounded-b-4xl">
           <Button
             type="submit"
             form="addTaskForm"

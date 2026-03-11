@@ -30,6 +30,9 @@ export const metadata: Metadata = {
     title: "Daily Practice Tracker",
     description: "Build consistency. Track progress. Achieve mastery. A beautiful daily practice tracker to manage your learning habits and celebrate achievements.",
   },
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export const viewport: Viewport = {

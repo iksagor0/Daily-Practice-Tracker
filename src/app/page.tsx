@@ -8,14 +8,16 @@ import { AuthOverlay } from "@/components/auth-overlay";
 import { AddTaskModal } from "@/components/add-task-modal";
 import { TimeInputModal } from "@/components/time-input-modal";
 import { useAppContext } from "@/context/app-context";
-import { ITask } from "@/types";
+import { ITask } from "@/models";
 
 export default function Home() {
   const { state, dispatch } = useAppContext();
-  
+
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<ITask | null>(null);
-  const [activeTaskForTime, setActiveTaskForTime] = useState<ITask | null>(null);
+  const [activeTaskForTime, setActiveTaskForTime] = useState<ITask | null>(
+    null,
+  );
 
   const handleOpenAddModal = () => {
     setEditingTask(null);
@@ -23,7 +25,7 @@ export default function Home() {
   };
 
   const handleEditTask = (taskId: string) => {
-    const task = state.tasks.find(t => t.id === taskId);
+    const task = state.tasks.find((t) => t.id === taskId);
     if (task) {
       setEditingTask(task);
       setIsAddModalOpen(true);
@@ -46,7 +48,7 @@ export default function Home() {
           targetStr: taskData.targetStr!,
           desc: taskData.desc!,
           icon: taskData.icon!,
-        }
+        },
       });
     } else {
       const colors = [
@@ -60,7 +62,7 @@ export default function Home() {
         "bg-orange-50 text-orange-600",
       ];
       const colorClass = colors[Math.floor(Math.random() * colors.length)];
-      
+
       const newTask: ITask = {
         id: "task_" + Date.now(),
         name: taskData.name!,
@@ -82,7 +84,7 @@ export default function Home() {
   };
 
   const handleMarkDone = (taskId: string) => {
-    const task = state.tasks.find(t => t.id === taskId);
+    const task = state.tasks.find((t) => t.id === taskId);
     if (task) {
       setActiveTaskForTime(task);
     }
@@ -100,7 +102,7 @@ export default function Home() {
   return (
     <main className="max-w-[1280px] mx-auto min-h-screen flex flex-col pt-4">
       <AuthOverlay />
-      
+
       <Header />
 
       <div className="flex-1 w-full flex flex-col lg:flex-row gap-8 lg:gap-12 px-4 lg:px-8 mt-4 relative">

@@ -1,5 +1,5 @@
 import React from "react";
-import { LogOut, Target, Music } from "lucide-react";
+import { LogOut } from "lucide-react";
 import Image from "next/image";
 import { format } from "date-fns";
 import { useAuth } from "@/context/auth-context";
@@ -13,9 +13,15 @@ export const Header: React.FC = () => {
 
   return (
     <header className="pt-6 pb-2 px-4 text-center animate-fade-in">
-      <h1 className="text-[28px] md:text-5xl font-display font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-brand-900 to-slate-900 tracking-tight mb-2">
-        <div className="inline-flex items-center justify-center p-1.5 md:p-3 md:mr-3 rounded-2xl bg-gradient-to-br from-brand-100 to-indigo-100 text-brand-600 shadow-sm border border-white">
-          <Target className="w-6 h-6 md:w-8 md:h-8" />
+      <h1 className="text-[28px] md:text-5xl font-display font-extrabold text-transparent bg-clip-text bg-linear-to-r from-slate-900 via-brand-900 to-slate-900 tracking-tight mb-2">
+        <div className="inline-flex items-center justify-center p-1 md:p-1 md:mr-3 rounded-2xl bg-white shadow-sm border border-slate-100 overflow-hidden">
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            width={56}
+            height={56}
+            className="w-10 h-10 object-contain"
+          />
         </div>
         Daily Practice Tracker
       </h1>
