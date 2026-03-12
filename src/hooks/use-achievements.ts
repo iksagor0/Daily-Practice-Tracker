@@ -11,16 +11,6 @@ export const useAchievements = () => {
   const [activeToast, setActiveToast] = useState<IAchievementDef | null>(null);
   const shownRef = useRef<Set<string>>(new Set());
 
-  // Restore session storage shown state
-  useEffect(() => {
-    try {
-      const stored = sessionStorage.getItem("shownAchievements");
-      if (stored) {
-        shownRef.current = new Set(JSON.parse(stored));
-      }
-    } catch {}
-  }, []);
-
   const stats = useMemo(() => {
     const totalTasks = state.tasks.length;
     const doneTasks = state.tasks.filter((t) => t.status === "DONE");
@@ -55,6 +45,16 @@ export const useAchievements = () => {
       monthlyTime: monthlyTime || 0,
     };
   }, [state.tasks, state.history]);
+
+  // Restore session storage shown state
+  useEffect(() => {
+    try {
+      const stored = sessionStorage.getItem("shownAchievements");
+      if (stored) {
+        shownRef.current = new Set(JSON.parse(stored));
+      }
+    } catch {}
+  }, []);
 
   useEffect(() => {
     if (!state.isLoaded) return;

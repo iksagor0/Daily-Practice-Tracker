@@ -38,3 +38,17 @@ export interface IProgressRingProps {
 export interface ITaskTimeBadgeProps {
   targetStr: string;
 }
+
+export interface TogglerProps {
+  enabled: boolean;
+  onChange: (enabled: boolean) => void;
+  className?: string;
+}
+
+export interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+  overlayClassName?: string;
+  overlayStyle?: React.CSSProperties;
+}

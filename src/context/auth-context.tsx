@@ -20,26 +20,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [isGuest, setIsGuest] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    // Check initial guest state from local storage
-    const storedGuest = localStorage.getItem("isGuestTracker") === "true";
-    if (storedGuest) {
-      // eslint-disable-next-line
-      setIsGuest(true);
-    }
-
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser: User | null) => {
-      setUser(firebaseUser);
-      if (firebaseUser) {
-        setIsGuest(false);
-        localStorage.removeItem("isGuestTracker");
-      }
-      setIsLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
   const loginWithGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
@@ -63,6 +43,26 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       console.error("Logout Error:", error);
     }
   };
+
+  useEffect(() => {
+    // Check initial guest state from local storage
+    const storedGuest = localStorage.getItem("isGuestTracker") === "true";
+    if (storedGuest) {
+      // eslint-disable-next-line
+      setIsGuest(true);
+    }
+
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser: User | null) => {
+      setUser(firebaseUser);
+      if (firebaseUser) {
+        setIsGuest(false);
+        localStorage.removeItem("isGuestTracker");
+      }
+      setIsLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const value = {
     user,

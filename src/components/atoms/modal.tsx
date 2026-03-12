@@ -1,13 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { cn } from "@/utils/cn";
-
-export interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  children: React.ReactNode;
-  overlayClassName?: string;
-  overlayStyle?: React.CSSProperties;
-}
+import { ModalProps } from "@/types";
 
 export const Modal: React.FC<ModalProps> = ({
   isOpen,
@@ -17,6 +10,12 @@ export const Modal: React.FC<ModalProps> = ({
   overlayStyle = {},
 }) => {
   const overlayRef = useRef<HTMLDivElement>(null);
+
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === overlayRef.current) {
+      onClose();
+    }
+  };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -38,17 +37,14 @@ export const Modal: React.FC<ModalProps> = ({
 
   if (!isOpen) return null;
 
-  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === overlayRef.current) {
-      onClose();
-    }
-  };
-
   return (
     <div
       ref={overlayRef}
       onClick={handleOverlayClick}
-      className={cn("fixed inset-0 z-100 flex items-center justify-center animate-fade-in", overlayClassName)}
+      className={cn(
+        "fixed inset-0 z-100 flex items-center justify-center animate-fade-in",
+        overlayClassName,
+      )}
       style={overlayStyle}
     >
       {children}

@@ -10,6 +10,13 @@ export const TimeInputModal: React.FC<ITimeInputModalProps> = ({
 }) => {
   const [time, setTime] = useState<string>("");
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!task) return;
+    const timeSpent = parseInt(time, 10) || 0;
+    onSubmit(task.id, timeSpent);
+  };
+
   useEffect(() => {
     /* eslint-disable */
     if (task) {
@@ -21,13 +28,6 @@ export const TimeInputModal: React.FC<ITimeInputModalProps> = ({
     }
     /* eslint-enable */
   }, [task]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!task) return;
-    const timeSpent = parseInt(time, 10) || 0;
-    onSubmit(task.id, timeSpent);
-  };
 
   if (!task) return null;
 

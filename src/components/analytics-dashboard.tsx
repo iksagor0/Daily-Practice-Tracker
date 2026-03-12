@@ -16,12 +16,6 @@ export const AnalyticsDashboard: React.FC = () => {
   const { activeToast } = useAchievements();
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    // Delay for initial bar growth animation
-    const t = setTimeout(() => setMounted(true), 100);
-    return () => clearTimeout(t);
-  }, []);
-
   const stats = useMemo(() => {
     const totalTasks = state.tasks.length;
     const doneTasks = state.tasks.filter((t) => t.status === "DONE");
@@ -89,10 +83,16 @@ export const AnalyticsDashboard: React.FC = () => {
     };
   }, [state.tasks, state.history]);
 
-  // Progress ring math
+  // Constants for Progress ring
   const radius = 70;
   const circumference = radius * 2 * Math.PI; // approx 439.8
   const offset = circumference - (stats.percentage / 100) * circumference;
+
+  useEffect(() => {
+    // Delay for initial bar growth animation
+    const t = setTimeout(() => setMounted(true), 100);
+    return () => clearTimeout(t);
+  }, []);
 
   return (
     <aside

@@ -13,9 +13,6 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
   onSubmit,
   initialTask,
 }) => {
-  // 1. Hooks (None outside of React core ones used here directly, but if any context/custom hooks were used they'd go here)
-
-  // 2. State
   const [name, setName] = useState("");
   const [targetTime, setTargetTime] = useState<string>("");
   const [desc, setDesc] = useState("");
@@ -23,12 +20,10 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
   const [repeatDaily, setRepeatDaily] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // 3. Variables & Memo
   const displayIcons = useMemo(() => {
     return isExpanded ? AVAILABLE_ICONS : AVAILABLE_ICONS.slice(0, 14);
   }, [isExpanded]);
 
-  // 5. Handlers
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -52,7 +47,6 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
     onSubmit(taskData);
   };
 
-  // 6. Effects
   useEffect(() => {
     /* eslint-disable react-hooks/set-state-in-effect */
     if (isOpen) {
