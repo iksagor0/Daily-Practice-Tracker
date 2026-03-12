@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Header } from "@/components/header";
 import { TaskList } from "@/components/task-list";
 import { AnalyticsDashboard } from "@/components/analytics-dashboard";
+import { Footer } from "@/components/footer";
 import { AuthOverlay } from "@/components/auth-overlay";
 import { AddTaskModal } from "@/components/add-task-modal";
 import { TimeInputModal } from "@/components/time-input-modal";
@@ -126,6 +127,8 @@ export default function Home() {
 
         <AnalyticsDashboard />
       </div>
+
+      <Footer />
 
       <AddTaskModal
         isOpen={isAddModalOpen}

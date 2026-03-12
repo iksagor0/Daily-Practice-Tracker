@@ -27,6 +27,7 @@ export const TaskCard: React.FC<ITaskCardProps> = ({
   const CheckIcon = LucideIcons.Check;
   const TimerIcon = LucideIcons.Timer;
   const UndoIcon = LucideIcons.RotateCcw;
+  const RepeatIcon = LucideIcons.Repeat;
 
   // Animation delay based on index for staggered entrance
   const delay = `${index * 0.05}s`;
@@ -37,8 +38,13 @@ export const TaskCard: React.FC<ITaskCardProps> = ({
         className="bg-slate-50 border border-slate-200 shadow-sm rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 opacity-80 hover:opacity-100 transition-opacity group relative animate-slide-up fill-mode-forwards"
         style={{ animationDelay: delay }}
       >
-        <div className="shrink-0 w-12 h-12 rounded-xl bg-slate-100 text-slate-400 flex items-center justify-center">
+        <div className="shrink-0 w-12 h-12 rounded-xl bg-slate-100 text-slate-400 flex items-center justify-center relative">
           <CheckIcon className="w-6 h-6" />
+          {task.repeatDaily && (
+            <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-white border border-slate-200 flex items-center justify-center shadow-xs">
+              <RepeatIcon className="w-2.5 h-2.5 text-slate-400" />
+            </div>
+          )}
         </div>
         <div className="flex-1 min-w-0 w-full">
           <div className="flex flex-wrap sm:flex-nowrap justify-between items-start gap-2 mb-0.5">
@@ -90,11 +96,16 @@ export const TaskCard: React.FC<ITaskCardProps> = ({
     >
       <div
         className={cn(
-          "shrink-0 w-12 h-12 rounded-xl flex items-center justify-center shadow-sm",
+          "shrink-0 w-12 h-12 rounded-xl flex items-center justify-center shadow-sm relative",
           task.colorClass,
         )}
       >
         <IconComponent className="w-6 h-6" />
+        {task.repeatDaily && (
+          <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-white border border-slate-100 flex items-center justify-center shadow-sm">
+            <RepeatIcon className="w-2.5 h-2.5 text-brand-600" />
+          </div>
+        )}
       </div>
       <div className="flex-1 min-w-0 w-full">
         <div className="flex flex-wrap sm:flex-nowrap justify-between items-start gap-2 mb-0.5">

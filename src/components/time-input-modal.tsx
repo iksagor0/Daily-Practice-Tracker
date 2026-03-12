@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Target, X } from "lucide-react";
+import { Clock, Repeat, Target, X } from "lucide-react";
 import { ITimeInputModalProps } from "@/types";
 import { Modal, Button } from "./atoms";
 
@@ -47,13 +47,23 @@ export const TimeInputModal: React.FC<ITimeInputModalProps> = ({
 
         <div className="p-6 border-b border-slate-100 flex justify-between items-start">
           <div>
-            <span className="text-emerald-600 font-bold text-[10px] tracking-widest uppercase mb-2 block">
+            <div className="w-10 h-10 rounded-full bg-linear-to-br from-orange-400 to-rose-500 flex items-center justify-center shadow-lg shadow-rose-500/20 shrink-0 relative">
+              <Clock className="w-5 h-5 text-white" />
+              {task.repeatDaily && (
+                <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-white flex items-center justify-center shadow-sm border border-slate-50">
+                  <Repeat className="w-2.5 h-2.5 text-rose-500" />
+                </div>
+              )}
+            </div>
+            <div className="text-emerald-600 font-bold text-[10px] tracking-widest uppercase mt-3 mb-1 block">
               Complete Task
-            </span>
-            <h2 className="text-xl font-display font-semibold text-slate-800 tracking-tight leading-tight line-clamp-3">
+            </div>
+
+            <h2 className="text-xl font-display font-semibold text-slate-800 tracking-tight leading-tight line-clamp-2">
               {task.name}
             </h2>
           </div>
+
           <Button
             type="button"
             onClick={onClose}
