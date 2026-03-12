@@ -121,10 +121,10 @@ export const AuthOverlay: React.FC = () => {
 
       <div className="absolute bottom-8 text-center animate-fade-in opacity-60">
         <p className="text-xs text-slate-400 font-medium">
-          Your data is safe and synced securely.
+          Your data is safe and synced securely by Google Firebase.
         </p>
         <p className="text-xs text-slate-400">
-          Design built with ❤️ for daily practitioners.
+          Build with ❤️ for daily practitioners, students, and learners.
         </p>
       </div>
     </div>

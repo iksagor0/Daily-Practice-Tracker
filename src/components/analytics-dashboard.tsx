@@ -1,22 +1,24 @@
 import {
+  Award,
   BarChart2,
+  Clock,
+  Flame,
   RefreshCw,
   TrendingUp,
-  Award,
-  Flame,
-  Clock,
 } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
 import { useAppContext } from "@/context/app-context";
 import { useAchievements } from "@/hooks/use-achievements";
 import { getBDTime, getEffectiveBDDateStr } from "@/utils/time";
 import { QuoteCard } from "./quote-card";
+import { ThemeSelector } from "./theme-selector";
 
 export const AnalyticsDashboard: React.FC = () => {
   const { state } = useAppContext();
   const { activeToast } = useAchievements();
   const [mounted, setMounted] = useState(false);
 
+  // stats calculation remains the same
   const stats = useMemo(() => {
     const totalTasks = state.tasks.length;
     const doneTasks = state.tasks.filter((t) => t.status === "DONE");
@@ -98,6 +100,7 @@ export const AnalyticsDashboard: React.FC = () => {
   return (
     <aside className="lg:w-[420px] lg:col-span-4 space-y-8 animate-fade-in animation-delay-500 opacity-0 fill-mode-forwards">
       <QuoteCard />
+      
       {/* Today's Progress Card */}
       <div className="bg-white/50 backdrop-blur-xl rounded-3xl p-6 relative overflow-hidden group border border-white/60 shadow-xl shadow-slate-200/40">
         <div className="absolute top-0 right-0 w-32 h-32 bg-brand-500/10 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
@@ -305,6 +308,8 @@ export const AnalyticsDashboard: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <ThemeSelector />
     </aside>
   );
 };

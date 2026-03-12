@@ -14,6 +14,7 @@ interface IAppState {
   history: THistory;
   lastResetTime: string | null;
   isLoaded: boolean;
+  theme: 'default' | 'sakura' | 'ocean' | 'earth' | 'mint' | 'aurora' | 'sunset' | 'forest' | 'nordic' | 'lavender';
 }
 
 type TAppAction =
@@ -23,13 +24,15 @@ type TAppAction =
   | { type: "DELETE_TASK"; payload: string }
   | { type: "COMPLETE_TASK"; payload: { id: string; timeSpent: number } }
   | { type: "UNDO_TASK"; payload: string }
-  | { type: "RUN_DAILY_RESET"; payload: string };
+  | { type: "RUN_DAILY_RESET"; payload: string }
+  | { type: "SET_THEME"; payload: IAppState['theme'] };
 
 const initialState: IAppState = {
   tasks: INITIAL_TASKS.map(t => ({ ...t, status: "TODO", actualTime: 0, completedAt: undefined })),
   history: [],
   lastResetTime: null,
   isLoaded: false,
+  theme: 'default',
 };
 
 function appReducer(state: IAppState, action: TAppAction): IAppState {
@@ -96,6 +99,9 @@ function appReducer(state: IAppState, action: TAppAction): IAppState {
       };
     }
 
+    case "SET_THEME":
+      return { ...state, theme: action.payload };
+
     default:
       return state;
   }
@@ -153,6 +159,13 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }
   }, [user, isGuest]);
 
+  // Apply Theme to DOM
+  useEffect(() => {
+    if (state.theme) {
+      document.documentElement.setAttribute('data-theme', state.theme);
+    }
+  }, [state.theme]);
+
   // Handle Daily Reset dynamically
   useEffect(() => {
     if (!state.isLoaded) return;
@@ -170,17 +183,19 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       localStorage.setItem("guestTrackerState", JSON.stringify({
          tasks: state.tasks,
          history: state.history,
-         lastResetTime: state.lastResetTime
+         lastResetTime: state.lastResetTime,
+         theme: state.theme
       }));
     } else if (user) {
       const stateRef = ref(db, `users/${user.uid}/trackerState`);
       set(stateRef, sanitizeForFirebase({
         tasks: state.tasks,
         history: state.history,
-        lastResetTime: state.lastResetTime
+        lastResetTime: state.lastResetTime,
+        theme: state.theme
       }));
     }
-  }, [state.tasks, state.history, state.lastResetTime, isGuest, user, state.isLoaded]);
+  }, [state.tasks, state.history, state.lastResetTime, state.theme, isGuest, user, state.isLoaded]);
 
   return <AppContext.Provider value={{ state, dispatch }}>{children}</AppContext.Provider>;
 };
