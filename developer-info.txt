@@ -1,4 +1,3 @@
-Go to every component and make sure all the hooks top of the component, then states > variables useMemo > useCallback > handler functions serially and lastly before return useEffects. That will make code more cleaner and readable. Please do not add new any comment on code for this work.
 
 Open-Source Project
 Github Link: https://github.com/iksagor0/Daily-Practice-Tracker
@@ -7,3 +6,7 @@ Developer: Mohammad Ibrahim Khalil
 Software Engineer
 Cumilla, Bangladesh
 Linkedin: https://www.linkedin.com/in/ibrahim-khalil-js/
+
+
+src\data\bangla-quotes.json
+If anyone from Bangladesh, West Bengal then show him Bangla quotes. If not the show him that English quotes come from the API. We Secondly, quote section should be in aside. 

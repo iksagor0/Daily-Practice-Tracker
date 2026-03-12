@@ -1,9 +1,9 @@
-import React from "react";
 import { Plus } from "lucide-react";
+import React from "react";
 import { useAppContext } from "@/context/app-context";
-import { TaskCard } from "./task-card";
-import { Button } from "./atoms";
 import { ITaskListProps } from "@/types";
+import { Button } from "./atoms";
+import { TaskCard } from "./task-card";
 
 export const TaskList: React.FC<ITaskListProps> = ({
   onOpenAddModal,

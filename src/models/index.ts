@@ -33,3 +33,8 @@ export interface IStats {
   readonly monthlyTime: number;
   readonly avgDaily?: number;
 }
+
+export interface IQuote {
+  readonly text: string;
+  readonly author: string;
+}
