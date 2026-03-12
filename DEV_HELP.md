@@ -1,0 +1,1 @@
+Analysis the project carefully first. then make sure all the hooks top of the component, then states > variables useMemo > useCallback > handler functions serially and lastly before return useEffects. That will make code more cleaner and readable.

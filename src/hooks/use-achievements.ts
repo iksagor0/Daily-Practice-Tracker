@@ -68,6 +68,7 @@ export const useAchievements = () => {
           sessionStorage.setItem("shownAchievements", JSON.stringify([...shownRef.current]));
         } catch {}
         
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setActiveToast(achievement);
         fireConfettiBurst();
         break; // Show one at a time per render

@@ -37,20 +37,20 @@ export const TimeInputModal: React.FC<ITimeInputModalProps> = ({
       onClose={onClose}
       overlayClassName="z-[100]"
       overlayStyle={{
-        backgroundColor: "rgba(241, 245, 249, 0.85)",
-        backdropFilter: "blur(12px)",
-        WebkitBackdropFilter: "blur(12px)",
+        backgroundColor: "rgba(0, 0, 0, 0.4)",
+        backdropFilter: "blur(2px)",
+        WebkitBackdropFilter: "blur(2px)",
       }}
     >
       <div className="bg-white rounded-4xl shadow-2xl w-full max-w-sm border border-white relative overflow-hidden animate-scale-in">
         <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-bl-[100px] -z-10"></div>
 
-        <div className="p-8 pb-6 border-b border-slate-100 flex justify-between items-start">
+        <div className="p-6 border-b border-slate-100 flex justify-between items-start">
           <div>
             <span className="text-emerald-600 font-bold text-[10px] tracking-widest uppercase mb-2 block">
               Complete Task
             </span>
-            <h2 className="text-xl font-display font-black text-slate-800 tracking-tight leading-tight line-clamp-2 pr-4">
+            <h2 className="text-xl font-display font-semibold text-slate-800 tracking-tight leading-tight line-clamp-3">
               {task.name}
             </h2>
           </div>
@@ -63,7 +63,7 @@ export const TimeInputModal: React.FC<ITimeInputModalProps> = ({
           </Button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-8">
+        <form onSubmit={handleSubmit} className="p-6">
           <label className="block text-sm font-extrabold tracking-tight text-slate-700 mb-2">
             Time Spent
           </label>
@@ -83,7 +83,7 @@ export const TimeInputModal: React.FC<ITimeInputModalProps> = ({
             </div>
           </div>
 
-          <p className="text-xs font-medium text-slate-500 mb-8 flex items-center">
+          <p className="text-xs font-medium text-slate-500 mb-4 flex items-center">
             {task.targetTime ? (
               <>
                 <Target className="w-3 h-3 inline mr-1 -mt-0.5" /> Target was{" "}

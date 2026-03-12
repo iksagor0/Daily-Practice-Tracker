@@ -7,6 +7,7 @@ import { useAuth } from "./auth-context";
 import { ITask, THistory } from "@/models";
 import { INITIAL_TASKS } from "@/constants";
 import { getEffectiveBDDateStr } from "@/utils/time";
+import { sanitizeForFirebase } from "@/utils/sanitize";
 
 interface IAppState {
   tasks: readonly ITask[];
@@ -173,11 +174,11 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       }));
     } else if (user) {
       const stateRef = ref(db, `users/${user.uid}/trackerState`);
-      set(stateRef, {
+      set(stateRef, sanitizeForFirebase({
         tasks: state.tasks,
         history: state.history,
         lastResetTime: state.lastResetTime
-      });
+      }));
     }
   }, [state.tasks, state.history, state.lastResetTime, isGuest, user, state.isLoaded]);
 
