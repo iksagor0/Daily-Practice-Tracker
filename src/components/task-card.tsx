@@ -11,6 +11,7 @@ export const TaskCard: React.FC<ITaskCardProps> = ({
   onEdit,
   onDelete,
   onMarkDone,
+  onQuickDone,
   onUndo,
 }) => {
   const isDone = task.status === "DONE";
@@ -28,10 +29,12 @@ export const TaskCard: React.FC<ITaskCardProps> = ({
   const TimerIcon = LucideIcons.Timer;
   const UndoIcon = LucideIcons.RotateCcw;
   const RepeatIcon = LucideIcons.Repeat;
+  const ZapIcon = LucideIcons.Zap;
 
   // Animation delay based on index for staggered entrance
   const delay = `${index * 0.05}s`;
 
+  // ... (lines 35-90 for isDone case remain same)
   if (isDone) {
     return (
       <div
@@ -143,14 +146,26 @@ export const TaskCard: React.FC<ITaskCardProps> = ({
             <TrashIcon className="w-4 h-4 sm:w-2.5 sm:h-2.5" />
           </Button>
         </div>
-        <Button
-          onClick={() => onMarkDone && onMarkDone(task.id)}
-          className="flex-1 sm:flex-none flex sm:w-10 sm:h-10 py-2.5 sm:py-0 shrink-0 rounded-xl sm:rounded-full bg-slate-50 border border-slate-200 text-slate-400 hover:border-emerald-400 hover:text-emerald-500 hover:bg-emerald-50 shadow-sm focus:ring-4 focus:ring-emerald-100 font-semibold sm:font-normal gap-2 sm:gap-0"
-          title="Mark Done"
-        >
-          <CheckIcon className="w-5 h-5" />{" "}
-          <span className="sm:hidden text-sm">Mark Done</span>
-        </Button>
+        
+        <div className="flex flex-1 sm:flex-none gap-2">
+          <Button
+            onClick={() => onQuickDone && onQuickDone(task.id)}
+            title="Done (0m)"
+            className="flex-1 sm:flex-none flex sm:w-10 sm:h-10 py-2.5 sm:py-0 shrink-0 rounded-xl sm:rounded-full bg-slate-50 border border-slate-200 text-slate-400 hover:border-amber-400 hover:text-amber-500 hover:bg-amber-50 shadow-sm gap-2 sm:gap-0"
+          >
+            <ZapIcon className="w-4 h-4" />
+            <span className="sm:hidden text-sm">Quick Done</span>
+          </Button>
+
+          <Button
+            onClick={() => onMarkDone && onMarkDone(task.id)}
+            className="flex-1 sm:flex-none flex sm:w-10 sm:h-10 py-2.5 sm:py-0 shrink-0 rounded-xl sm:rounded-full bg-slate-50 border border-slate-200 text-slate-400 hover:border-emerald-400 hover:text-emerald-500 hover:bg-emerald-50 shadow-sm focus:ring-4 focus:ring-emerald-100 font-semibold sm:font-normal gap-2 sm:gap-0"
+            title="Mark Done"
+          >
+            <CheckIcon className="w-5 h-5" />{" "}
+            <span className="sm:hidden text-sm">Mark Done</span>
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ export interface ITaskCardProps {
   onEdit: (taskId: string) => void;
   onDelete: (taskId: string) => void;
   onMarkDone?: (taskId: string) => void;
+  onQuickDone?: (taskId: string) => void;
   onUndo?: (taskId: string) => void;
 }
 
@@ -14,6 +15,7 @@ export interface ITaskListProps {
   onEditTask: (taskId: string) => void;
   onDeleteTask: (taskId: string) => void;
   onMarkDoneTask: (taskId: string) => void;
+  onQuickDoneTask: (taskId: string) => void;
   onUndoTask: (taskId: string) => void;
 }
 

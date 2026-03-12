@@ -94,6 +94,10 @@ export default function Home() {
     }
   };
 
+  const handleQuickDone = (taskId: string) => {
+    dispatch({ type: "COMPLETE_TASK", payload: { id: taskId, timeSpent: 0 } });
+  };
+
   const handleSubmitTime = (taskId: string, timeSpent: number) => {
     dispatch({ type: "COMPLETE_TASK", payload: { id: taskId, timeSpent } });
     setActiveTaskForTime(null,);
@@ -116,6 +120,7 @@ export default function Home() {
             onEditTask={handleEditTask}
             onDeleteTask={handleDeleteTask}
             onMarkDoneTask={handleMarkDone}
+            onQuickDoneTask={handleQuickDone}
             onUndoTask={handleUndoTask}
           />
         </div>

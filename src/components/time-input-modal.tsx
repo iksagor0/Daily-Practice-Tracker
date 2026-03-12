@@ -84,7 +84,6 @@ export const TimeInputModal: React.FC<ITimeInputModalProps> = ({
               onChange={(e) => setTime(e.target.value)}
               placeholder="0"
               min="0"
-              required
               autoFocus
               className="w-full text-center px-4 py-4 text-2xl font-display font-black tracking-tight bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-emerald-100 focus:border-emerald-500 hover:border-emerald-300 outline-none transition-all placeholder:text-slate-300 text-emerald-600"
             />
@@ -93,7 +92,7 @@ export const TimeInputModal: React.FC<ITimeInputModalProps> = ({
             </div>
           </div>
 
-          <p className="text-xs font-medium text-slate-500 mb-4 flex items-center">
+          <p className="text-xs font-medium text-slate-500 mb-6 flex items-center">
             {task.targetTime ? (
               <>
                 <Target className="w-3 h-3 inline mr-1 -mt-0.5" /> Target was{" "}
@@ -104,12 +103,24 @@ export const TimeInputModal: React.FC<ITimeInputModalProps> = ({
             )}
           </p>
 
-          <Button
-            type="submit"
-            className="w-full bg-emerald-500 hover:bg-emerald-400 text-white font-bold py-3.5 px-6 rounded-2xl shadow-sm hover:shadow-emerald-500/25 focus:ring-4 focus:ring-emerald-100 flex items-center justify-center gap-2"
-          >
-            <span>Done</span>
-          </Button>
+          <div className="flex flex-col gap-3">
+            <Button
+              type="submit"
+              className="w-full bg-emerald-500 hover:bg-emerald-400 text-white font-bold py-3.5 px-6 rounded-2xl shadow-sm hover:shadow-emerald-500/25 focus:ring-4 focus:ring-emerald-100 flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
+            >
+              <span>{time === "" ? "Done (0 min)" : "Complete Task"}</span>
+            </Button>
+            
+            {time !== "" && (
+              <Button
+                type="button"
+                onClick={() => onSubmit(task.id, 0)}
+                className="w-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-3 px-6 rounded-2xl flex items-center justify-center gap-2 transition-all"
+              >
+                <span className="text-sm">Finish with 0 min</span>
+              </Button>
+            )}
+          </div>
         </form>
       </div>
     </Modal>

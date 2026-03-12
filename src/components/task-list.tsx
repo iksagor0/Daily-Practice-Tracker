@@ -10,6 +10,7 @@ export const TaskList: React.FC<ITaskListProps> = ({
   onEditTask,
   onDeleteTask,
   onMarkDoneTask,
+  onQuickDoneTask,
   onUndoTask,
 }) => {
   const { state } = useAppContext();
@@ -51,6 +52,7 @@ export const TaskList: React.FC<ITaskListProps> = ({
             onEdit={onEditTask}
             onDelete={onDeleteTask}
             onMarkDone={onMarkDoneTask}
+            onQuickDone={onQuickDoneTask}
           />
         ))}
 
