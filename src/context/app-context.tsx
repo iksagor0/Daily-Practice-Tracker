@@ -18,6 +18,7 @@ interface IAppState {
 }
 
 type TAppAction =
+  | { type: "RESET_STATE" }
   | { type: "LOAD_STATE"; payload: Partial<IAppState> }
   | { type: "ADD_TASK"; payload: ITask }
   | { type: "EDIT_TASK"; payload: Pick<ITask, "id" | "name" | "desc" | "targetTime" | "targetStr" | "icon" | "repeatDaily"> }
@@ -37,6 +38,9 @@ const initialState: IAppState = {
 
 function appReducer(state: IAppState, action: TAppAction): IAppState {
   switch (action.type) {
+    case "RESET_STATE":
+      return { ...initialState };
+
     case "LOAD_STATE":
       return { ...state, ...action.payload, isLoaded: true };
 
@@ -120,6 +124,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   // Load Initial State
   useEffect(() => {
+    // CRITICAL: Reset loaded status and state immediately whenever user identity changes
+    // to prevent Guest data from leaking into and overwriting User data in Firebase.
+    dispatch({ type: "RESET_STATE" });
+
     if (isGuest) {
       const saved = localStorage.getItem("guestTrackerState");
       if (saved) {
@@ -128,43 +136,47 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
           dispatch({ type: "LOAD_STATE", payload: parsed });
         } catch (e) {
           console.error("Failed to parse guest state", e);
+          dispatch({ type: "LOAD_STATE", payload: {} }); // Mark as loaded even if empty
         }
       } else {
-        dispatch({ type: "LOAD_STATE", payload: initialState });
+        dispatch({ type: "LOAD_STATE", payload: {} });
       }
       return;
     }
 
     if (user) {
       const stateRef = ref(db, `users/${user.uid}/trackerState`);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onValue(stateRef, (snapshot: any) => {
         if (snapshot.exists()) {
           const parsed = snapshot.val();
           dispatch({ type: "LOAD_STATE", payload: parsed });
         } else {
-          // If a user just upgraded from Guest, migrating guest data
+          // If a new user just upgraded from Guest, migrating guest data
           const saved = localStorage.getItem("guestTrackerState");
           if (saved) {
             try {
-              dispatch({ type: "LOAD_STATE", payload: JSON.parse(saved) });
-            } catch { console.error("Error migrating guest"); }
+              const guestData = JSON.parse(saved);
+              dispatch({ type: "LOAD_STATE", payload: guestData });
+            } catch { 
+              console.error("Error migrating guest"); 
+              dispatch({ type: "LOAD_STATE", payload: {} });
+            }
             localStorage.removeItem("guestTrackerState");
           } else {
-            dispatch({ type: "LOAD_STATE", payload: initialState });
+            dispatch({ type: "LOAD_STATE", payload: {} }); // Mark as loaded with default
           }
         }
       });
       return () => off(stateRef);
     }
-  }, [user, isGuest]);
+  }, [user?.uid, isGuest]); // Depend on user.uid for specific account switches
 
   // Apply Theme to DOM
   useEffect(() => {
-    if (state.theme) {
+    if (state.theme && state.isLoaded) {
       document.documentElement.setAttribute('data-theme', state.theme);
     }
-  }, [state.theme]);
+  }, [state.theme, state.isLoaded]);
 
   // Handle Daily Reset dynamically
   useEffect(() => {
@@ -177,6 +189,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   // Sync to Data Source on specific changes
   useEffect(() => {
+    // DO NOT SYNC if state is not loaded or if user identity is in transition
     if (!state.isLoaded) return;
 
     if (isGuest) {
@@ -195,7 +208,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         theme: state.theme
       }));
     }
-  }, [state.tasks, state.history, state.lastResetTime, state.theme, isGuest, user, state.isLoaded]);
+  }, [state.tasks, state.history, state.lastResetTime, state.theme, isGuest, user?.uid, state.isLoaded]);
 
   return <AppContext.Provider value={{ state, dispatch }}>{children}</AppContext.Provider>;
 };
