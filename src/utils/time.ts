@@ -1,5 +1,3 @@
-// time.ts
-
 export function getBDTime(): Date {
   const now = new Date();
   const utc = now.getTime() + now.getTimezoneOffset() * 60000;
