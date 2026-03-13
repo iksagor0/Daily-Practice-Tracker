@@ -35,7 +35,7 @@ export const AuthOverlay: React.FC = () => {
         <div className="absolute -bottom-10 left-10 w-32 h-32 bg-sky-200 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob animation-delay-4000"></div>
 
         <div className="relative">
-          <div className="w-24 h-24 bg-white rounded-3xl mx-auto flex items-center justify-center shadow-lg border-4 border-white mb-6 overflow-hidden">
+          <div className="w-16 h-16 md:w-24 md:h-24 bg-white rounded-3xl mx-auto flex items-center justify-center shadow-lg border-4 border-white mb-6 overflow-hidden">
             <Image
               src="/logo.png"
               alt="Logo"
@@ -44,7 +44,7 @@ export const AuthOverlay: React.FC = () => {
               className="w-full h-full object-contain"
             />
           </div>
-          <h1 className="text-4xl md:text-5xl font-display font-black text-slate-900 mb-3 tracking-tight">
+          <h1 className="text-3xl md:text-5xl font-display font-black text-slate-900 mb-3 tracking-tight">
             Daily Practice Tracker
           </h1>
           <p className="hidden md:block text-slate-500 text-lg font-medium max-w-md mx-auto">
@@ -54,7 +54,7 @@ export const AuthOverlay: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-white/80 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-white/50 w-full max-w-sm text-center transform transition-all animate-slide-up relative">
+      <div className="bg-white/80 backdrop-blur-xl p-6 md:p-8 rounded-3xl border border-slate-300 md:shadow-lg w-full max-w-sm text-center transform transition-all animate-slide-up relative">
         <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6">
           Access Your Tracker
         </p>
@@ -87,7 +87,7 @@ export const AuthOverlay: React.FC = () => {
           <span className="text-[15px]">Sign in with Google</span>
         </Button>
 
-        <div className="relative my-6">
+        <div className="relative mt-6 mb-2">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-slate-200"></div>
           </div>
