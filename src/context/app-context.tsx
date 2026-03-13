@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useReducer, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  ReactNode,
+} from "react";
 import { ref, set, onValue, off } from "firebase/database";
 import { db } from "@/utils/firebase";
 import { useAuth } from "./auth-context";
@@ -14,26 +20,48 @@ interface IAppState {
   history: THistory;
   lastResetTime: string | null;
   isLoaded: boolean;
-  theme: 'default' | 'sakura' | 'ocean' | 'earth' | 'mint' | 'aurora' | 'sunset' | 'forest' | 'nordic' | 'lavender';
+  theme:
+    | "default"
+    | "sakura"
+    | "ocean"
+    | "earth"
+    | "mint"
+    | "aurora"
+    | "sunset"
+    | "forest"
+    | "nordic"
+    | "lavender";
 }
 
 type TAppAction =
   | { type: "RESET_STATE" }
   | { type: "LOAD_STATE"; payload: Partial<IAppState> }
   | { type: "ADD_TASK"; payload: ITask }
-  | { type: "EDIT_TASK"; payload: Pick<ITask, "id" | "name" | "desc" | "targetTime" | "targetStr" | "icon" | "repeatDaily"> }
+  | {
+      type: "EDIT_TASK";
+      payload: Pick<
+        ITask,
+        | "id"
+        | "name"
+        | "desc"
+        | "targetTime"
+        | "targetStr"
+        | "icon"
+        | "repeatDaily"
+      >;
+    }
   | { type: "DELETE_TASK"; payload: string }
   | { type: "COMPLETE_TASK"; payload: { id: string; timeSpent: number } }
   | { type: "UNDO_TASK"; payload: string }
   | { type: "RUN_DAILY_RESET"; payload: string }
-  | { type: "SET_THEME"; payload: IAppState['theme'] };
+  | { type: "SET_THEME"; payload: IAppState["theme"] };
 
 const initialState: IAppState = {
-  tasks: INITIAL_TASKS.map(t => ({ ...t, status: "TODO", actualTime: 0, completedAt: undefined })),
+  tasks: [],
   history: [],
   lastResetTime: null,
   isLoaded: false,
-  theme: 'default',
+  theme: "default",
 };
 
 function appReducer(state: IAppState, action: TAppAction): IAppState {
@@ -41,8 +69,30 @@ function appReducer(state: IAppState, action: TAppAction): IAppState {
     case "RESET_STATE":
       return { ...initialState };
 
-    case "LOAD_STATE":
-      return { ...state, ...action.payload, isLoaded: true };
+    case "LOAD_STATE": {
+      const payload = action.payload;
+      // If it's a completely fresh user (no tasks, no history, no last reset), give them initial tasks
+      const isNewUser =
+        !payload.lastResetTime &&
+        (!payload.tasks || payload.tasks.length === 0) &&
+        (!payload.history || payload.history.length === 0);
+
+      const tasks = isNewUser
+        ? INITIAL_TASKS.map((t) => ({
+            ...t,
+            status: "TODO" as const,
+            actualTime: 0,
+            completedAt: undefined,
+          }))
+        : payload.tasks || [];
+
+      return {
+        ...state,
+        ...payload,
+        tasks,
+        isLoaded: true,
+      };
+    }
 
     case "ADD_TASK":
       return { ...state, tasks: [...state.tasks, action.payload] };
@@ -50,31 +100,39 @@ function appReducer(state: IAppState, action: TAppAction): IAppState {
     case "EDIT_TASK":
       return {
         ...state,
-        tasks: state.tasks.map(t =>
-          t.id === action.payload.id ? { ...t, ...action.payload } : t
+        tasks: state.tasks.map((t) =>
+          t.id === action.payload.id ? { ...t, ...action.payload } : t,
         ),
       };
 
     case "DELETE_TASK":
-      return { ...state, tasks: state.tasks.filter(t => t.id !== action.payload) };
+      return {
+        ...state,
+        tasks: state.tasks.filter((t) => t.id !== action.payload),
+      };
 
     case "COMPLETE_TASK":
       return {
         ...state,
-        tasks: state.tasks.map(t =>
+        tasks: state.tasks.map((t) =>
           t.id === action.payload.id
-            ? { ...t, status: "DONE", actualTime: action.payload.timeSpent, completedAt: Date.now() }
-            : t
+            ? {
+                ...t,
+                status: "DONE",
+                actualTime: action.payload.timeSpent,
+                completedAt: Date.now(),
+              }
+            : t,
         ),
       };
 
     case "UNDO_TASK":
       return {
         ...state,
-        tasks: state.tasks.map(t =>
+        tasks: state.tasks.map((t) =>
           t.id === action.payload
             ? { ...t, status: "TODO", actualTime: 0, completedAt: undefined }
-            : t
+            : t,
         ),
       };
 
@@ -84,7 +142,10 @@ function appReducer(state: IAppState, action: TAppAction): IAppState {
 
       const newHistory = [...state.history];
       if (state.tasks.length > 0 && state.lastResetTime) {
-        const totalTime = state.tasks.reduce((sum, t) => sum + (t.status === "DONE" ? t.actualTime || 0 : 0), 0);
+        const totalTime = state.tasks.reduce(
+          (sum, t) => sum + (t.status === "DONE" ? t.actualTime || 0 : 0),
+          0,
+        );
         newHistory.push({
           date: state.lastResetTime,
           timeSpent: totalTime,
@@ -94,10 +155,10 @@ function appReducer(state: IAppState, action: TAppAction): IAppState {
       return {
         ...state,
         history: newHistory,
-        tasks: state.tasks.map(t => 
-          t.repeatDaily 
-            ? { ...t, status: "TODO", actualTime: 0, completedAt: undefined } 
-            : t
+        tasks: state.tasks.map((t) =>
+          t.repeatDaily
+            ? { ...t, status: "TODO", actualTime: 0, completedAt: undefined }
+            : t,
         ),
         lastResetTime: todayStr,
       };
@@ -118,7 +179,9 @@ interface IAppContextProps {
 
 const AppContext = createContext<IAppContextProps | undefined>(undefined);
 
-export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AppProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const { user, isGuest } = useAuth();
   const [state, dispatch] = useReducer(appReducer, initialState);
 
@@ -146,7 +209,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
     if (user) {
       const stateRef = ref(db, `users/${user.uid}/trackerState`);
-      onValue(stateRef, (snapshot: any) => {
+      onValue(stateRef, (snapshot) => {
         if (snapshot.exists()) {
           const parsed = snapshot.val();
           dispatch({ type: "LOAD_STATE", payload: parsed });
@@ -157,8 +220,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
             try {
               const guestData = JSON.parse(saved);
               dispatch({ type: "LOAD_STATE", payload: guestData });
-            } catch { 
-              console.error("Error migrating guest"); 
+            } catch {
+              console.error("Error migrating guest");
               dispatch({ type: "LOAD_STATE", payload: {} });
             }
             localStorage.removeItem("guestTrackerState");
@@ -169,12 +232,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       });
       return () => off(stateRef);
     }
-  }, [user?.uid, isGuest]); // Depend on user.uid for specific account switches
+  }, [user?.uid, isGuest, user]); // Depend on user.uid for specific account switches
 
   // Apply Theme to DOM
   useEffect(() => {
     if (state.theme && state.isLoaded) {
-      document.documentElement.setAttribute('data-theme', state.theme);
+      document.documentElement.setAttribute("data-theme", state.theme);
     }
   }, [state.theme, state.isLoaded]);
 
@@ -193,24 +256,42 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     if (!state.isLoaded) return;
 
     if (isGuest) {
-      localStorage.setItem("guestTrackerState", JSON.stringify({
-         tasks: state.tasks,
-         history: state.history,
-         lastResetTime: state.lastResetTime,
-         theme: state.theme
-      }));
+      localStorage.setItem(
+        "guestTrackerState",
+        JSON.stringify({
+          tasks: state.tasks,
+          history: state.history,
+          lastResetTime: state.lastResetTime,
+          theme: state.theme,
+        }),
+      );
     } else if (user) {
       const stateRef = ref(db, `users/${user.uid}/trackerState`);
-      set(stateRef, sanitizeForFirebase({
-        tasks: state.tasks,
-        history: state.history,
-        lastResetTime: state.lastResetTime,
-        theme: state.theme
-      }));
+      set(
+        stateRef,
+        sanitizeForFirebase({
+          tasks: state.tasks,
+          history: state.history,
+          lastResetTime: state.lastResetTime,
+          theme: state.theme,
+        }),
+      );
     }
-  }, [state.tasks, state.history, state.lastResetTime, state.theme, isGuest, user?.uid, state.isLoaded]);
+  }, [
+    state.tasks,
+    state.history,
+    state.lastResetTime,
+    state.theme,
+    isGuest,
+    user?.uid,
+    state.isLoaded,
+  ]);
 
-  return <AppContext.Provider value={{ state, dispatch }}>{children}</AppContext.Provider>;
+  return (
+    <AppContext.Provider value={{ state, dispatch }}>
+      {children}
+    </AppContext.Provider>
+  );
 };
 
 export const useAppContext = () => {

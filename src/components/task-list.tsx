@@ -1,4 +1,5 @@
 import { Plus } from "lucide-react";
+import Image from "next/image";
 import React from "react";
 import { useAppContext } from "@/context/app-context";
 import { ITaskListProps } from "@/types";
@@ -57,21 +58,35 @@ export const TaskList: React.FC<ITaskListProps> = ({
         ))}
 
         {todoTasks.length === 0 && (
-          <div className="text-center py-12 px-4 rounded-3xl border-2 border-dashed border-slate-200 bg-slate-50">
-            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-100 shadow-sm">
-              <span className="text-2xl pt-1">✨</span>
+          <div className="bg-white/40 backdrop-blur-md rounded-[2.5rem] p-8 sm:p-12 border border-white/60 shadow-xl shadow-slate-200/40 text-center animate-scale-in relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-48 h-48 bg-emerald-500/5 rounded-bl-[100px] pointer-events-none transition-transform group-hover:scale-110 duration-700"></div>
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-sky-500/5 rounded-tr-[80px] pointer-events-none transition-transform group-hover:scale-110 duration-700"></div>
+
+            <div className="relative mb-8 flex justify-center">
+              <div className="w-60 h-60 rounded-3xl overflow-hidden shadow-2xl shadow-emerald-500/10 border-4 border-white transition-transform duration-500 relative opacity-40">
+                <Image
+                  src="https://media.tenor.com/xH1eX6g_KrMAAAAj/goma-peach.gif"
+                  alt="Success"
+                  fill
+                  unoptimized
+                  className="object-cover"
+                />
+              </div>
             </div>
-            <h3 className="text-slate-700 font-bold mb-1">
-              You&apos;re all caught up!
+
+            <h3 className="text-2xl font-display font-black text-slate-800 mb-2 tracking-tight">
+              You&apos;re All Caught Up!
             </h3>
-            <p className="text-slate-500 text-sm mb-4">
-              You&apos;ve completed everything for today.
+            <p className="text-slate-500 text-sm mb-8 max-w-xs mx-auto">
+              Every task is finished. Enjoy your peaceful moment of
+              accomplishment.
             </p>
             <Button
               onClick={onOpenAddModal}
-              className="text-brand-600 hover:text-brand-700 font-bold text-sm bg-brand-50 hover:bg-brand-100 px-4 py-2 rounded-xl transition-colors"
+              className="border border-brand-600 hover:bg-brand-50 text-brand-600 font-semibold py-3.5 px-8 rounded-2xl transition-all active:scale-95 flex items-center gap-2 mx-auto"
             >
-              + Add a new task
+              <Plus className="w-5 h-5" />
+              <span>Plan Next Task</span>
             </Button>
           </div>
         )}
@@ -87,21 +102,35 @@ export const TaskList: React.FC<ITaskListProps> = ({
       </div>
 
       <div className="space-y-3">
-        {doneTasks.map((t, index) => (
-          <TaskCard
-            key={t.id}
-            task={t}
-            index={index}
-            onEdit={onEditTask}
-            onDelete={onDeleteTask}
-            onUndo={onUndoTask}
-          />
-        ))}
-
-        {doneTasks.length === 0 && (
-          <div className="text-center py-8 px-4 rounded-3xl bg-slate-50/50 border border-transparent">
-            <p className="text-slate-400 text-sm font-medium">
-              Tasks you complete will appear here. Let&apos;s get started!
+        {doneTasks.length > 0 ? (
+          doneTasks.map((t, index) => (
+            <TaskCard
+              key={t.id}
+              task={t}
+              index={index}
+              onEdit={onEditTask}
+              onDelete={onDeleteTask}
+              onUndo={onUndoTask}
+            />
+          ))
+        ) : (
+          <div className="bg-slate-50/40 rounded-4xl p-10 border border-slate-200/60 text-center animate-fade-in group">
+            <div className="mb-6 flex justify-center">
+              <div className="w-48 h-32 sm:w-56 sm:h-40 rounded-2xl overflow-hidden grayscale-[0.2] opacity-80 transition-all duration-500 relative">
+                <Image
+                  src="https://media.tenor.com/0cNM_9li440AAAAj/dudu-giving-flowers-bubu-flowers.gif"
+                  alt="Ready to start"
+                  fill
+                  unoptimized
+                  className="object-cover"
+                />
+              </div>
+            </div>
+            <h3 className="text-lg font-display font-bold text-slate-600 mb-2">
+              The Journey Begins Here
+            </h3>
+            <p className="text-slate-400 text-sm max-w-xs mx-auto">
+              Complete your first task to see your achievements blooming here.
             </p>
           </div>
         )}
