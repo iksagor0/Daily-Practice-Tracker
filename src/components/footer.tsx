@@ -48,7 +48,7 @@ export const Footer: React.FC = () => {
         </div>
       </div>
 
-      <div className="text-right">
+      <div className="text-center md:text-right">
         <p className="text-slate-300 text-[10px] font-bold tracking-wider uppercase">
           © {new Date().getFullYear()} Daily Practice Tracker
         </p>

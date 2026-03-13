@@ -13,19 +13,17 @@ export const Header: React.FC = () => {
 
   return (
     <header className="pt-6 pb-2 px-4 text-center animate-fade-in">
-      <h1 className="text-[28px] md:text-5xl font-display font-extrabold text-transparent bg-clip-text bg-linear-to-r from-slate-900 via-brand-900 to-slate-900 tracking-tight mb-2">
-        <div className="inline-flex items-center justify-center p-1 md:p-1 md:mr-3 rounded-2xl bg-white shadow-sm border border-slate-100 overflow-hidden">
-          <Image
-            src="/logo.png"
-            alt="Logo"
-            width={56}
-            height={56}
-            className="w-10 h-10 object-contain"
-          />
-        </div>
+      <h1 className="text-[28px] md:text-5xl font-display font-extrabold text-transparent bg-clip-text bg-linear-to-r from-slate-900 via-brand-900 to-slate-900 tracking-tight mb-2 flex items-center justify-center gap-2 md:gap-4 whitespace-nowrap">
+        <Image
+          src="/logo.png"
+          alt="Logo"
+          width={56}
+          height={56}
+          className="w-9 h-9 md:w-12 md:h-12 object-contain"
+        />
         Daily Practice Tracker
       </h1>
-      <p className="text-slate-500 font-medium text-sm md:text-base mb-4 tracking-wide">
+      <p className="text-slate-500 font-medium text-xs md:text-sm mb-4 tracking-wide">
         Build consistency. Track progress. Achieve mastery.
       </p>
 

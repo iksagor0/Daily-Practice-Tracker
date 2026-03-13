@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useAuth } from "@/context/auth-context";
 import Image from "next/image";
 import { Button } from "./atoms";
@@ -8,6 +8,16 @@ import { Button } from "./atoms";
 export const AuthOverlay: React.FC = () => {
   const { user, isGuest, isLoading, loginWithGoogle, continueAsGuest } =
     useAuth();
+
+  useEffect(() => {
+    // Lock scroll when overlay is visible
+    if (!user && !isGuest && !isLoading) {
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [user, isGuest, isLoading]);
 
   if (isLoading) {
     return (
@@ -28,7 +38,7 @@ export const AuthOverlay: React.FC = () => {
   if (user || isGuest) return null;
 
   return (
-    <div className="fixed inset-0 bg-slate-50 z-100 flex flex-col items-center justify-center transition-opacity duration-300 p-4">
+    <div className="fixed inset-0 bg-slate-50 z-100 flex flex-col items-center justify-center transition-opacity duration-300 p-4 overflow-hidden">
       <div className="mb-10 text-center animate-fade-in relative">
         <div className="absolute -top-10 -left-10 w-32 h-32 bg-brand-200 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob"></div>
         <div className="absolute -top-10 -right-10 w-32 h-32 bg-indigo-200 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob animation-delay-2000"></div>

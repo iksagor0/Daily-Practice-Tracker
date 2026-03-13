@@ -132,40 +132,39 @@ export const TaskCard: React.FC<ITaskCardProps> = ({
       <div className="shrink-0 w-full sm:w-auto mt-3 sm:mt-0 flex justify-between sm:justify-end gap-2 sm:ml-1 items-center">
         <div className="shrink-0 flex gap-2">
           <Button
-            onClick={() => onEdit(task.id)}
-            className="flex w-8 h-8 sm:w-6 sm:h-6 shrink-0 rounded-lg bg-slate-50 border border-slate-200 text-slate-400 hover:border-indigo-400 hover:text-indigo-500 hover:bg-indigo-50 shadow-sm focus:ring-2 focus:ring-indigo-100"
-            title="Edit Task"
-          >
-            <EditIcon className="w-4 h-4 sm:w-2.5 sm:h-2.5" />
-          </Button>
-          <Button
             onClick={() => onDelete(task.id)}
             className="flex w-8 h-8 sm:w-6 sm:h-6 shrink-0 rounded-lg bg-slate-50 border border-slate-200 text-slate-400 hover:border-rose-400 hover:text-rose-500 hover:bg-rose-50 shadow-sm focus:ring-2 focus:ring-rose-100"
             title="Delete Task"
           >
             <TrashIcon className="w-4 h-4 sm:w-2.5 sm:h-2.5" />
           </Button>
-        </div>
-        
-        <div className="flex flex-1 sm:flex-none gap-2">
+
           <Button
-            onClick={() => onQuickDone && onQuickDone(task.id)}
-            title="Done (0m)"
-            className="flex-1 sm:flex-none flex sm:w-10 sm:h-10 py-2.5 sm:py-0 shrink-0 rounded-xl sm:rounded-full bg-slate-50 border border-slate-200 text-slate-400 hover:border-amber-400 hover:text-amber-500 hover:bg-amber-50 shadow-sm gap-2 sm:gap-0"
+            onClick={() => onEdit(task.id)}
+            className="flex w-8 h-8 sm:w-6 sm:h-6 shrink-0 rounded-lg bg-slate-50 border border-slate-200 text-slate-400 hover:border-indigo-400 hover:text-indigo-500 hover:bg-indigo-50 shadow-sm focus:ring-2 focus:ring-indigo-100"
+            title="Edit Task"
           >
-            <ZapIcon className="w-4 h-4" />
-            <span className="sm:hidden text-sm">Quick Done</span>
+            <EditIcon className="w-4 h-4 sm:w-2.5 sm:h-2.5" />
           </Button>
 
           <Button
-            onClick={() => onMarkDone && onMarkDone(task.id)}
-            className="flex-1 sm:flex-none flex sm:w-10 sm:h-10 py-2.5 sm:py-0 shrink-0 rounded-xl sm:rounded-full bg-slate-50 border border-slate-200 text-slate-400 hover:border-emerald-400 hover:text-emerald-500 hover:bg-emerald-50 shadow-sm focus:ring-4 focus:ring-emerald-100 font-semibold sm:font-normal gap-2 sm:gap-0"
-            title="Mark Done"
+            onClick={() => onQuickDone && onQuickDone(task.id)}
+            title="Quick Done (0m)"
+            className="w-8 h-8 sm:w-6 sm:h-6 flex-1 sm:flex-none flex py-2.5 sm:py-0 shrink-0 rounded-lg bg-slate-50 border border-slate-200 text-slate-400 hover:border-amber-400 hover:text-amber-500 hover:bg-amber-50 shadow-sm gap-1 sm:gap-0 whitespace-nowrap"
           >
-            <CheckIcon className="w-5 h-5" />{" "}
-            <span className="sm:hidden text-sm">Mark Done</span>
+            <ZapIcon className="w-4 h-4" />
+            {/* <span className="sm:hidden text-sm">Quick</span> */}
           </Button>
         </div>
+
+        <Button
+          onClick={() => onMarkDone && onMarkDone(task.id)}
+          className="flex-1 sm:flex-none flex sm:w-10 sm:h-10 px-2 py-2.5 sm:py-0 shrink-0 rounded-xl sm:rounded-full bg-slate-50 border border-slate-200 text-slate-400 hover:border-emerald-400 hover:text-emerald-500 hover:bg-emerald-50 shadow-sm focus:ring-4 focus:ring-emerald-100 font-semibold sm:font-normal gap-1 sm:gap-0  whitespace-nowrap"
+          title="Mark Done"
+        >
+          <CheckIcon className="w-5 h-5" />{" "}
+          <span className="sm:hidden text-sm">Mark Done</span>
+        </Button>
       </div>
     </div>
   );
