@@ -31,11 +31,12 @@ interface IAppState {
     | "forest"
     | "nordic"
     | "lavender";
+  loadedFor: string | "guest" | null;
 }
 
 type TAppAction =
   | { type: "RESET_STATE" }
-  | { type: "LOAD_STATE"; payload: Partial<IAppState> }
+  | { type: "LOAD_STATE"; payload: Partial<IAppState> & { loadedFor: string | "guest" } }
   | { type: "ADD_TASK"; payload: ITask }
   | {
       type: "EDIT_TASK";
@@ -62,6 +63,7 @@ const initialState: IAppState = {
   lastResetTime: null,
   isLoaded: false,
   theme: "default",
+  loadedFor: null,
 };
 
 function appReducer(state: IAppState, action: TAppAction): IAppState {
@@ -90,6 +92,7 @@ function appReducer(state: IAppState, action: TAppAction): IAppState {
         ...state,
         ...payload,
         tasks,
+        loadedFor: payload.loadedFor,
         isLoaded: true,
       };
     }
@@ -196,13 +199,16 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
-          dispatch({ type: "LOAD_STATE", payload: parsed });
+          dispatch({
+            type: "LOAD_STATE",
+            payload: { ...parsed, loadedFor: "guest" },
+          });
         } catch (e) {
           console.error("Failed to parse guest state", e);
-          dispatch({ type: "LOAD_STATE", payload: {} }); // Mark as loaded even if empty
+          dispatch({ type: "LOAD_STATE", payload: { loadedFor: "guest" } });
         }
       } else {
-        dispatch({ type: "LOAD_STATE", payload: {} });
+        dispatch({ type: "LOAD_STATE", payload: { loadedFor: "guest" } });
       }
       return;
     }
@@ -212,27 +218,37 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
       onValue(stateRef, (snapshot) => {
         if (snapshot.exists()) {
           const parsed = snapshot.val();
-          dispatch({ type: "LOAD_STATE", payload: parsed });
+          // PRIORITIZE GOOGLE DATA: Load existing cloud data
+          dispatch({
+            type: "LOAD_STATE",
+            payload: { ...parsed, loadedFor: user.uid },
+          });
         } else {
           // If a new user just upgraded from Guest, migrating guest data
           const saved = localStorage.getItem("guestTrackerState");
           if (saved) {
             try {
               const guestData = JSON.parse(saved);
-              dispatch({ type: "LOAD_STATE", payload: guestData });
+              dispatch({
+                type: "LOAD_STATE",
+                payload: { ...guestData, loadedFor: user.uid },
+              });
             } catch {
               console.error("Error migrating guest");
-              dispatch({ type: "LOAD_STATE", payload: {} });
+              dispatch({ type: "LOAD_STATE", payload: { loadedFor: user.uid } });
             }
             localStorage.removeItem("guestTrackerState");
           } else {
-            dispatch({ type: "LOAD_STATE", payload: {} }); // Mark as loaded with default
+            dispatch({
+              type: "LOAD_STATE",
+              payload: { loadedFor: user.uid },
+            });
           }
         }
       });
       return () => off(stateRef);
     }
-  }, [user?.uid, isGuest, user]); // Depend on user.uid for specific account switches
+  }, [user?.uid, isGuest, user]);
 
   // Apply Theme to DOM
   useEffect(() => {
@@ -253,7 +269,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
   // Sync to Data Source on specific changes
   useEffect(() => {
     // DO NOT SYNC if state is not loaded or if user identity is in transition
-    if (!state.isLoaded) return;
+    if (!state.isLoaded || !state.loadedFor) return;
+
+    const currentIdentity = isGuest ? "guest" : user?.uid;
+    // CRITICAL: Prevent syncing if the state in memory belongs to a different user/context
+    if (state.loadedFor !== currentIdentity) {
+      console.warn("Sync blocked: identity mismatch");
+      return;
+    }
 
     if (isGuest) {
       localStorage.setItem(
@@ -285,6 +308,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
     isGuest,
     user?.uid,
     state.isLoaded,
+    state.loadedFor,
+    user,
   ]);
 
   return (
