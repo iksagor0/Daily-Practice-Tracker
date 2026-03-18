@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useMemo } from "react";
-import * as LucideIcons from "lucide-react";
-import { X } from "lucide-react";
 import { AVAILABLE_ICONS } from "@/constants";
 import { ITask } from "@/models";
 import { IAddTaskModalProps } from "@/types";
-import { Modal, Button, Toggler } from "./atoms";
 import { cn } from "@/utils/cn";
+import * as LucideIcons from "lucide-react";
+import { X } from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
+import { Button, Modal, Toggler } from "./atoms";
 
 export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
   isOpen,
@@ -73,6 +73,7 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
+      closeOnOutsideClick={false}
       overlayStyle={{
         backgroundColor: "rgba(0, 0, 0, 0.4)",
         backdropFilter: "blur(2px)",
@@ -133,7 +134,7 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
                     min="1"
                     className="w-full pl-4 pr-16 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-brand-100 focus:border-brand-500 hover:border-brand-300 outline-none transition-all placeholder:text-slate-400 font-medium text-slate-800 appearance-none"
                   />
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400 font-bold text-sm bg-linear-to-l from-slate-50 via-slate-50 rounded-r-2xl pl-2">
+                  <div className="absolute top-px right-px h-[calc(100%-2px)] flex items-center pr-4 pointer-events-none text-slate-400 font-bold text-sm bg-linear-to-l from-slate-50 via-slate-50 rounded-r-2xl pl-2">
                     min
                   </div>
                 </div>

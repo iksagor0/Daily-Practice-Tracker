@@ -8,11 +8,12 @@ export const Modal: React.FC<ModalProps> = ({
   children,
   overlayClassName = "",
   overlayStyle = {},
+  closeOnOutsideClick = true,
 }) => {
   const overlayRef = useRef<HTMLDivElement>(null);
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === overlayRef.current) {
+    if (closeOnOutsideClick && e.target === overlayRef.current) {
       onClose();
     }
   };

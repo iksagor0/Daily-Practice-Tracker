@@ -1,9 +1,9 @@
-import React from "react";
-import * as LucideIcons from "lucide-react";
-import { ITaskCardProps } from "@/types";
+import { Button, Linkify } from "@/components/atoms";
 import { TaskTimeBadge } from "@/shared/task-time-badge";
-import { Button } from "@/components/atoms";
+import { ITaskCardProps } from "@/types";
 import { cn } from "@/utils/cn";
+import * as LucideIcons from "lucide-react";
+import React from "react";
 
 export const TaskCard: React.FC<ITaskCardProps> = ({
   task,
@@ -58,8 +58,8 @@ export const TaskCard: React.FC<ITaskCardProps> = ({
               <TimerIcon className="w-3.5 h-3.5" /> {task.actualTime} min
             </div>
           </div>
-          <p className="text-slate-400 text-sm leading-relaxed truncate">
-            {task.desc}
+          <p className="text-slate-400 text-sm leading-relaxed line-clamp-2">
+            <Linkify text={task.desc} />
           </p>
         </div>
         <div className="shrink-0 w-full sm:w-auto mt-3 sm:mt-0 flex justify-between sm:justify-end gap-2 sm:ml-1 items-center">
@@ -122,11 +122,8 @@ export const TaskCard: React.FC<ITaskCardProps> = ({
             <TaskTimeBadge targetStr={task.targetStr} />
           </div>
         </div>
-        <p
-          title={task.desc}
-          className="text-slate-500 text-sm leading-relaxed md:truncate group-hover:text-slate-600 transition-colors"
-        >
-          {task.desc}
+        <p className="text-slate-500 text-sm leading-relaxed line-clamp-2 group-hover:text-slate-600 transition-colors">
+          <Linkify text={task.desc} />
         </p>
       </div>
       <div className="shrink-0 w-full sm:w-auto mt-3 sm:mt-0 flex justify-between sm:justify-end gap-2 sm:ml-1 items-center">

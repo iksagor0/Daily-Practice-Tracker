@@ -53,4 +53,5 @@ export interface ModalProps {
   children: React.ReactNode;
   overlayClassName?: string;
   overlayStyle?: React.CSSProperties;
+  closeOnOutsideClick?: boolean;
 }
