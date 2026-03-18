@@ -1,10 +1,25 @@
+import { useAppContext } from "@/context/app-context";
+import { ITask } from "@/models";
+import { ITaskListProps } from "@/types";
 import { Plus } from "lucide-react";
 import Image from "next/image";
-import React from "react";
-import { useAppContext } from "@/context/app-context";
-import { ITaskListProps } from "@/types";
+import React, { useEffect, useState } from "react";
 import { Button } from "./atoms";
 import { TaskCard } from "./task-card";
+
+interface DragState {
+  id: string;
+  task: ITask;
+  startX: number;
+  startY: number;
+  currentX: number;
+  currentY: number;
+  offsetX: number;
+  offsetY: number;
+  width: number;
+  height: number;
+  isDragging: boolean;
+}
 
 export const TaskList: React.FC<ITaskListProps> = ({
   onOpenAddModal,
@@ -14,12 +29,119 @@ export const TaskList: React.FC<ITaskListProps> = ({
   onQuickDoneTask,
   onUndoTask,
 }) => {
-  const { state } = useAppContext();
+  const { state, dispatch } = useAppContext();
+  const [dragState, setDragState] = useState<DragState | null>(null);
 
   const todoTasks = state.tasks.filter((t) => t.status === "TODO");
-  const doneTasks = state.tasks
-    .filter((t) => t.status === "DONE")
-    .sort((a, b) => (b.completedAt || 0) - (a.completedAt || 0));
+  const doneTasks = state.tasks.filter((t) => t.status === "DONE");
+
+
+  const handlePointerDown = (e: React.PointerEvent, id: string, task: ITask) => {
+    if (e.button !== 0) return; // Only allow left clicks
+    
+    e.preventDefault();
+    const target = e.currentTarget as HTMLElement;
+    const card = target.closest(".group") as HTMLElement;
+    if (!card) return;
+
+    const rect = card.getBoundingClientRect();
+    
+    setDragState({
+      id,
+      task,
+      startX: e.clientX,
+      startY: e.clientY,
+      currentX: e.clientX,
+      currentY: e.clientY,
+      offsetX: e.clientX - rect.left,
+      offsetY: e.clientY - rect.top,
+      width: rect.width,
+      height: rect.height,
+      isDragging: false,
+    });
+  };
+
+  useEffect(() => {
+    if (!dragState) return;
+
+    const handlePointerMove = (e: PointerEvent) => {
+      const isDragging =
+        dragState.isDragging ||
+        Math.abs(e.clientX - dragState.startX) > 3 ||
+        Math.abs(e.clientY - dragState.startY) > 3;
+
+      if (isDragging) {
+        const elements = document.elementsFromPoint(e.clientX, e.clientY);
+        
+        // Dynamic reordering over tasks
+        const hoveredTaskEl = elements.find((el) => el.getAttribute("data-task-id"));
+        if (hoveredTaskEl) {
+          const targetId = hoveredTaskEl.getAttribute("data-task-id");
+          const targetStatus = hoveredTaskEl.getAttribute("data-task-status");
+          
+          if (targetId && targetId !== dragState.id && targetStatus === dragState.task.status) {
+            const rect = hoveredTaskEl.getBoundingClientRect();
+            const hoverMiddleY = rect.top + rect.height / 2;
+            
+            const isDraggingDown = e.clientY > dragState.currentY;
+            const isDraggingUp = e.clientY < dragState.currentY;
+
+            if (
+              (isDraggingDown && e.clientY > hoverMiddleY) ||
+              (isDraggingUp && e.clientY < hoverMiddleY) ||
+              (!isDraggingDown && !isDraggingUp)
+            ) {
+              dispatch({
+                type: "REORDER_TASKS",
+                payload: { sourceId: dragState.id, targetId }
+              });
+            }
+          }
+        } else {
+          // Dynamic reordering over top/bottom empty zones
+          const dropZoneTop = elements.find((el) => el.getAttribute("data-dropzone") === "top");
+          const dropZoneBottom = elements.find((el) => el.getAttribute("data-dropzone") === "bottom");
+
+          if (dropZoneTop && todoTasks.length > 0) {
+            const topId = todoTasks[0].id;
+            if (dragState.id !== topId && dragState.task.status === "TODO") {
+              dispatch({
+                type: "REORDER_TASKS",
+                payload: { sourceId: dragState.id, targetId: topId },
+              });
+            }
+          } else if (dropZoneBottom && todoTasks.length > 0) {
+            const bottomId = todoTasks[todoTasks.length - 1].id;
+            if (dragState.id !== bottomId && dragState.task.status === "TODO") {
+              dispatch({
+                type: "REORDER_TASKS",
+                payload: { sourceId: dragState.id, targetId: bottomId },
+              });
+            }
+          }
+        }
+      }
+
+      setDragState((prev) => prev ? {
+        ...prev,
+        currentX: e.clientX,
+        currentY: e.clientY,
+        isDragging,
+      } : null);
+    };
+
+    const handlePointerUp = () => {
+      setDragState(null);
+    };
+
+    document.addEventListener("pointermove", handlePointerMove);
+    document.addEventListener("pointerup", handlePointerUp);
+
+    return () => {
+      document.removeEventListener("pointermove", handlePointerMove);
+      document.removeEventListener("pointerup", handlePointerUp);
+    };
+  }, [dragState, dispatch, todoTasks]);
 
   return (
     <div className="space-y-8 animate-fade-in animation-delay-300 opacity-0 fill-mode-forwards">
@@ -45,6 +167,12 @@ export const TaskList: React.FC<ITaskListProps> = ({
       </div>
 
       <div className="space-y-3 relative z-10">
+        {/* Top drop zone */}
+        <div
+          data-dropzone="top"
+          className="h-8 -mt-8 opacity-0 hover:opacity-100 transition-opacity"
+        />
+
         {todoTasks.map((t, index) => (
           <TaskCard
             key={t.id}
@@ -54,8 +182,16 @@ export const TaskList: React.FC<ITaskListProps> = ({
             onDelete={onDeleteTask}
             onMarkDone={onMarkDoneTask}
             onQuickDone={onQuickDoneTask}
+            onCustomDragStart={(e) => handlePointerDown(e, t.id, t)}
+            isHidden={dragState?.id === t.id && dragState.isDragging}
           />
         ))}
+
+        {/* Bottom drop zone */}
+        <div
+          data-dropzone="bottom"
+          className="h-8 opacity-0 hover:opacity-100 transition-opacity"
+        />
 
         {todoTasks.length === 0 && (
           <div className="bg-white/40 backdrop-blur-md rounded-[2.5rem] p-8 sm:p-12 border border-white/60 shadow-xl shadow-slate-200/40 text-center animate-scale-in relative overflow-hidden group">
@@ -111,6 +247,8 @@ export const TaskList: React.FC<ITaskListProps> = ({
               onEdit={onEditTask}
               onDelete={onDeleteTask}
               onUndo={onUndoTask}
+              onCustomDragStart={(e) => handlePointerDown(e, t.id, t)}
+              isHidden={dragState?.id === t.id && dragState.isDragging}
             />
           ))
         ) : (
@@ -135,6 +273,26 @@ export const TaskList: React.FC<ITaskListProps> = ({
           </div>
         )}
       </div>
+
+      {dragState?.isDragging && (
+        <div
+          className="fixed z-100 pointer-events-none shadow-[0_20px_50px_rgba(0,0,0,0.15)] rounded-2xl"
+          style={{
+            width: dragState.width,
+            height: dragState.height,
+            left: dragState.currentX - dragState.offsetX,
+            top: dragState.currentY - dragState.offsetY,
+          }}
+        >
+          <div className="absolute inset-0 border-[3px] border-dashed border-brand-500/30 rounded-2xl pointer-events-none z-10" />
+          <TaskCard
+            task={dragState.task}
+            index={0}
+            onEdit={() => {}}
+            onDelete={() => {}}
+          />
+        </div>
+      )}
     </div>
   );
 };

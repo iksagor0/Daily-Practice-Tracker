@@ -55,7 +55,8 @@ type TAppAction =
   | { type: "COMPLETE_TASK"; payload: { id: string; timeSpent: number } }
   | { type: "UNDO_TASK"; payload: string }
   | { type: "RUN_DAILY_RESET"; payload: string }
-  | { type: "SET_THEME"; payload: IAppState["theme"] };
+  | { type: "SET_THEME"; payload: IAppState["theme"] }
+  | { type: "REORDER_TASKS"; payload: { sourceId: string; targetId: string } };
 
 const initialState: IAppState = {
   tasks: [],
@@ -169,6 +170,20 @@ function appReducer(state: IAppState, action: TAppAction): IAppState {
 
     case "SET_THEME":
       return { ...state, theme: action.payload };
+
+    case "REORDER_TASKS": {
+      const { sourceId, targetId } = action.payload;
+      const tasks = [...state.tasks];
+      const sourceIndex = tasks.findIndex((t) => t.id === sourceId);
+      const targetIndex = tasks.findIndex((t) => t.id === targetId);
+
+      if (sourceIndex === -1 || targetIndex === -1) return state;
+
+      const [movedTask] = tasks.splice(sourceIndex, 1);
+      tasks.splice(targetIndex, 0, movedTask);
+
+      return { ...state, tasks };
+    }
 
     default:
       return state;
