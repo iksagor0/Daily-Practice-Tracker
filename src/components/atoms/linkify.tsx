@@ -27,6 +27,7 @@ export const Linkify: React.FC<ILinkifyProps> = ({ text }) => {
               href={part}
               target="_blank"
               rel="noopener noreferrer"
+              draggable={false}
               className="text-brand-600 hover:text-brand-500 transition-colors opacity-80 hover:underline"
               onClick={(e) => e.stopPropagation()}
             >

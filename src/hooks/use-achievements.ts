@@ -61,13 +61,16 @@ export const useAchievements = () => {
 
     for (const achievement of ACHIEVEMENTS) {
       if (shownRef.current.has(achievement.id)) continue;
-      
+
       if (achievement.check(stats)) {
         shownRef.current.add(achievement.id);
         try {
-          sessionStorage.setItem("shownAchievements", JSON.stringify([...shownRef.current]));
+          sessionStorage.setItem(
+            "shownAchievements",
+            JSON.stringify([...shownRef.current]),
+          );
         } catch {}
-        
+
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setActiveToast(achievement);
         fireConfettiBurst();
@@ -97,7 +100,14 @@ function fireConfettiBurst() {
     zIndex: 9999,
   };
 
-  const burst = (x: number, y: number, count: number, colors: string[], velocity = 30, size = 1) => {
+  const burst = (
+    x: number,
+    y: number,
+    count: number,
+    colors: string[],
+    velocity = 30,
+    size = 1,
+  ) => {
     confetti({
       ...defaults,
       particleCount: count,

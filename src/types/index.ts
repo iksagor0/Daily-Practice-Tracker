@@ -8,6 +8,8 @@ export interface ITaskCardProps {
   onMarkDone?: (taskId: string) => void;
   onQuickDone?: (taskId: string) => void;
   onUndo?: (taskId: string) => void;
+  onCustomDragStart?: (e: React.PointerEvent, id: string) => void;
+  isHidden?: boolean;
 }
 
 export interface ITaskListProps {

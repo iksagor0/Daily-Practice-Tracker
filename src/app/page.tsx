@@ -16,7 +16,9 @@ export default function Home() {
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<ITask | null>(null);
-  const [activeTaskForTime, setActiveTaskForTime] = useState<ITask | null>(null);
+  const [activeTaskForTime, setActiveTaskForTime] = useState<ITask | null>(
+    null,
+  );
 
   const handleOpenAddModal = () => {
     setEditingTask(null);
@@ -75,7 +77,7 @@ export default function Home() {
         status: "TODO",
         actualTime: 0,
       };
-      
+
       dispatch({ type: "ADD_TASK", payload: newTask });
     }
     handleCloseAddModal();
@@ -100,7 +102,7 @@ export default function Home() {
 
   const handleSubmitTime = (taskId: string, timeSpent: number) => {
     dispatch({ type: "COMPLETE_TASK", payload: { id: taskId, timeSpent } });
-    setActiveTaskForTime(null,);
+    setActiveTaskForTime(null);
   };
 
   const handleUndoTask = (taskId: string) => {

@@ -19,6 +19,7 @@ A beautiful, modern web app to track your daily learning habits, set goals, and 
 ## 🚀 Quick Start
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/YOUR_USERNAME/daily-practice-tracker.git
    cd daily-practice-tracker
@@ -26,6 +27,7 @@ A beautiful, modern web app to track your daily learning habits, set goals, and 
 
 2. **Open in browser**
    Simply open `index.html` in your browser, or serve it locally:
+
    ```bash
    npx serve .
    ```
@@ -36,15 +38,15 @@ A beautiful, modern web app to track your daily learning habits, set goals, and 
 
 ## 🛠️ Tech Stack
 
-| Technology | Purpose |
-|------------|---------|
-| HTML5 | Structure & semantics |
-| JavaScript (ES6+) | Application logic |
-| [Tailwind CSS](https://tailwindcss.com/) | Utility-first styling |
-| [Firebase](https://firebase.google.com/) | Authentication & Realtime Database |
-| [Lucide Icons](https://lucide.dev/) | Beautiful icon set |
-| [Canvas Confetti](https://www.npmjs.com/package/canvas-confetti) | Achievement celebrations |
-| [date-fns](https://date-fns.org/) | Date utilities |
+| Technology                                                       | Purpose                            |
+| ---------------------------------------------------------------- | ---------------------------------- |
+| HTML5                                                            | Structure & semantics              |
+| JavaScript (ES6+)                                                | Application logic                  |
+| [Tailwind CSS](https://tailwindcss.com/)                         | Utility-first styling              |
+| [Firebase](https://firebase.google.com/)                         | Authentication & Realtime Database |
+| [Lucide Icons](https://lucide.dev/)                              | Beautiful icon set                 |
+| [Canvas Confetti](https://www.npmjs.com/package/canvas-confetti) | Achievement celebrations           |
+| [date-fns](https://date-fns.org/)                                | Date utilities                     |
 
 ## 📁 Project Structure
 
@@ -67,11 +69,11 @@ daily-practice-tracker/
 
 Unlock milestones as you build your practice habits:
 
-| Category | Milestones |
-|----------|------------|
-| **Daily** | All tasks done, 100 / 200 / 300 min |
-| **Weekly** | 300 / 500 / 700 / 1000 min |
-| **Monthly** | 1K / 2K / 3K / 5K min |
+| Category    | Milestones                          |
+| ----------- | ----------------------------------- |
+| **Daily**   | All tasks done, 100 / 200 / 300 min |
+| **Weekly**  | 300 / 500 / 700 / 1000 min          |
+| **Monthly** | 1K / 2K / 3K / 5K min               |
 
 ## 🔧 Firebase Setup (For Your Own Instance)
 

@@ -2,7 +2,7 @@
  * Recursively removes all keys with 'undefined' values from an object or array.
  * This is necessary because Firebase Realtime Database 'set' operations fail if
  * any nested property is 'undefined'.
- * 
+ *
  * @param data - The object or array to sanitize.
  * @returns A deep copy of the data without 'undefined' properties.
  */
@@ -12,7 +12,7 @@ export function sanitizeForFirebase<T>(data: T): T {
   }
 
   if (Array.isArray(data)) {
-    return data.map(item => sanitizeForFirebase(item)) as unknown as T;
+    return data.map((item) => sanitizeForFirebase(item)) as unknown as T;
   }
 
   const result: Record<string, unknown> = {};

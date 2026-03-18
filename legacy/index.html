@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Daily Practice Tracker</title>
-    <meta name="description" content="Build consistency. Track progress. Achieve mastery. A beautiful daily practice tracker to manage your learning habits, set goals, and celebrate achievements." />
+    <meta
+      name="description"
+      content="Build consistency. Track progress. Achieve mastery. A beautiful daily practice tracker to manage your learning habits, set goals, and celebrate achievements."
+    />
     <meta name="author" content="Daily Practice Tracker" />
     <meta name="theme-color" content="#0ea5e9" />
 
@@ -14,14 +17,20 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Daily Practice Tracker" />
-    <meta property="og:description" content="Build consistency. Track progress. Achieve mastery. A beautiful daily practice tracker to manage your learning habits and celebrate achievements." />
+    <meta
+      property="og:description"
+      content="Build consistency. Track progress. Achieve mastery. A beautiful daily practice tracker to manage your learning habits and celebrate achievements."
+    />
     <meta property="og:image" content="public/favicon.svg" />
     <meta property="og:site_name" content="Daily Practice Tracker" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Daily Practice Tracker" />
-    <meta name="twitter:description" content="Build consistency. Track progress. Achieve mastery. A beautiful daily practice tracker to manage your learning habits and celebrate achievements." />
+    <meta
+      name="twitter:description"
+      content="Build consistency. Track progress. Achieve mastery. A beautiful daily practice tracker to manage your learning habits and celebrate achievements."
+    />
     <meta name="twitter:image" content="public/favicon.svg" />
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -67,8 +76,12 @@
         >
           <i data-lucide="lock" class="w-8 h-8"></i>
         </div>
-        <h2 class="text-2xl font-display font-bold text-slate-800 mb-2">Welcome</h2>
-        <p class="text-slate-500 mb-6 text-sm">Please sign in to access your practice tracker.</p>
+        <h2 class="text-2xl font-display font-bold text-slate-800 mb-2">
+          Welcome
+        </h2>
+        <p class="text-slate-500 mb-6 text-sm">
+          Please sign in to access your practice tracker.
+        </p>
 
         <button
           onclick="signInWithGoogle()"
@@ -123,7 +136,9 @@
         </div>
         Daily Practice Tracker
       </h1>
-      <p class="text-slate-500 max-w-lg mx-auto text-base md:text-lg font-medium mb-4">
+      <p
+        class="text-slate-500 max-w-lg mx-auto text-base md:text-lg font-medium mb-4"
+      >
         Build consistency. Track progress. Achieve mastery.
       </p>
 
@@ -193,12 +208,19 @@
       </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <main
+      class="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-8"
+    >
       <!-- Left Column: Tasks -->
-      <div class="lg:col-span-8 space-y-8 animate-slide-up" style="animation-delay: 0.1s">
+      <div
+        class="lg:col-span-8 space-y-8 animate-slide-up"
+        style="animation-delay: 0.1s"
+      >
         <!-- To-Do Section -->
         <section>
-          <div class="flex items-center justify-between mb-4 px-1 flex-col sm:flex-row gap-4">
+          <div
+            class="flex items-center justify-between mb-4 px-1 flex-col sm:flex-row gap-4"
+          >
             <h2
               class="text-2xl font-display font-bold text-slate-900 flex items-center gap-2 whitespace-nowrap"
             >
@@ -223,7 +245,10 @@
             </div>
           </div>
 
-          <div id="emptyTodoState" class="hidden glass-panel rounded-3xl p-10 text-center">
+          <div
+            id="emptyTodoState"
+            class="hidden glass-panel rounded-3xl p-10 text-center"
+          >
             <svg
               class="w-48 h-48 mx-auto mb-6 drop-shadow-sm"
               viewBox="0 0 200 200"
@@ -246,7 +271,14 @@
                 stroke="#CBD5E1"
                 stroke-width="4"
               />
-              <rect x="85" y="35" width="30" height="20" rx="4" fill="#94A3B8" />
+              <rect
+                x="85"
+                y="35"
+                width="30"
+                height="20"
+                rx="4"
+                fill="#94A3B8"
+              />
               <circle cx="100" cy="45" r="4" fill="#FFFFFF" />
               <path
                 d="M80 100L95 115L125 75"
@@ -256,8 +288,18 @@
                 stroke-linejoin="round"
                 class="animate-[pulse_2s_ease-out_infinite]"
               />
-              <path d="M75 135H125" stroke="#E2E8F0" stroke-width="4" stroke-linecap="round" />
-              <path d="M75 145H110" stroke="#E2E8F0" stroke-width="4" stroke-linecap="round" />
+              <path
+                d="M75 135H125"
+                stroke="#E2E8F0"
+                stroke-width="4"
+                stroke-linecap="round"
+              />
+              <path
+                d="M75 145H110"
+                stroke="#E2E8F0"
+                stroke-width="4"
+                stroke-linecap="round"
+              />
               <path
                 d="M40 70 L45 55 L60 50 L45 45 L40 30 L35 45 L20 50 L35 55 Z"
                 fill="#FBBF24"
@@ -270,10 +312,12 @@
                 style="animation-delay: 0.5s"
               />
             </svg>
-            <h3 class="text-slate-800 font-bold text-xl mb-2">Looking effortlessly clean!</h3>
+            <h3 class="text-slate-800 font-bold text-xl mb-2">
+              Looking effortlessly clean!
+            </h3>
             <p class="text-slate-500 max-w-sm mx-auto">
-              Your To-Do list is completely clear. Time to chill, or add a new task if you're
-              feeling ambitious.
+              Your To-Do list is completely clear. Time to chill, or add a new
+              task if you're feeling ambitious.
             </p>
           </div>
 
@@ -285,8 +329,13 @@
         <!-- Done Section -->
         <section class="opacity-90">
           <div class="flex items-center justify-between mb-4 px-1 mt-14">
-            <h2 class="text-xl font-display font-bold text-slate-700 flex items-center gap-2">
-              <i data-lucide="check-square" class="w-5 h-5 text-emerald-500"></i>
+            <h2
+              class="text-xl font-display font-bold text-slate-700 flex items-center gap-2"
+            >
+              <i
+                data-lucide="check-square"
+                class="w-5 h-5 text-emerald-500"
+              ></i>
               Completed
             </h2>
             <span
@@ -312,16 +361,34 @@
                 d="M141.5,-155.8C183.8,-115.3,218.7,-64.6,224.6,-5.9C230.5,52.8,207.4,119.5,160.1,162.7C112.8,205.8,40.9,225.4,-17.8,243.2C-76.5,261,-122.1,277,-158.6,248.8C-195.1,220.6,-222.6,148.3,-229.6,78.7C-236.6,9.1,-223.2,-57.8,-185.1,-105.4C-147,-153,-84.5,-181.3,-24.5,-156.8C35.5,-132.3,99.2,-196.3,141.5,-155.8Z"
                 transform="translate(100 100) scale(0.4)"
               />
-              <path d="M50 110L100 140L150 110V70L100 100L50 70V110Z" fill="#CBD5E1" />
-              <path d="M100 140V100" stroke="#94A3B8" stroke-width="4" stroke-linecap="round" />
+              <path
+                d="M50 110L100 140L150 110V70L100 100L50 70V110Z"
+                fill="#CBD5E1"
+              />
+              <path
+                d="M100 140V100"
+                stroke="#94A3B8"
+                stroke-width="4"
+                stroke-linecap="round"
+              />
               <path
                 d="M50 70L100 100L150 70"
                 stroke="#94A3B8"
                 stroke-width="4"
                 stroke-linecap="round"
               />
-              <path d="M100 40L150 70" stroke="#94A3B8" stroke-width="4" stroke-linecap="round" />
-              <path d="M100 40L50 70" stroke="#94A3B8" stroke-width="4" stroke-linecap="round" />
+              <path
+                d="M100 40L150 70"
+                stroke="#94A3B8"
+                stroke-width="4"
+                stroke-linecap="round"
+              />
+              <path
+                d="M100 40L50 70"
+                stroke="#94A3B8"
+                stroke-width="4"
+                stroke-linecap="round"
+              />
               <circle
                 cx="100"
                 cy="50"
@@ -338,7 +405,9 @@
                 class="animate-pulse"
               />
             </svg>
-            <h3 class="text-slate-600 font-bold text-lg mb-1">Nothing finished yet</h3>
+            <h3 class="text-slate-600 font-bold text-lg mb-1">
+              Nothing finished yet
+            </h3>
             <p class="text-slate-400 font-medium">
               Your completed tasks will magically appear down here.
             </p>
@@ -351,15 +420,23 @@
       </div>
 
       <!-- Right Column: Statistics & Analytics -->
-      <aside class="lg:col-span-4 space-y-6 animate-slide-up" style="animation-delay: 0.2s">
+      <aside
+        class="lg:col-span-4 space-y-6 animate-slide-up"
+        style="animation-delay: 0.2s"
+      >
         <!-- Today's Progress Card -->
         <div class="glass-panel rounded-3xl p-6 relative overflow-hidden group">
           <div
             class="absolute top-0 right-0 w-32 h-32 bg-brand-500/10 rounded-bl-full -z-10 transition-transform group-hover:scale-110"
           ></div>
 
-          <h2 class="text-lg font-display font-bold text-slate-900 mb-6 flex items-center">
-            <i data-lucide="trending-up" class="w-5 h-5 mr-2 text-brand-500"></i>
+          <h2
+            class="text-lg font-display font-bold text-slate-900 mb-6 flex items-center"
+          >
+            <i
+              data-lucide="trending-up"
+              class="w-5 h-5 mr-2 text-brand-500"
+            ></i>
             Today's Progress
           </h2>
 
@@ -388,28 +465,43 @@
                 stroke-dashoffset="439.8"
               />
             </svg>
-            <div class="absolute inset-0 flex flex-col items-center justify-center">
+            <div
+              class="absolute inset-0 flex flex-col items-center justify-center"
+            >
               <span
                 id="progressPercentage"
                 class="text-3xl font-display font-black text-slate-900 tracking-tight"
                 >0%</span
               >
-              <span class="text-xs font-semibold text-slate-500 uppercase tracking-widest mt-1"
+              <span
+                class="text-xs font-semibold text-slate-500 uppercase tracking-widest mt-1"
                 >Completed</span
               >
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <div class="bg-white/60 rounded-2xl p-4 border border-white text-center">
-              <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Tasks</p>
+            <div
+              class="bg-white/60 rounded-2xl p-4 border border-white text-center"
+            >
+              <p
+                class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1"
+              >
+                Tasks
+              </p>
               <p class="text-2xl font-display font-bold text-slate-800">
                 <span id="statTasksDone" class="text-brand-600">0</span
-                ><span class="text-lg text-slate-400">/<span id="statTasksTotal">0</span></span>
+                ><span class="text-lg text-slate-400"
+                  >/<span id="statTasksTotal">0</span></span
+                >
               </p>
             </div>
-            <div class="bg-white/60 rounded-2xl p-4 border border-white text-center">
-              <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
+            <div
+              class="bg-white/60 rounded-2xl p-4 border border-white text-center"
+            >
+              <p
+                class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1"
+              >
                 Time Spent
               </p>
               <p class="text-2xl font-display font-bold text-slate-800">
@@ -427,8 +519,13 @@
 
         <!-- Performance Analytics Card -->
         <div class="glass-panel rounded-3xl p-6">
-          <h2 class="text-lg font-display font-bold text-slate-900 mb-5 flex items-center">
-            <i data-lucide="bar-chart-2" class="w-5 h-5 mr-2 text-indigo-500"></i>
+          <h2
+            class="text-lg font-display font-bold text-slate-900 mb-5 flex items-center"
+          >
+            <i
+              data-lucide="bar-chart-2"
+              class="w-5 h-5 mr-2 text-indigo-500"
+            ></i>
             Performance Analytics
           </h2>
 
@@ -436,7 +533,9 @@
             <!-- Daily Avg -->
             <div>
               <div class="flex justify-between items-end mb-1.5">
-                <span class="text-sm font-semibold text-slate-600">Daily Average</span>
+                <span class="text-sm font-semibold text-slate-600"
+                  >Daily Average</span
+                >
                 <span class="text-sm font-bold text-slate-900"
                   ><span id="statAvgDaily">0</span>
                   <span class="text-slate-500 font-normal">min</span></span
@@ -453,7 +552,9 @@
             <!-- Weekly Total -->
             <div>
               <div class="flex justify-between items-end mb-1.5">
-                <span class="text-sm font-semibold text-slate-600">This Week Total</span>
+                <span class="text-sm font-semibold text-slate-600"
+                  >This Week Total</span
+                >
                 <span class="text-sm font-bold text-slate-900"
                   ><span id="statTotalWeekly">0</span>
                   <span class="text-slate-500 font-normal">min</span></span
@@ -470,7 +571,9 @@
             <!-- Monthly Total -->
             <div>
               <div class="flex justify-between items-end mb-1.5">
-                <span class="text-sm font-semibold text-slate-600">This Month Total</span>
+                <span class="text-sm font-semibold text-slate-600"
+                  >This Month Total</span
+                >
                 <span class="text-sm font-bold text-slate-900"
                   ><span id="statTotalMonthly">0</span>
                   <span class="text-slate-500 font-normal">min</span></span
@@ -489,8 +592,8 @@
             <span
               class="inline-flex items-center text-xs text-slate-500 font-medium bg-slate-100 px-3 py-1 rounded-full"
             >
-              <i data-lucide="refresh-cw" class="w-3 h-3 mr-1.5"></i> Resets at 6:00 AM Bangladesh
-              Time
+              <i data-lucide="refresh-cw" class="w-3 h-3 mr-1.5"></i> Resets at
+              6:00 AM Bangladesh Time
             </span>
           </div>
         </div>
@@ -519,13 +622,20 @@
           </button>
         </div>
 
-        <h3 class="text-xl font-display font-bold text-slate-900 mb-1">Log Practice Time</h3>
-        <p id="modalTaskName" class="text-slate-500 text-sm mb-6 font-medium line-clamp-2">
+        <h3 class="text-xl font-display font-bold text-slate-900 mb-1">
+          Log Practice Time
+        </h3>
+        <p
+          id="modalTaskName"
+          class="text-slate-500 text-sm mb-6 font-medium line-clamp-2"
+        >
           Task Name goes here
         </p>
 
         <div class="mb-6">
-          <label for="timeInput" class="block text-sm font-bold text-slate-700 mb-2"
+          <label
+            for="timeInput"
+            class="block text-sm font-bold text-slate-700 mb-2"
             >Time spent (minutes)</label
           >
           <div class="relative">
@@ -537,11 +647,16 @@
               class="block w-full rounded-xl border-slate-300 bg-slate-50 border px-4 py-3 text-lg font-bold text-slate-900 focus:border-brand-500 focus:ring-brand-500 focus:bg-white transition-colors"
               placeholder="e.g. 30"
             />
-            <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+            <div
+              class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none"
+            >
               <span class="text-slate-400 font-medium">min</span>
             </div>
           </div>
-          <p id="modalTargetTimeHelper" class="mt-2 text-xs text-brand-600 font-medium"></p>
+          <p
+            id="modalTargetTimeHelper"
+            class="mt-2 text-xs text-brand-600 font-medium"
+          ></p>
         </div>
 
         <div class="flex gap-3">
@@ -576,7 +691,9 @@
           >
             <i data-lucide="plus-circle" class="w-6 h-6"></i>
           </div>
-          <h2 id="addTaskModalTitle" class="text-2xl font-bold text-slate-800">New Task</h2>
+          <h2 id="addTaskModalTitle" class="text-2xl font-bold text-slate-800">
+            New Task
+          </h2>
         </div>
 
         <div class="space-y-4 mb-6 overflow-y-auto pr-2">
@@ -592,7 +709,9 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-bold text-slate-600 mb-1.5">Description</label>
+            <label class="block text-sm font-bold text-slate-600 mb-1.5"
+              >Description</label
+            >
             <textarea
               id="addTaskDesc"
               placeholder="Optional details..."
@@ -612,7 +731,9 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-bold text-slate-600 mb-2">Select Icon</label>
+            <label class="block text-sm font-bold text-slate-600 mb-2"
+              >Select Icon</label
+            >
             <div id="iconSelectorContainer" class="flex flex-wrap gap-2">
               <!-- Icons rendered dynamically -->
             </div>
