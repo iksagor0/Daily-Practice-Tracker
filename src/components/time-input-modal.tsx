@@ -110,7 +110,7 @@ export const TimeInputModal: React.FC<ITimeInputModalProps> = ({
             >
               <span>{time === "" ? "Done (0 min)" : "Complete Task"}</span>
             </Button>
-            
+
             {time !== "" && (
               <Button
                 type="button"

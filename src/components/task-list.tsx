@@ -35,17 +35,20 @@ export const TaskList: React.FC<ITaskListProps> = ({
   const todoTasks = state.tasks.filter((t) => t.status === "TODO");
   const doneTasks = state.tasks.filter((t) => t.status === "DONE");
 
-
-  const handlePointerDown = (e: React.PointerEvent, id: string, task: ITask) => {
+  const handlePointerDown = (
+    e: React.PointerEvent,
+    id: string,
+    task: ITask,
+  ) => {
     if (e.button !== 0) return; // Only allow left clicks
-    
+
     e.preventDefault();
     const target = e.currentTarget as HTMLElement;
     const card = target.closest(".group") as HTMLElement;
     if (!card) return;
 
     const rect = card.getBoundingClientRect();
-    
+
     setDragState({
       id,
       task,
@@ -72,17 +75,23 @@ export const TaskList: React.FC<ITaskListProps> = ({
 
       if (isDragging) {
         const elements = document.elementsFromPoint(e.clientX, e.clientY);
-        
+
         // Dynamic reordering over tasks
-        const hoveredTaskEl = elements.find((el) => el.getAttribute("data-task-id"));
+        const hoveredTaskEl = elements.find((el) =>
+          el.getAttribute("data-task-id"),
+        );
         if (hoveredTaskEl) {
           const targetId = hoveredTaskEl.getAttribute("data-task-id");
           const targetStatus = hoveredTaskEl.getAttribute("data-task-status");
-          
-          if (targetId && targetId !== dragState.id && targetStatus === dragState.task.status) {
+
+          if (
+            targetId &&
+            targetId !== dragState.id &&
+            targetStatus === dragState.task.status
+          ) {
             const rect = hoveredTaskEl.getBoundingClientRect();
             const hoverMiddleY = rect.top + rect.height / 2;
-            
+
             const isDraggingDown = e.clientY > dragState.currentY;
             const isDraggingUp = e.clientY < dragState.currentY;
 
@@ -93,14 +102,18 @@ export const TaskList: React.FC<ITaskListProps> = ({
             ) {
               dispatch({
                 type: "REORDER_TASKS",
-                payload: { sourceId: dragState.id, targetId }
+                payload: { sourceId: dragState.id, targetId },
               });
             }
           }
         } else {
           // Dynamic reordering over top/bottom empty zones
-          const dropZoneTop = elements.find((el) => el.getAttribute("data-dropzone") === "top");
-          const dropZoneBottom = elements.find((el) => el.getAttribute("data-dropzone") === "bottom");
+          const dropZoneTop = elements.find(
+            (el) => el.getAttribute("data-dropzone") === "top",
+          );
+          const dropZoneBottom = elements.find(
+            (el) => el.getAttribute("data-dropzone") === "bottom",
+          );
 
           if (dropZoneTop && todoTasks.length > 0) {
             const topId = todoTasks[0].id;
@@ -122,12 +135,16 @@ export const TaskList: React.FC<ITaskListProps> = ({
         }
       }
 
-      setDragState((prev) => prev ? {
-        ...prev,
-        currentX: e.clientX,
-        currentY: e.clientY,
-        isDragging,
-      } : null);
+      setDragState((prev) =>
+        prev
+          ? {
+              ...prev,
+              currentX: e.clientX,
+              currentY: e.clientY,
+              isDragging,
+            }
+          : null,
+      );
     };
 
     const handlePointerUp = () => {
@@ -284,7 +301,7 @@ export const TaskList: React.FC<ITaskListProps> = ({
             top: dragState.currentY - dragState.offsetY,
           }}
         >
-          <div className="absolute inset-0 border-[3px] border-dashed border-brand-500/30 rounded-2xl pointer-events-none z-10" />
+          <div className="absolute -inset-[3px] border-[3px] border-dashed border-brand-500/50 rounded-2xl pointer-events-none z-20" />
           <TaskCard
             task={dragState.task}
             index={0}

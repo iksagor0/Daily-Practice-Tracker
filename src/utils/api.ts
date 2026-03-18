@@ -4,7 +4,10 @@
  * @param options - Fetch options.
  * @returns The JSON response.
  */
-export const fetchApi = async <T>(url: string, options?: RequestInit): Promise<T> => {
+export const fetchApi = async <T>(
+  url: string,
+  options?: RequestInit,
+): Promise<T> => {
   const response = await fetch(url, {
     ...options,
     headers: {

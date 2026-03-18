@@ -70,7 +70,7 @@ export const ActiveTaskCard: React.FC<ITaskCardProps> = ({
       </div>
 
       <div className="flex-1 min-w-0 w-full">
-      {/* name and time */}
+        {/* name and time */}
         <div className="flex flex-wrap sm:flex-nowrap justify-between items-start gap-2 mb-0.5">
           <h3
             title={task.name}

@@ -17,18 +17,21 @@ const outfit = Outfit({
 
 export const metadata: Metadata = {
   title: "Daily Practice Tracker",
-  description: "Build consistency. Track progress. Achieve mastery. A beautiful daily practice tracker to manage your learning habits, set goals, and celebrate achievements.",
+  description:
+    "Build consistency. Track progress. Achieve mastery. A beautiful daily practice tracker to manage your learning habits, set goals, and celebrate achievements.",
   authors: [{ name: "Daily Practice Tracker" }],
   openGraph: {
     type: "website",
     title: "Daily Practice Tracker",
-    description: "Build consistency. Track progress. Achieve mastery. A beautiful daily practice tracker to manage your learning habits and celebrate achievements.",
+    description:
+      "Build consistency. Track progress. Achieve mastery. A beautiful daily practice tracker to manage your learning habits and celebrate achievements.",
     siteName: "Daily Practice Tracker",
   },
   twitter: {
     card: "summary",
     title: "Daily Practice Tracker",
-    description: "Build consistency. Track progress. Achieve mastery. A beautiful daily practice tracker to manage your learning habits and celebrate achievements.",
+    description:
+      "Build consistency. Track progress. Achieve mastery. A beautiful daily practice tracker to manage your learning habits and celebrate achievements.",
   },
   icons: {
     icon: "/favicon.png",
@@ -50,13 +53,11 @@ export default function RootLayout({
         className={cn(
           inter.variable,
           outfit.variable,
-          "font-sans text-slate-800 antialiased selection:bg-brand-200 selection:text-brand-900 pb-20 overflow-x-hidden"
+          "font-sans text-slate-800 antialiased selection:bg-brand-200 selection:text-brand-900 pb-20 overflow-x-hidden",
         )}
       >
         <AuthProvider>
-          <AppProvider>
-            {children}
-          </AppProvider>
+          <AppProvider>{children}</AppProvider>
         </AuthProvider>
       </body>
     </html>

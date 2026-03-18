@@ -1,7 +1,8 @@
 const firebaseConfig = {
   apiKey: "AIzaSyABBiZ665TxQktlPynC9DAZtB8d0U_QJ8w",
   authDomain: "daily-practice-tracker.firebaseapp.com",
-  databaseURL: "https://daily-practice-tracker-default-rtdb.asia-southeast1.firebasedatabase.app",
+  databaseURL:
+    "https://daily-practice-tracker-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "daily-practice-tracker",
   storageBucket: "daily-practice-tracker.firebasestorage.app",
   messagingSenderId: "149600530913",
@@ -97,7 +98,9 @@ function checkDailyReset() {
         (sum, t) => sum + (t.status === "DONE" ? t.actualTime || 0 : 0),
         0,
       );
-      const completedTasks = appState.tasks.filter((t) => t.status === "DONE").length;
+      const completedTasks = appState.tasks.filter(
+        (t) => t.status === "DONE",
+      ).length;
 
       appState.history.push({
         dateKey: appState.lastResetTime,
@@ -271,8 +274,12 @@ function renderTasks() {
   document.getElementById("todoCountBadge").innerText = todoTasks.length;
   document.getElementById("doneCountBadge").innerText = doneTasks.length;
 
-  document.getElementById("emptyTodoState").classList.toggle("hidden", todoTasks.length > 0);
-  document.getElementById("emptyDoneState").classList.toggle("hidden", doneTasks.length > 0);
+  document
+    .getElementById("emptyTodoState")
+    .classList.toggle("hidden", todoTasks.length > 0);
+  document
+    .getElementById("emptyDoneState")
+    .classList.toggle("hidden", doneTasks.length > 0);
 
   // Render TODOs
   todoContainer.innerHTML = todoTasks
@@ -359,7 +366,8 @@ function updateStatistics() {
   document.getElementById("statTimeSpent").innerText = todayTime;
 
   // Progress Ring
-  const percentage = totalTasks === 0 ? 0 : Math.round((completedCount / totalTasks) * 100);
+  const percentage =
+    totalTasks === 0 ? 0 : Math.round((completedCount / totalTasks) * 100);
   document.getElementById("progressPercentage").innerText = `${percentage}%`;
 
   const circle = document.getElementById("progressRing");
@@ -405,7 +413,9 @@ function calculateHistoricalStats(todayTime) {
   // Include today in average if we have done anything or if it's late in the day.
   // Average over (history.length + 1) days
   const overallAvg =
-    daysRecorded === 0 ? todayTime : Math.round((totalEverTime + todayTime) / (daysRecorded + 1));
+    daysRecorded === 0
+      ? todayTime
+      : Math.round((totalEverTime + todayTime) / (daysRecorded + 1));
 
   document.getElementById("statAvgDaily").innerText = overallAvg;
   document.getElementById("statTotalWeekly").innerText = rolling7Total;
@@ -464,7 +474,9 @@ function submitTaskCompletion() {
   // Default to 0 if empty
   const timeSpent = parseInt(inputVal, 10) || 0;
 
-  const taskIndex = appState.tasks.findIndex((t) => t.id === currentActiveTaskId);
+  const taskIndex = appState.tasks.findIndex(
+    (t) => t.id === currentActiveTaskId,
+  );
   if (taskIndex !== -1) {
     appState.tasks[taskIndex].status = "DONE";
     appState.tasks[taskIndex].actualTime = timeSpent;
@@ -502,7 +514,9 @@ function renderIconSelector() {
   const container = document.getElementById("iconSelectorContainer");
   if (!container) return;
 
-  const displayIcons = isIconSelectorExpanded ? AVAILABLE_ICONS : AVAILABLE_ICONS.slice(0, 22);
+  const displayIcons = isIconSelectorExpanded
+    ? AVAILABLE_ICONS
+    : AVAILABLE_ICONS.slice(0, 22);
   let html = displayIcons
     .map(
       (icon) => `
@@ -679,7 +693,7 @@ function triggerSuccessFeedback() {
 
 // --- Achievement System ---
 const shownAchievements = new Set(
-  JSON.parse(sessionStorage.getItem("shownAchievements") || "[]")
+  JSON.parse(sessionStorage.getItem("shownAchievements") || "[]"),
 );
 
 /**
@@ -706,7 +720,13 @@ function checkAchievements() {
     if (diffDays <= 30) monthlyTime += record.totalTime;
   });
 
-  const stats = { todayTime, todayCompleted, todayTotal, weeklyTime, monthlyTime };
+  const stats = {
+    todayTime,
+    todayCompleted,
+    todayTotal,
+    weeklyTime,
+    monthlyTime,
+  };
 
   // Check each achievement
   for (const achievement of ACHIEVEMENTS) {
@@ -715,7 +735,7 @@ function checkAchievements() {
       shownAchievements.add(achievement.id);
       sessionStorage.setItem(
         "shownAchievements",
-        JSON.stringify([...shownAchievements])
+        JSON.stringify([...shownAchievements]),
       );
       triggerCelebration(achievement);
       return; // Show one at a time
@@ -808,7 +828,14 @@ function fireConfettiBurst() {
       ...defaults,
       particleCount: 150,
       origin: { x: 0.5, y: 0.45 },
-      colors: ["#ff0000", "#ffcc00", "#00ccff", "#ff00cc", "#00ff66", "#6600ff"],
+      colors: [
+        "#ff0000",
+        "#ffcc00",
+        "#00ccff",
+        "#ff00cc",
+        "#00ff66",
+        "#6600ff",
+      ],
       spread: 360,
       startVelocity: 45,
       scalar: 1.5,
@@ -871,7 +898,9 @@ window.addEventListener("DOMContentLoaded", () => {
         const savedGuestData = localStorage.getItem("guestTrackerState");
         if (savedGuestData) {
           try {
-            db.ref(`users/${currentUser.uid}/trackerState`).set(JSON.parse(savedGuestData));
+            db.ref(`users/${currentUser.uid}/trackerState`).set(
+              JSON.parse(savedGuestData),
+            );
           } catch (e) {
             console.error("Failed to sync guest data to db", e);
           }
@@ -899,7 +928,8 @@ window.addEventListener("DOMContentLoaded", () => {
           "https://ui-avatars.com/api/?name=" +
             encodeURIComponent(user.displayName || "User") +
             "&background=random";
-        document.getElementById("userName").innerText = user.displayName || "User";
+        document.getElementById("userName").innerText =
+          user.displayName || "User";
       }
       loadState();
     } else {
@@ -933,17 +963,16 @@ window.addEventListener("DOMContentLoaded", () => {
   // Initial render for dates immediately before data loads
   const bdTime = getBDTime();
   if (window.dateFns && document.getElementById("currentDateText")) {
-    document.getElementById("currentDateText").innerText = window.dateFns.format(
-      bdTime,
-      "EEEE, MMMM d, yyyy",
-    );
+    document.getElementById("currentDateText").innerText =
+      window.dateFns.format(bdTime, "EEEE, MMMM d, yyyy");
   } else if (document.getElementById("currentDateText")) {
-    document.getElementById("currentDateText").innerText = bdTime.toLocaleDateString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
+    document.getElementById("currentDateText").innerText =
+      bdTime.toLocaleDateString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
   }
 
   // Check for reset every minute while tab is open just in case they leave it open through 6 AM

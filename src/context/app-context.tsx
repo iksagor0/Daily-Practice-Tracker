@@ -1,19 +1,19 @@
 "use client";
 
+import { INITIAL_TASKS } from "@/constants";
+import { ITask, THistory } from "@/models";
+import { db } from "@/utils/firebase";
+import { sanitizeForFirebase } from "@/utils/sanitize";
+import { getEffectiveBDDateStr } from "@/utils/time";
+import { off, onValue, ref, set } from "firebase/database";
 import React, {
+  ReactNode,
   createContext,
   useContext,
   useEffect,
   useReducer,
-  ReactNode,
 } from "react";
-import { ref, set, onValue, off } from "firebase/database";
-import { db } from "@/utils/firebase";
 import { useAuth } from "./auth-context";
-import { ITask, THistory } from "@/models";
-import { INITIAL_TASKS } from "@/constants";
-import { getEffectiveBDDateStr } from "@/utils/time";
-import { sanitizeForFirebase } from "@/utils/sanitize";
 
 interface IAppState {
   tasks: readonly ITask[];
@@ -36,7 +36,10 @@ interface IAppState {
 
 type TAppAction =
   | { type: "RESET_STATE" }
-  | { type: "LOAD_STATE"; payload: Partial<IAppState> & { loadedFor: string | "guest" } }
+  | {
+      type: "LOAD_STATE";
+      payload: Partial<IAppState> & { loadedFor: string | "guest" };
+    }
   | { type: "ADD_TASK"; payload: ITask }
   | {
       type: "EDIT_TASK";
@@ -250,7 +253,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
               });
             } catch {
               console.error("Error migrating guest");
-              dispatch({ type: "LOAD_STATE", payload: { loadedFor: user.uid } });
+              dispatch({
+                type: "LOAD_STATE",
+                payload: { loadedFor: user.uid },
+              });
             }
             localStorage.removeItem("guestTrackerState");
           } else {

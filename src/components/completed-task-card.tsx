@@ -1,8 +1,8 @@
-import * as LucideIcons from "lucide-react";
-import React from "react";
 import { Button, Linkify } from "@/components/atoms";
 import { ITaskCardProps } from "@/types";
 import { cn } from "@/utils/cn";
+import * as LucideIcons from "lucide-react";
+import React from "react";
 
 /**
  * CompletedTaskCard component for rendering finished tasks.

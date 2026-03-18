@@ -100,7 +100,7 @@ export const AnalyticsDashboard: React.FC = () => {
   return (
     <aside className="lg:w-[420px] lg:col-span-4 space-y-8 animate-fade-in animation-delay-500 opacity-0 fill-mode-forwards">
       <QuoteCard />
-      
+
       {/* Today's Progress Card */}
       <div className="bg-white/50 backdrop-blur-xl rounded-3xl p-6 relative overflow-hidden group border border-white/60 shadow-xl shadow-slate-200/40">
         <div className="absolute top-0 right-0 w-32 h-32 bg-brand-500/10 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
@@ -173,9 +173,7 @@ export const AnalyticsDashboard: React.FC = () => {
           <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-bl from-white/40 to-transparent rounded-bl-full pointer-events-none"></div>
           <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-linear-to-tr from-orange-200/40 to-transparent rounded-full pointer-events-none blur-xl"></div>
 
-          <div
-            className="shrink-0 w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-amber-100 flex items-center justify-center text-4xl sm:text-5xl group-hover:scale-105 transition-transform duration-300 relative z-10 animate-toast-bounce"
-          >
+          <div className="shrink-0 w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-amber-100 flex items-center justify-center text-4xl sm:text-5xl group-hover:scale-105 transition-transform duration-300 relative z-10 animate-toast-bounce">
             {activeToast.label.split(" ")[0] || "🏆"}
           </div>
 

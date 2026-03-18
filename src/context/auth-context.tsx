@@ -1,7 +1,18 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { User, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
+import {
+  User,
+  onAuthStateChanged,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
 import { auth, googleProvider } from "@/utils/firebase";
 
 interface IAuthContext {
@@ -15,7 +26,9 @@ interface IAuthContext {
 
 const AuthContext = createContext<IAuthContext | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<User | null>(null);
   const [isGuest, setIsGuest] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -52,14 +65,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setIsGuest(true);
     }
 
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser: User | null) => {
-      setUser(firebaseUser);
-      if (firebaseUser) {
-        setIsGuest(false);
-        localStorage.removeItem("isGuestTracker");
-      }
-      setIsLoading(false);
-    });
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (firebaseUser: User | null) => {
+        setUser(firebaseUser);
+        if (firebaseUser) {
+          setIsGuest(false);
+          localStorage.removeItem("isGuestTracker");
+        }
+        setIsLoading(false);
+      },
+    );
 
     return () => unsubscribe();
   }, []);
