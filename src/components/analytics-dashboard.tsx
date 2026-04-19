@@ -1,3 +1,6 @@
+import { useAppContext } from "@/context/app-context";
+import { useAchievements } from "@/hooks/use-achievements";
+import { getBDTime, getEffectiveBDDateStr } from "@/utils/time";
 import {
   Award,
   BarChart2,
@@ -7,9 +10,6 @@ import {
   TrendingUp,
 } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
-import { useAppContext } from "@/context/app-context";
-import { useAchievements } from "@/hooks/use-achievements";
-import { getBDTime, getEffectiveBDDateStr } from "@/utils/time";
 import { QuoteCard } from "./quote-card";
 import { ThemeSelector } from "./theme-selector";
 
@@ -20,8 +20,21 @@ export const AnalyticsDashboard: React.FC = () => {
 
   // stats calculation remains the same
   const stats = useMemo(() => {
-    const totalTasks = state.tasks.length;
-    const doneTasks = state.tasks.filter((t) => t.status === "DONE");
+    const currentEffectiveDate = getEffectiveBDDateStr();
+
+    // Filter tasks for Today's Progress calculation
+    const todayTasks = state.tasks.filter((t) => {
+      if (t.status === "DONE") {
+        if (t.completedAt) {
+          return getEffectiveBDDateStr(t.completedAt) === currentEffectiveDate;
+        }
+        return t.repeatDaily; // fallback for legacy tasks
+      }
+      return true;
+    });
+
+    const totalTasks = todayTasks.length;
+    const doneTasks = todayTasks.filter((t) => t.status === "DONE");
     const completedCount = doneTasks.length;
 
     let todayTime = 0;
@@ -30,7 +43,6 @@ export const AnalyticsDashboard: React.FC = () => {
     const percentage =
       totalTasks === 0 ? 0 : Math.round((completedCount / totalTasks) * 100);
 
-    const currentEffectiveDate = getEffectiveBDDateStr();
     const bdTime = getBDTime();
     if (bdTime.getHours() < 6) bdTime.setDate(bdTime.getDate() - 1);
     const todayObj = new Date(currentEffectiveDate);
