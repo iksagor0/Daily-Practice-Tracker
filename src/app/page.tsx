@@ -10,6 +10,9 @@ import { AddTaskModal } from "@/components/add-task-modal";
 import { TimeInputModal } from "@/components/time-input-modal";
 import { useAppContext } from "@/context/app-context";
 import { ITask } from "@/models";
+import { Notebook } from "@/components/notebook";
+
+export type TActiveTab = "TRACKER" | "NOTEBOOK";
 
 export default function Home() {
   const { state, dispatch } = useAppContext();
@@ -19,6 +22,7 @@ export default function Home() {
   const [activeTaskForTime, setActiveTaskForTime] = useState<ITask | null>(
     null,
   );
+  const [activeTab, setActiveTab] = useState<TActiveTab>("TRACKER");
 
   const handleOpenAddModal = () => {
     setEditingTask(null);
@@ -113,22 +117,28 @@ export default function Home() {
     <main className="max-w-[1280px] mx-auto min-h-screen flex flex-col pt-4">
       <AuthOverlay />
 
-      <Header />
+      <Header activeTab={activeTab} onTabChange={setActiveTab} />
 
-      <div className="flex-1 w-full flex flex-col lg:flex-row gap-8 lg:gap-12 px-4 lg:px-8 mt-4 relative">
-        <div className="flex-1 min-w-0">
-          <TaskList
-            onOpenAddModal={handleOpenAddModal}
-            onEditTask={handleEditTask}
-            onDeleteTask={handleDeleteTask}
-            onMarkDoneTask={handleMarkDone}
-            onQuickDoneTask={handleQuickDone}
-            onUndoTask={handleUndoTask}
-          />
+      {activeTab === "TRACKER" ? (
+        <div className="flex-1 w-full flex flex-col lg:flex-row gap-8 lg:gap-12 px-4 lg:px-8 mt-4 relative">
+          <div className="flex-1 min-w-0">
+            <TaskList
+              onOpenAddModal={handleOpenAddModal}
+              onEditTask={handleEditTask}
+              onDeleteTask={handleDeleteTask}
+              onMarkDoneTask={handleMarkDone}
+              onQuickDoneTask={handleQuickDone}
+              onUndoTask={handleUndoTask}
+            />
+          </div>
+
+          <AnalyticsDashboard />
         </div>
-
-        <AnalyticsDashboard />
-      </div>
+      ) : (
+        <div className="flex-1 w-full flex flex-col px-4 lg:px-8 mt-4 relative">
+          <Notebook />
+        </div>
+      )}
 
       <Footer />
 

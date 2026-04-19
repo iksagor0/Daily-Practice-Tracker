@@ -1,12 +1,22 @@
-import React from "react";
+import { TActiveTab } from "@/app/page";
+import { useAuth } from "@/context/auth-context";
+import { cn } from "@/utils/cn";
+import { getBDTime } from "@/utils/time";
+import { format } from "date-fns";
 import { LogOut } from "lucide-react";
 import Image from "next/image";
-import { format } from "date-fns";
-import { useAuth } from "@/context/auth-context";
-import { getBDTime } from "@/utils/time";
+import React from "react";
 import { Button } from "./atoms";
 
-export const Header: React.FC = () => {
+interface IHeaderProps {
+  activeTab?: TActiveTab;
+  onTabChange?: (tab: TActiveTab) => void;
+}
+
+export const Header: React.FC<IHeaderProps> = ({
+  activeTab = "TRACKER",
+  onTabChange,
+}) => {
   const { user, isGuest, isLoading, loginWithGoogle, logout } = useAuth();
   const currentBdDate = getBDTime();
   const dateString = format(currentBdDate, "EEEE, MMMM d, yyyy");
@@ -95,6 +105,42 @@ export const Header: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Tab Navigation */}
+      {onTabChange && (
+        <div className="flex justify-center mt-6">
+          <div className="bg-slate-100/80 backdrop-blur-sm p-1 rounded-2xl flex items-center border border-slate-200 shadow-inner">
+            <button
+              onClick={() => onTabChange("TRACKER")}
+              className={cn(
+                "px-6 py-2 rounded-xl text-sm font-bold transition-all duration-300 ease-out",
+                {
+                  "bg-white text-brand-600 shadow-sm border border-slate-200/50":
+                    activeTab === "TRACKER",
+                  "text-slate-500 hover:text-slate-700 hover:bg-slate-200/50":
+                    activeTab !== "TRACKER",
+                },
+              )}
+            >
+              Task Tracker
+            </button>
+            <button
+              onClick={() => onTabChange("NOTEBOOK")}
+              className={cn(
+                "px-6 py-2 rounded-xl text-sm font-bold transition-all duration-300 ease-out",
+                {
+                  "bg-white text-brand-600 shadow-sm border border-slate-200/50":
+                    activeTab === "NOTEBOOK",
+                  "text-slate-500 hover:text-slate-700 hover:bg-slate-200/50":
+                    activeTab !== "NOTEBOOK",
+                },
+              )}
+            >
+              Notebook
+            </button>
+          </div>
+        </div>
+      )}
     </header>
   );
 };
