@@ -1,41 +1,10 @@
-import { INote } from "@/models/notebook";
+import { INoteEditorProps } from "@/types/notebook";
 import { cn } from "@/utils/cn";
 import { format } from "date-fns";
-import { Download, Edit3, Eye, Plus, Upload } from "lucide-react";
+import { Download, Edit3, Eye, Upload } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import { Button } from "../atoms";
+import { EmptyState } from "./empty-state";
 import { MarkdownPreview } from "./markdown-preview";
-
-interface INoteEditorProps {
-  note: INote | null;
-  onChange: (id: string, content: string) => void;
-  onAddNote?: (content?: string) => void;
-}
-
-const MARKDOWN_EXAMPLE = `# Markdown Guide
-
-## Text Formatting
-**Bold text** and *italic text*.
-~~Strikethrough~~ and \`inline code\`.
-
-## Lists
-- Item 1
-- Item 2
-  - Sub-item A
-
-1. First
-2. Second
-
-## Links & Images
-[Visit Google](https://google.com)
-
-## Checklists
-- [x] Task completed
-- [ ] Task pending
-
-## Blockquotes
-> Focus on progress, not perfection.
-`;
 
 export const NoteEditor: React.FC<INoteEditorProps> = ({
   note,
@@ -67,7 +36,11 @@ export const NoteEditor: React.FC<INoteEditorProps> = ({
     const words = cleanContent.split(" ").filter(Boolean);
     const namePart =
       words.length > 0
-        ? words.slice(0, 4).join("-").toLowerCase().replace(/[^a-z0-9-]/g, "")
+        ? words
+            .slice(0, 4)
+            .join("-")
+            .toLowerCase()
+            .replace(/[^a-z0-9-]/g, "")
         : "untitled";
 
     const fileName = `${namePart}-${format(new Date(), "yyyy-MM-dd")}.md`;
@@ -98,62 +71,7 @@ export const NoteEditor: React.FC<INoteEditorProps> = ({
   };
 
   if (!note) {
-    return (
-      <div className="flex-1 flex flex-col items-center justify-center bg-white/50 backdrop-blur-xl rounded-3xl border border-white/60 shadow-xl shadow-slate-200/40 p-8 h-full min-h-[500px]">
-        <div className="w-16 h-16 bg-brand-50 rounded-2xl flex items-center justify-center mb-4 transform -rotate-6">
-          <Edit3 className="w-8 h-8 text-brand-300" />
-        </div>
-        <h3 className="text-xl font-display font-bold text-slate-700 mb-2">
-          Select or create a note
-        </h3>
-        <p className="text-sm text-slate-500 text-center max-w-sm mb-6">
-          Write down your daily reflections, study notes, or brainstorm ideas
-          using Markdown.
-        </p>
-        {onAddNote && (
-          <div className="flex flex-col items-center gap-3 w-full max-w-[320px]">
-            <Button
-              onClick={() => onAddNote()}
-              className="w-full px-6 py-3 rounded-xl bg-brand-500 text-white font-bold hover:bg-brand-600 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-brand-500/20"
-            >
-              <Plus className="w-5 h-5" />
-              Create Note
-            </Button>
-
-            <div className="w-full space-y-1 pt-5 mt-6 border-t border-slate-200 opacity-70">
-              <div className="flex items-center gap-3 text-slate-400 font-medium">
-                <span className="text-brand-500">#</span>
-                <span>Main Title</span>
-              </div>
-              <div className="flex items-center gap-3 text-slate-400 font-medium">
-                <span className="text-brand-500">##</span>
-                <span>Section Header</span>
-              </div>
-              <div className="flex items-center gap-3 text-slate-400 font-medium">
-                <span className="text-brand-500">###</span>
-                <span>Sub-section</span>
-              </div>
-              <div className="flex items-center gap-3 text-slate-400 font-medium">
-                <span className="text-brand-500">**</span>
-                <span>Bold Text</span>
-                <span className="text-brand-500">**</span>
-              </div>
-              <div className="flex items-center gap-3 text-slate-400 font-medium">
-                <span className="text-brand-500">-</span>
-                <span>List Item</span>
-              </div>
-            </div>
-
-            <button
-              onClick={() => onAddNote(MARKDOWN_EXAMPLE)}
-              className="text-xs font-bold text-slate-400 hover:text-brand-600 border border-slate-200 hover:border-brand-200 px-4 py-2 rounded-lg transition-all"
-            >
-              Write Example of markdown file
-            </button>
-          </div>
-        )}
-      </div>
-    );
+    return <EmptyState onAddNote={onAddNote} />;
   }
 
   return (

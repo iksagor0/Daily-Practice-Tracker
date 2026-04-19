@@ -1,5 +1,4 @@
 import dynamic from "next/dynamic";
-import React from "react";
 
 // Dynamic import to avoid SSR issues and lazy-load the heavy markdown parsers
 export const MarkdownPreview = dynamic(
@@ -26,5 +25,5 @@ export const MarkdownPreview = dynamic(
     loading: () => (
       <div className="text-slate-400 italic">Loading preview...</div>
     ),
-  }
+  },
 );
