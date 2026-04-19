@@ -1,4 +1,4 @@
-import { INote } from "@/models";
+import { INote } from "@/models/notebook";
 import { cn } from "@/utils/cn";
 import { format } from "date-fns";
 import { FileText, Plus, Trash2 } from "lucide-react";
@@ -27,7 +27,10 @@ export const NoteList: React.FC<INoteListProps> = ({
   const _renderNoteItem = (note: INote) => {
     const isActive = activeNoteId === note.id;
     // Extract a small snippet from content for the preview
-    const previewText = note.content.trim() || "Empty note...";
+    const rawText = note.content.trim() || "Empty note...";
+    const previewText = rawText
+      .replace(/^[#*>-]+\s*/gm, "")
+      .replace(/[*_~`]/g, "");
 
     return (
       <div
@@ -37,28 +40,31 @@ export const NoteList: React.FC<INoteListProps> = ({
           "p-4 rounded-2xl cursor-pointer transition-all border group relative",
           {
             "bg-white border-brand-200 shadow-sm shadow-brand-500/5": isActive,
-            "bg-white/50 border-transparent hover:bg-white/80 hover:border-slate-200":
+            "bg-white border-transparent hover:bg-white/80 hover:border-slate-200":
               !isActive,
           },
         )}
       >
         <div className="flex items-start justify-between gap-2 mb-1">
           <h4
-            className={cn("font-bold text-sm truncate", {
+            className={cn("font-bold text-sm truncate pr-10", {
               "text-brand-900": isActive,
               "text-slate-700": !isActive,
             })}
           >
             {previewText.split("\n")[0].substring(0, 40) || "New Note"}
           </h4>
-          <span className="text-[10px] font-medium text-slate-400 whitespace-nowrap pt-0.5">
-            {format(new Date(note.updatedAt), "MMM d")}
-          </span>
         </div>
 
-        <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+        <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed mb-0.5">
           {previewText}
         </p>
+
+        <div className="flex items-center justify-end">
+          <span className="text-[10px] font-medium text-slate-400 whitespace-nowrap">
+            {format(new Date(note.updatedAt), "d MMMM yyyy")}
+          </span>
+        </div>
 
         <button
           onClick={(e) => {
@@ -66,7 +72,7 @@ export const NoteList: React.FC<INoteListProps> = ({
             onDeleteNote(note.id);
           }}
           className={cn(
-            "absolute top-3 right-3 p-1.5 rounded-lg bg-rose-50 text-rose-500 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-rose-100",
+            "absolute top-3 right-3 p-1.5 rounded-lg bg-rose-50 text-rose-500 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-rose-100 cursor-pointer z-10",
             { "opacity-100": isActive },
           )}
         >
@@ -77,7 +83,7 @@ export const NoteList: React.FC<INoteListProps> = ({
   };
 
   return (
-    <div className="w-full lg:w-80 flex flex-col h-full bg-slate-50/50 backdrop-blur-xl rounded-3xl border border-white/60 shadow-xl shadow-slate-200/40 p-4">
+    <div className="w-full lg:w-80 flex flex-col h-full bg-slate-50/60 backdrop-blur-lg rounded-3xl border border-white/60 shadow-xl shadow-slate-200/40 p-4">
       <div className="flex items-center justify-between mb-6 px-2">
         <h2 className="text-lg font-display font-bold text-slate-800 flex items-center gap-2">
           <FileText className="w-5 h-5 text-brand-500" />
@@ -85,7 +91,7 @@ export const NoteList: React.FC<INoteListProps> = ({
         </h2>
         <Button
           onClick={onAddNote}
-          className="p-2 rounded-xl bg-brand-50 text-brand-600 hover:bg-brand-100 transition-colors"
+          className="p-1.5 rounded-xl bg-white border border-slate-200 shadow-sm text-brand-600 hover:bg-slate-50 transition-colors cursor-pointer"
         >
           <Plus className="w-4 h-4" />
         </Button>

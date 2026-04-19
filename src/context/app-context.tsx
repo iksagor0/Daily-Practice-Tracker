@@ -1,7 +1,8 @@
 "use client";
 
 import { INITIAL_TASKS } from "@/constants";
-import { INote, ITask, THistory } from "@/models";
+import { ITask, THistory } from "@/models";
+import { INote } from "@/types";
 import { db } from "@/utils/firebase";
 import { sanitizeForFirebase } from "@/utils/sanitize";
 import { getEffectiveBDDateStr } from "@/utils/time";

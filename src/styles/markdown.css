@@ -1,0 +1,37 @@
+#markdown ul li {
+  padding-inline-start: 0;
+}
+
+#markdown h1,
+#markdown h2,
+#markdown h3 {
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+}
+
+#markdown h4,
+#markdown h5,
+#markdown h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+#markdown p,
+#markdown a,
+#markdown ul,
+#markdown ol,
+#markdown li,
+#markdown b {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 400;
+  font-family: "Inter", sans-serif;
+}
+
+#markdown h1 {
+  font-size: 1.75rem;
+}
+
+#markdown p {
+  font-size: 1rem;
+}

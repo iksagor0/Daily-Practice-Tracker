@@ -1,4 +1,5 @@
 import { ITask } from "@/models";
+export * from "./notebook";
 
 export interface ITaskCardProps {
   task: ITask;

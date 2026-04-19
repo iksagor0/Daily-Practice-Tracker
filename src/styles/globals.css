@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @theme {
   /* Default Theme Variables */
@@ -306,4 +307,8 @@ body::before {
 
 .perspective-1000 {
   perspective: 1000px;
+}
+
+button {
+  cursor: pointer;
 }

@@ -1,5 +1,5 @@
 import { useAppContext } from "@/context/app-context";
-import { INote } from "@/models";
+import { INote } from "@/models/notebook";
 import React, { useState } from "react";
 import { NoteEditor } from "./note-editor";
 import { NoteList } from "./note-list";
@@ -8,10 +8,23 @@ export const Notebook: React.FC = () => {
   const { state, dispatch } = useAppContext();
   const [activeNoteId, setActiveNoteId] = useState<string | null>(null);
 
-  const handleAddNote = () => {
+  const handleAddNote = (content: string = "") => {
+    const contentStr = typeof content === "string" ? content : "";
+
+    // If it's a tutorial request, check if one already exists
+    if (contentStr.includes("# Markdown Guide")) {
+      const existingTutorial = state.notes.find((n) =>
+        n.content.includes("# Markdown Guide"),
+      );
+      if (existingTutorial) {
+        setActiveNoteId(existingTutorial.id);
+        return;
+      }
+    }
+
     const newNote: INote = {
       id: "note_" + Date.now(),
-      content: "",
+      content: contentStr,
       createdAt: Date.now(),
       updatedAt: Date.now(),
     };
@@ -55,7 +68,12 @@ export const Notebook: React.FC = () => {
         onAddNote={handleAddNote}
         onDeleteNote={handleDeleteNote}
       />
-      <NoteEditor key={activeNoteId || "empty"} note={activeNote} onChange={handleUpdateNote} />
+      <NoteEditor
+        key={activeNoteId || "empty"}
+        note={activeNote}
+        onChange={handleUpdateNote}
+        onAddNote={handleAddNote}
+      />
     </div>
   );
 };

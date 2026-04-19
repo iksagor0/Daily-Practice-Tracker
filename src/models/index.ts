@@ -14,13 +14,6 @@ export interface ITask {
   readonly repeatDaily: boolean;
 }
 
-export interface INote {
-  readonly id: string;
-  readonly content: string;
-  readonly createdAt: number;
-  readonly updatedAt: number;
-}
-
 export interface IHistoryEntry {
   readonly date?: string; // "yyyy-MM-dd" format
   readonly timeSpent?: number;

@@ -1,9 +1,11 @@
+import { AppProvider } from "@/context/app-context";
+import { AuthProvider } from "@/context/auth-context";
+import { cn } from "@/utils/cn";
 import type { Metadata, Viewport } from "next";
 import { Inter, Outfit } from "next/font/google";
-import { AuthProvider } from "@/context/auth-context";
-import { AppProvider } from "@/context/app-context";
-import { cn } from "@/utils/cn";
-import "./globals.css";
+
+import "../styles/globals.css";
+import "../styles/markdown.css";
 
 const inter = Inter({
   variable: "--font-inter",
