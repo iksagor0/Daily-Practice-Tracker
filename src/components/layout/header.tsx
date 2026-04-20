@@ -1,112 +1,150 @@
-"use client";
-
 import { useAuth } from "@/context/auth-context";
-import { UserIcon } from "lucide-react";
+import { IHeaderProps } from "@/types";
+import { cn } from "@/utils/cn";
+import { format } from "date-fns";
+import { LogOut } from "lucide-react";
 import Image from "next/image";
-import React, { useEffect } from "react";
-import { Button } from "../atoms";
-import { GoogleIcon } from "../atoms/custom-icons";
+import React, { useMemo } from "react";
+import Button from "../atoms/button";
 
-const Header: React.FC = () => {
-  const { user, isGuest, isLoading, loginWithGoogle, continueAsGuest } =
-    useAuth();
+const Header: React.FC<IHeaderProps> = ({
+  activeTab = "TRACKER",
+  onTabChange,
+}) => {
+  const { user, isGuest, isLoading, loginWithGoogle, logout } = useAuth();
 
-  useEffect(() => {
-    // Lock scroll when overlay is visible
-    if (!user && !isGuest && !isLoading) {
-      document.body.style.overflow = "hidden";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [user, isGuest, isLoading]);
-
-  if (isLoading) {
-    return (
-      <div className="fixed inset-0 bg-slate-50 z-200 flex flex-col items-center justify-center transition-opacity duration-300">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-brand-500 mb-6 relative">
-          <div className="absolute inset-0 rounded-full border-2 border-brand-100 -m-1"></div>
-        </div>
-        <h2 className="text-xl font-display font-bold text-slate-800 animate-pulse">
-          Loading Tracker...
-        </h2>
-        <p className="text-sm text-slate-500 mt-2 font-medium">
-          Preparing your workspace
-        </p>
-      </div>
-    );
-  }
-
-  if (user || isGuest) return null;
+  const getDateString = useMemo(() => {
+    const currentDate = new Date();
+    return format(currentDate, "EEEE, MMMM d, yyyy");
+  }, []);
 
   return (
-    <header className="fixed inset-0 bg-slate-50 z-100 flex flex-col items-center justify-center transition-opacity duration-300 p-4 overflow-hidden">
-      <div className="mb-10 text-center animate-fade-in relative">
-        <div className="absolute -top-10 -left-10 w-32 h-32 bg-brand-200 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob"></div>
-        <div className="absolute -top-10 -right-10 w-32 h-32 bg-indigo-200 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-10 left-10 w-32 h-32 bg-sky-200 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob animation-delay-4000"></div>
-
-        <div className="relative">
-          <div className="w-16 h-16 md:w-24 md:h-24 bg-white rounded-3xl mx-auto flex items-center justify-center shadow-lg border-4 border-white mb-6 overflow-hidden">
-            <Image
-              src="/logo.png"
-              alt="Logo"
-              width={96}
-              height={96}
-              className="w-full h-full object-contain"
-            />
-          </div>
-          <h1 className="text-3xl md:text-5xl font-display font-black text-slate-900 mb-3 tracking-tight">
-            Daily Practice Tracker
-          </h1>
-          <p className="hidden md:block text-slate-500 text-lg font-medium max-w-md mx-auto">
-            Build consistency, track progress, and achieve mastery in your daily
-            goals.
-          </p>
-        </div>
-      </div>
-
-      <div className="bg-white/80 backdrop-blur-xl p-6 md:p-8 rounded-3xl border border-slate-300 md:shadow-lg w-full max-w-sm text-center transform transition-all animate-slide-up relative">
-        <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6">
-          Access Your Tracker
-        </p>
-
-        <Button
-          onClick={loginWithGoogle}
-          className="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-brand-200 font-semibold py-3.5 px-6 rounded-2xl shadow-sm mb-4 group focus:ring-4 focus:ring-brand-100"
-        >
-          <GoogleIcon />
-          <span className="text-[15px]">Sign in with Google</span>
-        </Button>
-
-        <div className="relative mt-6 mb-2">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-slate-200"></div>
-          </div>
-          <div className="relative flex justify-center text-xs">
-            <span className="bg-white/80 px-3 text-slate-400 font-bold tracking-wide">
-              OR
-            </span>
+    <header className="pt-2 pb-1 px-4 lg:px-8 animate-fade-in flex flex-col gap-2">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+        {/* Brand Section */}
+        <div className="flex items-center gap-3">
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            width={36}
+            height={36}
+            className="w-9 h-9 object-contain"
+          />
+          <div className="text-left">
+            <h1 className="text-xl md:text-xl font-display font-extrabold text-transparent bg-clip-text bg-linear-to-r from-slate-900 via-brand-900 to-slate-900 tracking-tight leading-none">
+              Daily Practice Tracker
+            </h1>
+            <p className="hidden md:block text-slate-500 font-medium text-[10px] tracking-wide mt-px">
+              Build consistency. Track progress. Achieve mastery.
+            </p>
           </div>
         </div>
 
-        <Button
-          onClick={continueAsGuest}
-          className="w-full text-slate-500 hover:text-slate-800 font-semibold py-3 text-[15px] flex items-center justify-center gap-2 group hover:bg-slate-50 rounded-2xl"
-        >
-          <UserIcon />
-          Continue as Guest
-        </Button>
+        {/* Auth State & Tools */}
+        <div className="flex items-center gap-2 md:gap-3">
+          <div className="bg-white px-3 py-1.5 rounded-xl shadow-xs border border-slate-200 text-slate-600 font-bold text-[11px] md:text-xs flex items-center gap-2">
+            <svg
+              className="w-3.5 h-3.5 text-brand-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
+            </svg>
+            {getDateString}
+          </div>
+
+          {/* Auth Section */}
+          {!isLoading && (
+            <div className="bg-white p-1 rounded-xl shadow-xs border border-slate-200 flex items-center">
+              {user ? (
+                <div className="flex items-center gap-2 pl-2 pr-1">
+                  <Image
+                    src={user?.photoURL || "/default-avatar.png"}
+                    alt="Profile"
+                    width={20}
+                    height={20}
+                    className="rounded-full border border-slate-200 shadow-xs"
+                  />
+                  <span className="text-xs font-bold text-slate-700 max-w-[100px] truncate hidden sm:inline-block">
+                    {user?.displayName}
+                  </span>
+                  <Button
+                    onClick={logout}
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 transition-colors"
+                    title="Sign Out"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                  </Button>
+                </div>
+              ) : isGuest ? (
+                <div className="flex items-center gap-1.5 pl-2 pr-1">
+                  <div className="w-5 h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center">
+                    <span className="text-[10px] font-bold text-slate-400">
+                      G
+                    </span>
+                  </div>
+                  <span className="text-xs font-bold text-slate-500 italic hidden sm:inline-block">
+                    Guest
+                  </span>
+                  <Button
+                    onClick={loginWithGoogle}
+                    className="px-2 py-1 ml-1 rounded-lg text-[10px] font-bold bg-brand-50 text-brand-600 hover:bg-brand-100 transition-colors"
+                  >
+                    Sync
+                  </Button>
+                  <Button
+                    onClick={logout}
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 transition-colors"
+                    title="Clear Guest Data & Exit"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                  </Button>
+                </div>
+              ) : null}
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="absolute bottom-8 text-center animate-fade-in opacity-60">
-        <p className="text-xs text-slate-400 font-medium">
-          Your data is safe and synced securely by Google Firebase.
-        </p>
-        <p className="text-xs text-slate-400">
-          Build with ❤️ for daily practitioners, students, and learners.
-        </p>
-      </div>
+      {/* Tab Navigation */}
+      {onTabChange && (
+        <nav className="flex justify-center border-b border-solid border-black/5 pb-2">
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => onTabChange("TRACKER")}
+              className={cn(
+                "px-5 py-1.5 rounded-xl text-xs font-bold transition-all duration-300 ease-out relative",
+                {
+                  "bg-brand-600/10 text-brand-600": activeTab === "TRACKER",
+                  "text-slate-500 hover:text-slate-700 hover:bg-slate-100":
+                    activeTab !== "TRACKER",
+                },
+              )}
+            >
+              Task Tracker
+            </button>
+            <button
+              onClick={() => onTabChange("NOTEBOOK")}
+              className={cn(
+                "px-5 py-1.5 rounded-xl text-xs font-bold transition-all duration-300 ease-out relative",
+                {
+                  "bg-brand-600/10 text-brand-600": activeTab === "NOTEBOOK",
+                  "text-slate-500 hover:text-slate-700 hover:bg-brand-600/10":
+                    activeTab !== "NOTEBOOK",
+                },
+              )}
+            >
+              Notebook
+            </button>
+          </div>
+        </nav>
+      )}
     </header>
   );
 };

@@ -5,7 +5,6 @@ import {
   AnalyticsDashboard,
   Footer,
   Header,
-  Nav,
   Notebook,
   TaskList,
   TimeInputModal,
@@ -117,9 +116,7 @@ export default function Home() {
 
   return (
     <main className="max-w-[1280px] mx-auto min-h-screen flex flex-col pt-4">
-      <Header />
-
-      <Nav activeTab={activeTab} onTabChange={setActiveTab} />
+      <Header activeTab={activeTab} onTabChange={setActiveTab} />
 
       {activeTab === "TRACKER" ? (
         <div className="flex-1 w-full flex flex-col lg:flex-row gap-8 lg:gap-12 px-4 lg:px-8 mt-4 relative">
