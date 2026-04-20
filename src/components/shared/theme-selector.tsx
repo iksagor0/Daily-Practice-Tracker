@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
 import { useAppContext } from "@/context/app-context";
 import { cn } from "@/utils/cn";
-import { Palette, Check } from "lucide-react";
+import { Check, Palette } from "lucide-react";
+import React from "react";
 
 const THEMES = [
   {
@@ -58,7 +58,7 @@ const THEMES = [
   },
 ] as const;
 
-export const ThemeSelector: React.FC = () => {
+const ThemeSelector: React.FC = () => {
   const { state, dispatch } = useAppContext();
 
   return (
@@ -120,3 +120,5 @@ export const ThemeSelector: React.FC = () => {
     </div>
   );
 };
+
+export default ThemeSelector;

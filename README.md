@@ -7,6 +7,8 @@ A premium, modern web application designed to help you track daily learning habi
 ## ✨ Premium Features
 
 - **📋 Smart Task Management** — Effortlessly add, edit, and organize your daily practice routines.
+- **📝 Integrated Notebook** — A powerful, markdown-supported notebook feature to document your learning journey alongside your tasks.
+- **💾 Markdown Portability** — Effortlessly export your notes as standard `.md` files, with support for importing both `.md` and `.txt` files.
 - **⚡ Quick Completion** — Mark tasks done with 0 minutes for rapid tracking of habit-based tasks.
 - **📊 Advanced Analytics** — Gain insights with daily averages, weekly totals, and monthly milestone tracking.
 - **🔐 Secure Sync** — Full Google Authentication with seamless data persistence via Firebase.
@@ -71,13 +73,13 @@ The app tracks your consistency and growth across multiple tiers:
 Daily-Practice-Tracker/
 ├── src/
 │   ├── app/                # Next.js App Router (Layouts & Pages)
-│   ├── components/         # Premium UI Components (Theme Store, Task Cards, Modals)
+│   ├── components/         # Feature-wise UI Components (notebook/, task/, layout/, atoms/)
 │   ├── context/            # Global State (Auth, App State, Sync Logic)
-│   ├── constants/          # App constants & Initial task data
-│   ├── shared/             # Atomic & Shared components
+│   ├── constants/          # App constants, feature-wise data (task.constants.ts, app.constants.ts)
+│   ├── shared/             # Reusable global components
 │   ├── utils/              # Firebase config, utility functions, & sanitization
-│   ├── types/              # TypeScript Interfaces
-│   └── models/             # API & Data Models
+│   ├── types/              # Type-safe Interfaces (layout.types.ts, notebook.types.ts)
+│   └── models/             # API & Data Models (task.model.ts, notebook.model.ts)
 ├── public/                 # Static assets & favicon
 └── tailwind.config.js      # Custom theme configuration
 ```

@@ -1,7 +1,8 @@
+import { APP_COPYRIGHT_TEXT, APP_VERSION } from "@/constants";
+import { Code2, Github, Linkedin, MapPin } from "lucide-react";
 import React from "react";
-import { Github, Linkedin, MapPin, Code2 } from "lucide-react";
 
-export const Footer: React.FC = () => {
+const Footer: React.FC = () => {
   return (
     <footer className="w-full mt-12 pb-8 pt-6 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-6 px-4 lg:px-8">
       <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6">
@@ -48,14 +49,16 @@ export const Footer: React.FC = () => {
         </div>
       </div>
 
-      <div className="text-center md:text-right">
-        <p className="text-slate-300 text-[10px] font-bold tracking-wider uppercase">
-          © {new Date().getFullYear()} Daily Practice Tracker
+      <div className="text-center md:text-right text-slate-400">
+        <p className="text-[10px] font-bold tracking-wider uppercase">
+          {APP_COPYRIGHT_TEXT}
         </p>
-        <p className="text-slate-300 text-[9px] font-medium leading-none mt-1">
-          v1.0.0 • Built with Passion
+        <p className="text-[9px] font-medium leading-none mt-1">
+          {APP_VERSION} • Built with Passion
         </p>
       </div>
     </footer>
   );
 };
+
+export default Footer;

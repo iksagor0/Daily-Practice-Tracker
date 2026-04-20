@@ -4,8 +4,8 @@ import { ITaskListProps } from "@/types";
 import { Plus } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { Button } from "./atoms";
-import { TaskCard } from "./task-card";
+import { Button } from "../atoms";
+import TaskCard from "./task-card";
 
 interface DragState {
   id: string;
@@ -21,7 +21,7 @@ interface DragState {
   isDragging: boolean;
 }
 
-export const TaskList: React.FC<ITaskListProps> = ({
+const TaskList: React.FC<ITaskListProps> = ({
   onOpenAddModal,
   onEditTask,
   onDeleteTask,
@@ -313,3 +313,5 @@ export const TaskList: React.FC<ITaskListProps> = ({
     </div>
   );
 };
+
+export default TaskList;

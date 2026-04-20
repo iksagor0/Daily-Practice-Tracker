@@ -1,3 +1,6 @@
+import { useAppContext } from "@/context/app-context";
+import { useAchievements } from "@/hooks/use-achievements";
+import { getBDTime, getEffectiveBDDateStr } from "@/utils/time";
 import {
   Award,
   BarChart2,
@@ -7,21 +10,32 @@ import {
   TrendingUp,
 } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
-import { useAppContext } from "@/context/app-context";
-import { useAchievements } from "@/hooks/use-achievements";
-import { getBDTime, getEffectiveBDDateStr } from "@/utils/time";
-import { QuoteCard } from "./quote-card";
-import { ThemeSelector } from "./theme-selector";
+import { ProgressSvg } from "../atoms/custom-icons";
+import QuoteCard from "../shared/quote-card";
+import ThemeSelector from "../shared/theme-selector";
 
-export const AnalyticsDashboard: React.FC = () => {
+const AnalyticsDashboard: React.FC = () => {
   const { state } = useAppContext();
   const { activeToast } = useAchievements();
   const [mounted, setMounted] = useState(false);
 
   // stats calculation remains the same
   const stats = useMemo(() => {
-    const totalTasks = state.tasks.length;
-    const doneTasks = state.tasks.filter((t) => t.status === "DONE");
+    const currentEffectiveDate = getEffectiveBDDateStr();
+
+    // Filter tasks for Today's Progress calculation
+    const todayTasks = state.tasks.filter((t) => {
+      if (t.status === "DONE") {
+        if (t.completedAt) {
+          return getEffectiveBDDateStr(t.completedAt) === currentEffectiveDate;
+        }
+        return t.repeatDaily; // fallback for legacy tasks
+      }
+      return true;
+    });
+
+    const totalTasks = todayTasks.length;
+    const doneTasks = todayTasks.filter((t) => t.status === "DONE");
     const completedCount = doneTasks.length;
 
     let todayTime = 0;
@@ -30,7 +44,6 @@ export const AnalyticsDashboard: React.FC = () => {
     const percentage =
       totalTasks === 0 ? 0 : Math.round((completedCount / totalTasks) * 100);
 
-    const currentEffectiveDate = getEffectiveBDDateStr();
     const bdTime = getBDTime();
     if (bdTime.getHours() < 6) bdTime.setDate(bdTime.getDate() - 1);
     const todayObj = new Date(currentEffectiveDate);
@@ -111,29 +124,12 @@ export const AnalyticsDashboard: React.FC = () => {
         </h2>
 
         <div className="flex justify-center mb-6 relative">
-          <svg className="w-40 h-40 transform -rotate-90">
-            <circle
-              className="text-slate-100"
-              strokeWidth="12"
-              stroke="currentColor"
-              fill="transparent"
-              r={radius}
-              cx="80"
-              cy="80"
-            />
-            <circle
-              className="text-brand-500 transition-all duration-1000 ease-out"
-              strokeWidth="12"
-              strokeLinecap="round"
-              stroke="currentColor"
-              fill="transparent"
-              r={radius}
-              cx="80"
-              cy="80"
-              strokeDasharray={circumference}
-              strokeDashoffset={mounted ? offset : circumference}
-            />
-          </svg>
+          <ProgressSvg
+            radius={radius}
+            circumference={circumference}
+            offset={offset}
+            mounted={mounted}
+          />
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <span className="text-3xl font-display font-black text-slate-900 tracking-tight">
               {stats.percentage}%
@@ -311,3 +307,5 @@ export const AnalyticsDashboard: React.FC = () => {
     </aside>
   );
 };
+
+export default AnalyticsDashboard;

@@ -1,0 +1,58 @@
+#markdown * {
+  color: #0f172a;
+  font-family: "Inter", sans-serif;
+}
+
+#markdown h1 {
+  margin-bottom: 0.5rem;
+  color: #37393d;
+  font-weight: 700;
+}
+
+#markdown h2,
+#markdown h3 {
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+  color: #37393d;
+  font-weight: 700;
+}
+
+#markdown h4,
+#markdown h5,
+#markdown h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+  color: #37393d;
+  font-weight: 700;
+}
+
+#markdown p,
+#markdown a,
+#markdown ul,
+#markdown ol,
+#markdown li,
+#markdown b {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+#markdown h1 {
+  font-size: 1.75rem;
+}
+
+#markdown p {
+  font-size: 1rem;
+}
+
+#markdown ul {
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+#markdown ul li {
+  padding-inline-start: 0;
+}
+
+#markdown li::marker {
+  color: #7d8288;
+}

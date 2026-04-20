@@ -1,11 +1,11 @@
-export function getBDTime(): Date {
-  const now = new Date();
+export function getBDTime(date?: Date | number): Date {
+  const now = date ? new Date(date) : new Date();
   const utc = now.getTime() + now.getTimezoneOffset() * 60000;
   return new Date(utc + 3600000 * 6);
 }
 
-export function getEffectiveBDDateStr(): string {
-  const bdTime = getBDTime();
+export function getEffectiveBDDateStr(date?: Date | number): string {
+  const bdTime = getBDTime(date);
   if (bdTime.getHours() < 6) {
     bdTime.setDate(bdTime.getDate() - 1);
   }

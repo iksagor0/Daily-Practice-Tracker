@@ -10,7 +10,7 @@ interface ILinkifyProps {
  * @param text - The text to process.
  * @returns React elements with clickable links.
  */
-export const Linkify: React.FC<ILinkifyProps> = ({ text }) => {
+const Linkify: React.FC<ILinkifyProps> = ({ text }) => {
   if (!text) return null;
 
   // Regex to match URLs starting with http:// or https://
@@ -40,3 +40,5 @@ export const Linkify: React.FC<ILinkifyProps> = ({ text }) => {
     </>
   );
 };
+
+export default Linkify;

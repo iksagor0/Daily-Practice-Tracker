@@ -7,7 +7,7 @@ import React from "react";
 /**
  * CompletedTaskCard component for rendering finished tasks.
  */
-export const CompletedTaskCard: React.FC<ITaskCardProps> = ({
+const CompletedTaskCard: React.FC<ITaskCardProps> = ({
   task,
   index,
   onEdit,
@@ -102,3 +102,5 @@ export const CompletedTaskCard: React.FC<ITaskCardProps> = ({
     </div>
   );
 };
+
+export default CompletedTaskCard;

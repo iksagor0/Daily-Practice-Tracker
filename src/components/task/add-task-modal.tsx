@@ -5,9 +5,9 @@ import { cn } from "@/utils/cn";
 import * as LucideIcons from "lucide-react";
 import { X } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
-import { Button, Modal, Toggler } from "./atoms";
+import { Button, Modal, Toggler } from "../atoms";
 
-export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
+const AddTaskModal: React.FC<IAddTaskModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
@@ -238,3 +238,5 @@ export const AddTaskModal: React.FC<IAddTaskModalProps> = ({
     </Modal>
   );
 };
+
+export default AddTaskModal;

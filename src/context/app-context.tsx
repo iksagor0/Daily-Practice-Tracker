@@ -1,7 +1,8 @@
 "use client";
 
 import { INITIAL_TASKS } from "@/constants";
-import { ITask, THistory } from "@/models";
+import { INote, ITask, THistory } from "@/models";
+
 import { db } from "@/utils/firebase";
 import { sanitizeForFirebase } from "@/utils/sanitize";
 import { getEffectiveBDDateStr } from "@/utils/time";
@@ -15,8 +16,11 @@ import React, {
 } from "react";
 import { useAuth } from "./auth-context";
 
+import { EActiveTab } from "@/types";
+
 interface IAppState {
   tasks: readonly ITask[];
+  notes: readonly INote[];
   history: THistory;
   lastResetTime: string | null;
   isLoaded: boolean;
@@ -32,6 +36,7 @@ interface IAppState {
     | "nordic"
     | "lavender";
   loadedFor: string | "guest" | null;
+  activeTab: EActiveTab;
 }
 
 type TAppAction =
@@ -59,15 +64,21 @@ type TAppAction =
   | { type: "UNDO_TASK"; payload: string }
   | { type: "RUN_DAILY_RESET"; payload: string }
   | { type: "SET_THEME"; payload: IAppState["theme"] }
-  | { type: "REORDER_TASKS"; payload: { sourceId: string; targetId: string } };
+  | { type: "REORDER_TASKS"; payload: { sourceId: string; targetId: string } }
+  | { type: "ADD_NOTE"; payload: INote }
+  | { type: "EDIT_NOTE"; payload: INote }
+  | { type: "DELETE_NOTE"; payload: string }
+  | { type: "SET_ACTIVE_TAB"; payload: EActiveTab };
 
 const initialState: IAppState = {
   tasks: [],
+  notes: [],
   history: [],
   lastResetTime: null,
   isLoaded: false,
   theme: "default",
   loadedFor: null,
+  activeTab: EActiveTab.TRACKER,
 };
 
 function appReducer(state: IAppState, action: TAppAction): IAppState {
@@ -96,6 +107,7 @@ function appReducer(state: IAppState, action: TAppAction): IAppState {
         ...state,
         ...payload,
         tasks,
+        notes: payload.notes || [],
         loadedFor: payload.loadedFor,
         isLoaded: true,
       };
@@ -187,6 +199,26 @@ function appReducer(state: IAppState, action: TAppAction): IAppState {
 
       return { ...state, tasks };
     }
+
+    case "ADD_NOTE":
+      return { ...state, notes: [action.payload, ...state.notes] };
+
+    case "EDIT_NOTE":
+      return {
+        ...state,
+        notes: state.notes.map((n) =>
+          n.id === action.payload.id ? action.payload : n,
+        ),
+      };
+
+    case "DELETE_NOTE":
+      return {
+        ...state,
+        notes: state.notes.filter((n) => n.id !== action.payload),
+      };
+
+    case "SET_ACTIVE_TAB":
+      return { ...state, activeTab: action.payload };
 
     default:
       return state;
@@ -304,6 +336,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
         "guestTrackerState",
         JSON.stringify({
           tasks: state.tasks,
+          notes: state.notes,
           history: state.history,
           lastResetTime: state.lastResetTime,
           theme: state.theme,
@@ -315,6 +348,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
         stateRef,
         sanitizeForFirebase({
           tasks: state.tasks,
+          notes: state.notes,
           history: state.history,
           lastResetTime: state.lastResetTime,
           theme: state.theme,
@@ -323,6 +357,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
     }
   }, [
     state.tasks,
+    state.notes,
     state.history,
     state.lastResetTime,
     state.theme,
