@@ -6,6 +6,7 @@ import { LogOut } from "lucide-react";
 import Image from "next/image";
 import React, { useMemo } from "react";
 import Button from "../atoms/button";
+import { CalendarIcon } from "../atoms/custom-icons";
 
 const Header: React.FC<IHeaderProps> = ({
   activeTab = "TRACKER",
@@ -43,19 +44,7 @@ const Header: React.FC<IHeaderProps> = ({
         {/* Auth State & Tools */}
         <div className="flex items-center gap-2 md:gap-3">
           <div className="bg-white px-3 py-1.5 rounded-xl shadow-xs border border-slate-200 text-slate-600 font-bold text-[11px] md:text-xs flex items-center gap-2">
-            <svg
-              className="w-3.5 h-3.5 text-brand-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-              />
-            </svg>
+            <CalendarIcon className="w-3.5 h-3.5 text-brand-500" />
             {getDateString}
           </div>
 
@@ -122,7 +111,7 @@ const Header: React.FC<IHeaderProps> = ({
                 "px-5 py-1.5 rounded-xl text-xs font-bold transition-all duration-300 ease-out relative",
                 {
                   "bg-brand-600/10 text-brand-600": activeTab === "TRACKER",
-                  "text-slate-500 hover:text-slate-700 hover:bg-slate-100":
+                  "text-slate-500 hover:text-slate-700 hover:bg-brand-600/10":
                     activeTab !== "TRACKER",
                 },
               )}

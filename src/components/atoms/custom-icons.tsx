@@ -1,3 +1,5 @@
+import { ProgressSvgProps } from "@/types";
+
 export const GoogleIcon = () => {
   return (
     <svg
@@ -37,6 +39,62 @@ export const UserIcon = () => {
         strokeLinejoin="round"
         strokeWidth="2"
         d="M14 5l7 7m0 0l-7 7m7-7H3"
+      />
+    </svg>
+  );
+};
+
+export const CalendarIcon = ({
+  className = "w-3.5 h-3.5",
+}: {
+  className?: string;
+}) => {
+  return (
+    <svg
+      className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+      />
+    </svg>
+  );
+};
+
+export const ProgressSvg: React.FC<ProgressSvgProps> = ({
+  radius,
+  circumference,
+  offset,
+  mounted,
+  className = "w-40 h-40 transform -rotate-90",
+}) => {
+  return (
+    <svg className={className}>
+      <circle
+        className="text-slate-100"
+        strokeWidth="12"
+        stroke="currentColor"
+        fill="transparent"
+        r={radius}
+        cx="80"
+        cy="80"
+      />
+      <circle
+        className="text-brand-500 transition-all duration-1000 ease-out"
+        strokeWidth="12"
+        strokeLinecap="round"
+        stroke="currentColor"
+        fill="transparent"
+        r={radius}
+        cx="80"
+        cy="80"
+        strokeDasharray={circumference}
+        strokeDashoffset={mounted ? offset : circumference}
       />
     </svg>
   );

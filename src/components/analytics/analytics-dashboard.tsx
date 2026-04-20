@@ -10,6 +10,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
+import { ProgressSvg } from "../atoms/custom-icons";
 import QuoteCard from "../shared/quote-card";
 import ThemeSelector from "../shared/theme-selector";
 
@@ -123,29 +124,12 @@ const AnalyticsDashboard: React.FC = () => {
         </h2>
 
         <div className="flex justify-center mb-6 relative">
-          <svg className="w-40 h-40 transform -rotate-90">
-            <circle
-              className="text-slate-100"
-              strokeWidth="12"
-              stroke="currentColor"
-              fill="transparent"
-              r={radius}
-              cx="80"
-              cy="80"
-            />
-            <circle
-              className="text-brand-500 transition-all duration-1000 ease-out"
-              strokeWidth="12"
-              strokeLinecap="round"
-              stroke="currentColor"
-              fill="transparent"
-              r={radius}
-              cx="80"
-              cy="80"
-              strokeDasharray={circumference}
-              strokeDashoffset={mounted ? offset : circumference}
-            />
-          </svg>
+          <ProgressSvg
+            radius={radius}
+            circumference={circumference}
+            offset={offset}
+            mounted={mounted}
+          />
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <span className="text-3xl font-display font-black text-slate-900 tracking-tight">
               {stats.percentage}%

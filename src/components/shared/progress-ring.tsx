@@ -1,6 +1,7 @@
 import { IProgressRingProps } from "@/types";
 import { cn } from "@/utils/cn";
 import React from "react";
+import { ProgressSvg } from "../atoms/custom-icons";
 
 const ProgressRing: React.FC<IProgressRingProps> = ({
   percentage,
@@ -17,39 +18,13 @@ const ProgressRing: React.FC<IProgressRingProps> = ({
         className,
       )}
     >
-      {/* Background Track */}
-      <svg
+      <ProgressSvg
+        radius={radius}
+        circumference={circumference}
+        offset={offset}
+        mounted={true}
         className="absolute inset-0 w-full h-full transform -rotate-90"
-        viewBox="0 0 160 160"
-      >
-        <circle
-          cx="80"
-          cy="80"
-          r={radius}
-          fill="none"
-          strokeWidth="12"
-          className="stroke-slate-100"
-        />
-      </svg>
-      {/* Foreground Progress Ring */}
-      <svg
-        className="absolute inset-0 w-full h-full transform -rotate-90"
-        viewBox="0 0 160 160"
-      >
-        <circle
-          cx="80"
-          cy="80"
-          r={radius}
-          fill="none"
-          strokeWidth="12"
-          strokeLinecap="round"
-          className="stroke-brand-500 transition-[stroke-dashoffset] duration-800 ease-[cubic-bezier(0.16,1,0.3,1)] -rotate-90 origin-center"
-          style={{
-            strokeDasharray: `${circumference} ${circumference}`,
-            strokeDashoffset: offset,
-          }}
-        />
-      </svg>
+      />
       {/* Text Inside Ring */}
       <div className="text-center z-10 transition-transform hover:scale-105 select-none">
         <div className="text-4xl font-display font-extrabold text-slate-800 tracking-tight leading-none mb-1">

@@ -19,3 +19,11 @@ export interface ModalProps {
   overlayStyle?: React.CSSProperties;
   closeOnOutsideClick?: boolean;
 }
+
+export interface ProgressSvgProps {
+  radius: number;
+  circumference: number;
+  offset: number;
+  mounted: boolean;
+  className?: string;
+}
