@@ -1,4 +1,4 @@
-import { INote } from "@/models/notebook";
+import { INote } from "@/models/notebook.model";
 
 export interface INoteListProps {
   notes: readonly INote[];

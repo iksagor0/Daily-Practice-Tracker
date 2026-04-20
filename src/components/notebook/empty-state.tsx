@@ -1,10 +1,10 @@
-import { MARKDOWN_EXAMPLE } from "@/constants/notebook";
-import { IEmptyStateProps } from "@/types/notebook";
+import { MARKDOWN_EXAMPLE } from "@/constants/notebook.constants";
+import { IEmptyStateProps } from "@/types/notebook.types";
 import { Edit3, Plus } from "lucide-react";
 import React from "react";
 import { Button } from "../atoms";
 
-export const EmptyState: React.FC<IEmptyStateProps> = ({ onAddNote }) => {
+const EmptyState: React.FC<IEmptyStateProps> = ({ onAddNote }) => {
   return (
     <div className="flex-1 flex flex-col items-center justify-center bg-white/50 backdrop-blur-xl rounded-3xl border border-white/60 shadow-xl shadow-slate-200/40 p-8 h-full min-h-[500px]">
       <div className="w-16 h-16 bg-brand-50 rounded-2xl flex items-center justify-center mb-4 transform -rotate-6">
@@ -62,3 +62,5 @@ export const EmptyState: React.FC<IEmptyStateProps> = ({ onAddNote }) => {
     </div>
   );
 };
+
+export default EmptyState;

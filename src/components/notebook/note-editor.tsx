@@ -1,12 +1,12 @@
-import { INoteEditorProps } from "@/types/notebook";
+import { INoteEditorProps } from "@/types/notebook.types";
 import { cn } from "@/utils/cn";
 import { format } from "date-fns";
 import { Download, Edit3, Eye, Upload } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import { EmptyState } from "./empty-state";
-import { MarkdownPreview } from "./markdown-preview";
+import EmptyState from "./empty-state";
+import MarkdownPreview from "./markdown-preview";
 
-export const NoteEditor: React.FC<INoteEditorProps> = ({
+const NoteEditor: React.FC<INoteEditorProps> = ({
   note,
   onChange,
   onAddNote,
@@ -182,3 +182,5 @@ export const NoteEditor: React.FC<INoteEditorProps> = ({
     </div>
   );
 };
+
+export default NoteEditor;

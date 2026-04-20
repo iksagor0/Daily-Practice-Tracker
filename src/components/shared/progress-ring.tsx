@@ -1,8 +1,8 @@
-import React from "react";
-import { cn } from "@/utils/cn";
 import { IProgressRingProps } from "@/types";
+import { cn } from "@/utils/cn";
+import React from "react";
 
-export const ProgressRing: React.FC<IProgressRingProps> = ({
+const ProgressRing: React.FC<IProgressRingProps> = ({
   percentage,
   className = "",
 }) => {
@@ -62,3 +62,5 @@ export const ProgressRing: React.FC<IProgressRingProps> = ({
     </div>
   );
 };
+
+export default ProgressRing;

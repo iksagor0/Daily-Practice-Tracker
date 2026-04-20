@@ -1,4 +1,4 @@
-export * from "./button";
-export * from "./linkify";
-export * from "./modal";
-export * from "./toggler";
+export { default as Button } from "./button";
+export { default as Linkify } from "./linkify";
+export { default as Modal } from "./modal";
+export { default as Toggler } from "./toggler";

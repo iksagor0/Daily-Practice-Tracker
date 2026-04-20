@@ -3,7 +3,7 @@ import { cn } from "@/utils/cn";
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, type = "button", ...props }, ref) => {
     return (
       <button
@@ -19,3 +19,5 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   },
 );
 Button.displayName = "Button";
+
+export default Button;

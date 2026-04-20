@@ -1,11 +1,11 @@
+import { useQuote } from "@/hooks/use-quote";
 import { Quote as QuoteIcon } from "lucide-react";
 import React from "react";
-import { useQuote } from "@/hooks/use-quote";
 
 /**
  * Premium Quote Card component for daily inspiration.
  */
-export const QuoteCard: React.FC = () => {
+const QuoteCard: React.FC = () => {
   const { quote, loading } = useQuote();
 
   if (loading && !quote) {
@@ -61,3 +61,6 @@ export const QuoteCard: React.FC = () => {
     </div>
   );
 };
+
+export default QuoteCard;
+

@@ -1,7 +1,7 @@
+import { Code2, Github, Linkedin, MapPin } from "lucide-react";
 import React from "react";
-import { Github, Linkedin, MapPin, Code2 } from "lucide-react";
 
-export const Footer: React.FC = () => {
+const Footer: React.FC = () => {
   return (
     <footer className="w-full mt-12 pb-8 pt-6 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-6 px-4 lg:px-8">
       <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6">
@@ -59,3 +59,5 @@ export const Footer: React.FC = () => {
     </footer>
   );
 };
+
+export default Footer;

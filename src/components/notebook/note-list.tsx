@@ -1,10 +1,10 @@
-import { INoteListProps } from "@/types/notebook";
+import { INoteListProps } from "@/types/notebook.types";
 import { FileText, Plus } from "lucide-react";
 import React, { useMemo } from "react";
-import { Button } from "../atoms";
-import { NoteItem } from "./note-item";
+import Button from "../atoms/button";
+import SingleNoteItem from "./single-note-item";
 
-export const NoteList: React.FC<INoteListProps> = ({
+const NoteList: React.FC<INoteListProps> = ({
   notes,
   activeNoteId,
   onSelectNote,
@@ -43,7 +43,7 @@ export const NoteList: React.FC<INoteListProps> = ({
           </div>
         ) : (
           sortedNotes.map((note) => (
-            <NoteItem
+            <SingleNoteItem
               key={note.id}
               note={note}
               isActive={activeNoteId === note.id}
@@ -56,3 +56,5 @@ export const NoteList: React.FC<INoteListProps> = ({
     </div>
   );
 };
+
+export default NoteList;

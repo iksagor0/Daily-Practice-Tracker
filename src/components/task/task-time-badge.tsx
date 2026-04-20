@@ -1,9 +1,9 @@
-import React from "react";
-import * as LucideIcons from "lucide-react";
-import { cn } from "@/utils/cn";
 import { ITaskTimeBadgeProps } from "@/types";
+import { cn } from "@/utils/cn";
+import * as LucideIcons from "lucide-react";
+import React from "react";
 
-export const TaskTimeBadge: React.FC<ITaskTimeBadgeProps> = ({ targetStr }) => {
+const TaskTimeBadge: React.FC<ITaskTimeBadgeProps> = ({ targetStr }) => {
   let iconName = "Clock";
   let colorClass = "text-amber-500 bg-amber-50 border-amber-100";
 
@@ -31,3 +31,5 @@ export const TaskTimeBadge: React.FC<ITaskTimeBadgeProps> = ({ targetStr }) => {
     </div>
   );
 };
+
+export default TaskTimeBadge;

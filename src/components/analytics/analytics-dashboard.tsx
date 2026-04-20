@@ -10,10 +10,10 @@ import {
   TrendingUp,
 } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
-import { QuoteCard } from "./quote-card";
-import { ThemeSelector } from "./theme-selector";
+import QuoteCard from "../shared/quote-card";
+import ThemeSelector from "../shared/theme-selector";
 
-export const AnalyticsDashboard: React.FC = () => {
+const AnalyticsDashboard: React.FC = () => {
   const { state } = useAppContext();
   const { activeToast } = useAchievements();
   const [mounted, setMounted] = useState(false);
@@ -323,3 +323,5 @@ export const AnalyticsDashboard: React.FC = () => {
     </aside>
   );
 };
+
+export default AnalyticsDashboard;

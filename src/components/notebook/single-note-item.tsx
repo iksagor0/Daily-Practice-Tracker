@@ -1,10 +1,10 @@
-import { INoteItemProps } from "@/types/notebook";
+import { INoteItemProps } from "@/types/notebook.types";
 import { cn } from "@/utils/cn";
 import { format } from "date-fns";
 import { Trash2 } from "lucide-react";
 import React from "react";
 
-export const NoteItem: React.FC<INoteItemProps> = ({
+const SingleNoteItem: React.FC<INoteItemProps> = ({
   note,
   isActive,
   onSelect,
@@ -64,3 +64,5 @@ export const NoteItem: React.FC<INoteItemProps> = ({
     </div>
   );
 };
+
+export default SingleNoteItem;

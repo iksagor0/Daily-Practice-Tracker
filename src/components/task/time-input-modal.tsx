@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { Clock, Repeat, Target, X } from "lucide-react";
 import { ITimeInputModalProps } from "@/types";
-import { Modal, Button } from "./atoms";
+import { Clock, Repeat, Target, X } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Button, Modal } from "../atoms";
 
-export const TimeInputModal: React.FC<ITimeInputModalProps> = ({
+const TimeInputModal: React.FC<ITimeInputModalProps> = ({
   task,
   onClose,
   onSubmit,
@@ -126,3 +126,5 @@ export const TimeInputModal: React.FC<ITimeInputModalProps> = ({
     </Modal>
   );
 };
+
+export default TimeInputModal;

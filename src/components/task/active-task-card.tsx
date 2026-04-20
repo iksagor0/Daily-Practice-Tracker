@@ -1,14 +1,14 @@
 import { Button, Linkify } from "@/components/atoms";
-import { TaskTimeBadge } from "@/shared/task-time-badge";
 import { ITaskCardProps } from "@/types";
 import { cn } from "@/utils/cn";
 import * as LucideIcons from "lucide-react";
 import React from "react";
+import TaskTimeBadge from "./task-time-badge";
 
 /**
  * ActiveTaskCard component for rendering tasks in progress.
  */
-export const ActiveTaskCard: React.FC<ITaskCardProps> = ({
+const ActiveTaskCard: React.FC<ITaskCardProps> = ({
   task,
   index,
   onEdit,
@@ -129,3 +129,5 @@ export const ActiveTaskCard: React.FC<ITaskCardProps> = ({
     </div>
   );
 };
+
+export default ActiveTaskCard;

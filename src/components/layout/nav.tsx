@@ -1,19 +1,14 @@
-import { TActiveTab } from "@/app/page";
 import { useAuth } from "@/context/auth-context";
+import { IHeaderProps } from "@/types";
 import { cn } from "@/utils/cn";
 import { getBDTime } from "@/utils/time";
 import { format } from "date-fns";
 import { LogOut } from "lucide-react";
 import Image from "next/image";
 import React from "react";
-import { Button } from "./atoms";
+import Button from "../atoms/button";
 
-interface IHeaderProps {
-  activeTab?: TActiveTab;
-  onTabChange?: (tab: TActiveTab) => void;
-}
-
-export const Header: React.FC<IHeaderProps> = ({
+const Nav: React.FC<IHeaderProps> = ({
   activeTab = "TRACKER",
   onTabChange,
 }) => {
@@ -22,7 +17,7 @@ export const Header: React.FC<IHeaderProps> = ({
   const dateString = format(currentBdDate, "EEEE, MMMM d, yyyy");
 
   return (
-    <header className="pt-6 pb-2 px-4 text-center animate-fade-in">
+    <nav className="pt-6 pb-2 px-4 text-center animate-fade-in">
       <h1 className="text-[28px] md:text-5xl font-display font-extrabold text-transparent bg-clip-text bg-linear-to-r from-slate-900 via-brand-900 to-slate-900 tracking-tight mb-2 flex items-center justify-center gap-2 md:gap-4 whitespace-nowrap">
         <Image
           src="/logo.png"
@@ -141,6 +136,8 @@ export const Header: React.FC<IHeaderProps> = ({
           </div>
         </div>
       )}
-    </header>
+    </nav>
   );
 };
+
+export default Nav;

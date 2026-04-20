@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 
 // Dynamic import to avoid SSR issues and lazy-load the heavy markdown parsers
-export const MarkdownPreview = dynamic(
+const MarkdownPreview = dynamic(
   async () => {
     const ReactMarkdown = (await import("react-markdown")).default;
     const remarkGfm = (await import("remark-gfm")).default;
@@ -27,3 +27,5 @@ export const MarkdownPreview = dynamic(
     ),
   },
 );
+
+export default MarkdownPreview;
