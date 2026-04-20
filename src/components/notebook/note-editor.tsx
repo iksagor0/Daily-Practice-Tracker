@@ -75,10 +75,7 @@ const NoteEditor: React.FC<INoteEditorProps> = ({
   }
 
   return (
-    <div
-      id="markdown"
-      className="flex-1 flex flex-col h-full bg-white/80 backdrop-blur-xl rounded-3xl border border-white/60 shadow-xl shadow-slate-200/40 overflow-hidden min-h-[500px]"
-    >
+    <div className="flex-1 flex flex-col h-full bg-white/80 backdrop-blur-xl rounded-3xl border border-white/60 shadow-xl shadow-slate-200/40 overflow-hidden min-h-[500px]">
       {/* Editor Header */}
       <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-white/50 flex-wrap gap-4">
         <div className="flex items-center gap-2">
@@ -170,7 +167,10 @@ const NoteEditor: React.FC<INoteEditorProps> = ({
             autoFocus
           />
         ) : (
-          <div className="w-full h-full overflow-y-auto p-4 lg:p-6 custom-scrollbar prose prose-slate prose-brand max-w-none prose-headings:font-display prose-headings:font-bold prose-a:text-brand-600">
+          <div
+            id="markdown"
+            className="mark-down-preview-wrapper w-full h-full overflow-y-auto p-4 lg:p-6 custom-scrollbar prose prose-slate prose-brand max-w-none prose-headings:font-display prose-headings:font-bold prose-a:text-brand-600"
+          >
             {localContent ? (
               <MarkdownPreview content={localContent} />
             ) : (
