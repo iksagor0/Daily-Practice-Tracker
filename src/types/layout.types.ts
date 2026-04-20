@@ -1,6 +1,9 @@
-import { TActiveTab } from "@/app/page";
+export enum EActiveTab {
+  TRACKER = "TRACKER",
+  NOTEBOOK = "NOTEBOOK",
+}
 
 export interface IHeaderProps {
-  activeTab?: TActiveTab;
-  onTabChange?: (tab: TActiveTab) => void;
+  activeTab?: EActiveTab;
+  onTabChange?: (tab: EActiveTab) => void;
 }

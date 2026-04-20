@@ -1,3 +1,4 @@
+import { APP_COPYRIGHT_TEXT, APP_VERSION } from "@/constants";
 import { Code2, Github, Linkedin, MapPin } from "lucide-react";
 import React from "react";
 
@@ -48,12 +49,12 @@ const Footer: React.FC = () => {
         </div>
       </div>
 
-      <div className="text-center md:text-right">
-        <p className="text-slate-300 text-[10px] font-bold tracking-wider uppercase">
-          © {new Date().getFullYear()} Daily Practice Tracker
+      <div className="text-center md:text-right text-slate-400">
+        <p className="text-[10px] font-bold tracking-wider uppercase">
+          {APP_COPYRIGHT_TEXT}
         </p>
-        <p className="text-slate-300 text-[9px] font-medium leading-none mt-1">
-          v1.0.0 • Built with Passion
+        <p className="text-[9px] font-medium leading-none mt-1">
+          {APP_VERSION} • Built with Passion
         </p>
       </div>
     </footer>

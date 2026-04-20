@@ -1,8 +1,8 @@
 "use client";
 
 import { INITIAL_TASKS } from "@/constants";
-import { ITask, THistory } from "@/models";
-import { INote } from "@/types";
+import { INote, ITask, THistory } from "@/models";
+
 import { db } from "@/utils/firebase";
 import { sanitizeForFirebase } from "@/utils/sanitize";
 import { getEffectiveBDDateStr } from "@/utils/time";
@@ -15,6 +15,8 @@ import React, {
   useReducer,
 } from "react";
 import { useAuth } from "./auth-context";
+
+import { EActiveTab } from "@/types";
 
 interface IAppState {
   tasks: readonly ITask[];
@@ -34,6 +36,7 @@ interface IAppState {
     | "nordic"
     | "lavender";
   loadedFor: string | "guest" | null;
+  activeTab: EActiveTab;
 }
 
 type TAppAction =
@@ -64,7 +67,8 @@ type TAppAction =
   | { type: "REORDER_TASKS"; payload: { sourceId: string; targetId: string } }
   | { type: "ADD_NOTE"; payload: INote }
   | { type: "EDIT_NOTE"; payload: INote }
-  | { type: "DELETE_NOTE"; payload: string };
+  | { type: "DELETE_NOTE"; payload: string }
+  | { type: "SET_ACTIVE_TAB"; payload: EActiveTab };
 
 const initialState: IAppState = {
   tasks: [],
@@ -74,6 +78,7 @@ const initialState: IAppState = {
   isLoaded: false,
   theme: "default",
   loadedFor: null,
+  activeTab: EActiveTab.TRACKER,
 };
 
 function appReducer(state: IAppState, action: TAppAction): IAppState {
@@ -211,6 +216,9 @@ function appReducer(state: IAppState, action: TAppAction): IAppState {
         ...state,
         notes: state.notes.filter((n) => n.id !== action.payload),
       };
+
+    case "SET_ACTIVE_TAB":
+      return { ...state, activeTab: action.payload };
 
     default:
       return state;

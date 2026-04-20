@@ -11,9 +11,8 @@ import {
 } from "@/components";
 import { useAppContext } from "@/context/app-context";
 import { ITask } from "@/models";
+import { EActiveTab } from "@/types";
 import { useState } from "react";
-
-export type TActiveTab = "TRACKER" | "NOTEBOOK";
 
 export default function Home() {
   const { state, dispatch } = useAppContext();
@@ -23,7 +22,6 @@ export default function Home() {
   const [activeTaskForTime, setActiveTaskForTime] = useState<ITask | null>(
     null,
   );
-  const [activeTab, setActiveTab] = useState<TActiveTab>("TRACKER");
 
   const handleOpenAddModal = () => {
     setEditingTask(null);
@@ -116,9 +114,9 @@ export default function Home() {
 
   return (
     <main className="max-w-[1280px] mx-auto min-h-screen flex flex-col pt-4">
-      <Header activeTab={activeTab} onTabChange={setActiveTab} />
+      <Header />
 
-      {activeTab === "TRACKER" ? (
+      {state.activeTab === EActiveTab.TRACKER ? (
         <div className="flex-1 w-full flex flex-col lg:flex-row gap-8 lg:gap-12 px-4 lg:px-8 mt-4 relative">
           <div className="flex-1 min-w-0">
             <TaskList
