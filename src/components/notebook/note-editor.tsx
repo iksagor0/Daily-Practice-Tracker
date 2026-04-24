@@ -75,14 +75,14 @@ const NoteEditor: React.FC<INoteEditorProps> = ({
   }
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-white/80 backdrop-blur-xl rounded-3xl border border-white/60 shadow-xl shadow-slate-200/40 overflow-hidden min-h-[500px]">
+    <div className="flex-1 flex flex-col h-full bg-base_color/80 backdrop-blur-xl rounded-3xl border border-border_color shadow-xl shadow-slate-200/10 overflow-hidden min-h-[500px]">
       {/* Editor Header */}
       <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-white/50 flex-wrap gap-4">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-slate-500 tracking-wider bg-slate-100 px-2.5 py-1 rounded-lg">
+          <span className="text-xs font-bold text-heading_color_secondary tracking-wider bg-base_color/50 px-2.5 py-1 rounded-lg">
             {format(new Date(note.createdAt), "d MMMM, yyyy")}
           </span>
-          <span className="text-[10px] font-medium text-slate-400">
+          <span className="text-[10px] font-medium text-disable_color">
             Last edited {format(new Date(note.updatedAt), "hh:mm a")}
           </span>
         </div>
@@ -163,7 +163,7 @@ const NoteEditor: React.FC<INoteEditorProps> = ({
             value={localContent}
             onChange={(e) => setLocalContent(e.target.value)}
             placeholder="Write down your daily reflections, study notes, or brainstorm ideas using Markdown..."
-            className="w-full h-full p-4 lg:p-6 resize-none bg-transparent focus:outline-none text-slate-700 leading-relaxed font-medium placeholder:text-slate-300 custom-scrollbar"
+            className="w-full h-full p-4 lg:p-6 resize-none bg-transparent focus:outline-none text-heading_color_secondary leading-relaxed font-medium placeholder:text-disable_color custom-scrollbar"
             autoFocus
           />
         ) : (

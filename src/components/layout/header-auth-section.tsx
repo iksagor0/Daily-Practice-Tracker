@@ -20,7 +20,7 @@ const AuthSection: React.FC = () => {
   if (isLoading) return null;
 
   return (
-    <div className="bg-white p-1 rounded-xl shadow-xs border border-slate-200 flex items-center">
+    <div className="bg-base_color p-1 rounded-xl shadow-xs border border-border_color flex items-center">
       {user ? (
         <div className="flex items-center gap-2 pl-2 pr-1">
           <Image
@@ -28,9 +28,9 @@ const AuthSection: React.FC = () => {
             alt="Profile"
             width={20}
             height={20}
-            className="rounded-full border border-slate-200 shadow-xs"
+            className="rounded-full border border-border_color shadow-xs"
           />
-          <span className="text-xs font-bold text-slate-700 max-w-[100px] truncate">
+          <span className="text-xs font-bold text-heading_color max-w-[100px] truncate">
             {user?.displayName}
           </span>
           <Button
@@ -43,10 +43,10 @@ const AuthSection: React.FC = () => {
         </div>
       ) : isGuest ? (
         <div className="flex items-center gap-1.5 pl-2 pr-1">
-          <div className="w-5 h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center">
-            <span className="text-[10px] font-bold text-slate-400">G</span>
+          <div className="w-5 h-5 rounded-full bg-base_color/50 border border-border_color flex items-center justify-center">
+            <span className="text-[10px] font-bold text-disable_color">G</span>
           </div>
-          <span className="text-xs font-bold text-slate-500 italic hidden sm:inline-block">
+          <span className="text-xs font-bold text-heading_color_secondary italic hidden sm:inline-block">
             Guest
           </span>
           <Button

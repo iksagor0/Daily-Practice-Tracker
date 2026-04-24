@@ -1,62 +1,10 @@
 "use client";
 
 import { useAppContext } from "@/context/app-context";
+import { THEMES } from "@/data/themes";
 import { cn } from "@/utils/cn";
 import { Check, Palette } from "lucide-react";
 import React from "react";
-
-const THEMES = [
-  {
-    id: "default",
-    name: "Modern Sky",
-    colors: ["bg-sky-500", "bg-emerald-500"],
-  },
-  {
-    id: "sakura",
-    name: "Sakura Blossom",
-    colors: ["bg-[#ec4899]", "bg-[#f472b6]"],
-  },
-  {
-    id: "ocean",
-    name: "Tropical Ocean",
-    colors: ["bg-[#0d9488]", "bg-[#2dd4bf]"],
-  },
-  {
-    id: "earth",
-    name: "Desert Earth",
-    colors: ["bg-[#b45309]", "bg-[#fbbf24]"],
-  },
-  {
-    id: "mint",
-    name: "Emerald Mint",
-    colors: ["bg-[#059669]", "bg-[#10b981]"],
-  },
-  {
-    id: "aurora",
-    name: "Arctic Aurora",
-    colors: ["bg-[#22d3ee]", "bg-[#a7f3d0]"],
-  },
-  {
-    id: "sunset",
-    name: "Sunset Mirage",
-    colors: ["bg-[#f97316]", "bg-[#fbbf24]"],
-  },
-  {
-    id: "forest",
-    name: "Forest Serenity",
-    colors: ["bg-[#16a34a]", "bg-[#854d0e]"],
-  },
-  {
-    id: "nordic",
-    name: "Nordic Minimal",
-    colors: ["bg-[#576d65]", "bg-[#f2f2ef]"],
-  },
-  {
-    id: "lavender",
-    name: "Soft Lavender",
-    colors: ["bg-[#8b5cf6]", "bg-[#ec4899]"],
-  },
-] as const;
 
 const ThemeSelector: React.FC = () => {
   const { state, dispatch } = useAppContext();

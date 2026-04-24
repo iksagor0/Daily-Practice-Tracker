@@ -27,10 +27,10 @@ const Header: React.FC = () => {
             className="w-9 h-9 object-contain rounded-lg"
           />
           <div className="text-left">
-            <h1 className="text-xl md:text-xl font-display font-extrabold text-transparent bg-clip-text bg-linear-to-r from-slate-900 via-brand-900 to-slate-900 tracking-tight leading-none">
+            <h1 className="text-xl md:text-xl font-display font-extrabold text-heading_color tracking-tight leading-none">
               {APP_NAME}
             </h1>
-            <p className="text-slate-500 font-medium text-[10px] tracking-wide mt-px">
+            <p className="text-heading_color_secondary font-medium text-[10px] tracking-wide mt-px">
               {APP_DESCRIPTION}
             </p>
           </div>
@@ -38,7 +38,7 @@ const Header: React.FC = () => {
 
         {/* Auth State & Tools */}
         <div className="flex items-center gap-1 md:gap-3">
-          <div className="bg-white px-3 py-[7px] rounded-xl shadow-xs border border-slate-200 text-slate-600 font-bold text-xs md:text-xs flex items-center gap-2 truncate whitespace-nowrap">
+          <div className="bg-base_color px-3 py-[7px] rounded-xl shadow-xs border border-border_color text-heading_color_secondary font-bold text-xs md:text-xs flex items-center gap-2 truncate whitespace-nowrap">
             <CalendarIcon className="w-5 h-5 text-brand-500" />
             {getDateString}
           </div>
