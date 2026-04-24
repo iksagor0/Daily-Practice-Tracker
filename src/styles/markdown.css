@@ -1,5 +1,5 @@
 #markdown * {
-  color: #0f172a;
+  color: var(--color-heading_color_secondary);
   font-family: "Inter", sans-serif;
 }
 
@@ -33,7 +33,7 @@
 #markdown li,
 #markdown b {
   margin: 0;
-  font-size: 15px;
+  font-size: 1rem;
   font-weight: 400;
 }
 
@@ -42,13 +42,17 @@
 }
 
 #markdown p {
-  font-size: 1rem;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  font-weight: 500;
 }
 
 #markdown ul {
+  margin-top: -0.8rem;
   margin-bottom: 1rem;
   margin-left: 1rem;
 }
+
 #markdown ul li {
   padding-inline-start: 0;
 }

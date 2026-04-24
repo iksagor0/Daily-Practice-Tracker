@@ -11,7 +11,9 @@ const NoteEditor: React.FC<INoteEditorProps> = ({
   onChange,
   onAddNote,
 }) => {
-  const [viewMode, setViewMode] = useState<"WRITE" | "PREVIEW">("WRITE");
+  const [viewMode, setViewMode] = useState<"WRITE" | "PREVIEW">(
+    note && note.content ? "PREVIEW" : "WRITE",
+  );
   const [localContent, setLocalContent] = useState(note?.content || "");
   const fileInputRef = useRef<HTMLInputElement>(null);
 

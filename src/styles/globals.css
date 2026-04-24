@@ -153,7 +153,6 @@
   --color-secondary_color: #0ea5e9;
 }
 
-
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -292,11 +291,10 @@ body::before {
     radial-gradient(at 100% 100%, #0f172a 0px, transparent 40%);
 }
 
-
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 2px;
+  height: 2px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
