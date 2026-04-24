@@ -5,6 +5,7 @@ import {
   AnalyticsDashboard,
   Footer,
   Header,
+  LandingOverlay,
   Notebook,
   TaskList,
   TimeInputModal,
@@ -114,6 +115,7 @@ export default function Home() {
 
   return (
     <main className="max-w-[1280px] mx-auto min-h-screen flex flex-col pt-4">
+      <LandingOverlay />
       <Header />
 
       {state.activeTab === EActiveTab.TRACKER ? (

@@ -27,14 +27,12 @@ interface IAppState {
   theme:
     | "default"
     | "sakura"
-    | "ocean"
     | "earth"
     | "mint"
-    | "aurora"
-    | "sunset"
-    | "forest"
-    | "nordic"
-    | "lavender";
+    | "lavender"
+    | "midnight"
+    | "nordic-dark"
+    | "slate-dark";
   loadedFor: string | "guest" | null;
   activeTab: EActiveTab;
 }

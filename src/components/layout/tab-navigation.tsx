@@ -1,14 +1,9 @@
 "use client";
 
 import { useAppContext } from "@/context/app-context";
-import { EActiveTab } from "@/types";
+import { EActiveTab, INavItem } from "@/types";
 import { cn } from "@/utils/cn";
 import React from "react";
-
-interface INavItem {
-  id: EActiveTab;
-  label: string;
-}
 
 const NAV_ITEMS: INavItem[] = [
   { id: EActiveTab.TRACKER, label: "Task Tracker" },
@@ -23,7 +18,7 @@ const TabNavigation: React.FC = () => {
   };
 
   return (
-    <nav className="flex justify-center border-b border-solid border-black/5 pb-2">
+    <nav className="flex justify-center border-b border-solid border-border_color pb-2">
       <div className="flex items-center gap-1">
         {NAV_ITEMS.map((item) => {
           const isActive = state.activeTab === item.id;
@@ -34,8 +29,9 @@ const TabNavigation: React.FC = () => {
               className={cn(
                 "px-5 py-1.5 rounded-xl text-xs font-bold transition-all duration-300 ease-out relative",
                 {
-                  "bg-brand-600/10 text-brand-600": isActive,
-                  "text-slate-500 hover:text-slate-700 hover:bg-slate-100": !isActive,
+                  "bg-primary_color_weak text-primary_color": isActive,
+                  "text-heading_color_secondary hover:text-heading_color hover:bg-primary_color_weak/5":
+                    !isActive,
                 },
               )}
             >

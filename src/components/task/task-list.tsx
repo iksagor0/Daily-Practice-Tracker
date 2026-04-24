@@ -164,13 +164,13 @@ const TaskList: React.FC<ITaskListProps> = ({
     <div className="space-y-8 animate-fade-in animation-delay-300 opacity-0 fill-mode-forwards">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 gap-4">
         <div>
-          <h2 className="text-2xl font-display font-black text-slate-800 tracking-tight flex items-center gap-2">
+          <h2 className="text-2xl font-display font-black text-heading_color tracking-tight flex items-center gap-2">
             To-Do Today
-            <span className="bg-slate-800 text-white text-xs px-2.5 py-1 rounded-full font-bold">
+            <span className="bg-heading_color text-base_color text-xs px-2.5 py-1 rounded-full font-bold">
               {todoTasks.length}
             </span>
           </h2>
-          <p className="text-slate-500 text-sm font-medium mt-1">
+          <p className="text-heading_color_secondary text-sm font-medium mt-1">
             Focus on one task at a time.
           </p>
         </div>
@@ -245,10 +245,10 @@ const TaskList: React.FC<ITaskListProps> = ({
         )}
       </div>
 
-      <div className="pt-8 mb-6 mt-8 border-t border-slate-200">
-        <h2 className="text-xl font-display font-bold text-slate-800 tracking-tight flex items-center gap-2 mb-2">
+      <div className="pt-8 mb-6 mt-8 border-t border-border_color">
+        <h2 className="text-xl font-display font-bold text-heading_color tracking-tight flex items-center gap-2 mb-2">
           Completed
-          <span className="bg-emerald-100 text-emerald-700 text-xs px-2.5 py-1 rounded-full font-bold">
+          <span className="bg-success_bg_color text-success_color text-xs px-2.5 py-1 rounded-full font-bold">
             {doneTasks.length}
           </span>
         </h2>

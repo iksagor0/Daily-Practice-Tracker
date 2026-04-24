@@ -33,6 +33,14 @@ const AddTaskModal: React.FC<IAddTaskModalProps> = ({
     }
 
     const parsedTime = targetTime ? parseInt(targetTime, 10) : null;
+
+    if (parsedTime && parsedTime > 1440) {
+      alert(
+        "Repeat Daily Task: Target time cannot exceed 24 hours (1440 minutes).",
+      );
+      return;
+    }
+
     const targetStr = parsedTime ? `${parsedTime} min` : "Unlimited";
 
     const taskData: Partial<ITask> = {
@@ -129,7 +137,12 @@ const AddTaskModal: React.FC<IAddTaskModalProps> = ({
                   <input
                     type="number"
                     value={targetTime}
-                    onChange={(e) => setTargetTime(e.target.value)}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value.length <= 4) {
+                        setTargetTime(value);
+                      }
+                    }}
                     placeholder="e.g. 30"
                     min="1"
                     className="w-full pl-4 pr-16 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-brand-100 focus:border-brand-500 hover:border-brand-300 outline-none transition-all placeholder:text-slate-400 font-medium text-slate-800 appearance-none"

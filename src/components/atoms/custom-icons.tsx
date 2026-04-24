@@ -76,7 +76,7 @@ export const ProgressSvg: React.FC<ProgressSvgProps> = ({
   return (
     <svg className={className}>
       <circle
-        className="text-slate-100"
+        className="text-brand-500/10"
         strokeWidth="12"
         stroke="currentColor"
         fill="transparent"

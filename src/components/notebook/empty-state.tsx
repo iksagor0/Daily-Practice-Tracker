@@ -6,14 +6,14 @@ import { Button } from "../atoms";
 
 const EmptyState: React.FC<IEmptyStateProps> = ({ onAddNote }) => {
   return (
-    <div className="flex-1 flex flex-col items-center justify-center bg-white/50 backdrop-blur-xl rounded-3xl border border-white/60 shadow-xl shadow-slate-200/40 p-8 h-full min-h-[500px]">
+    <div className="flex-1 flex flex-col items-center justify-center bg-base_color/50 backdrop-blur-xl rounded-3xl border border-border_color shadow-xl shadow-slate-200/10 p-8 h-full min-h-[500px]">
       <div className="w-16 h-16 bg-brand-50 rounded-2xl flex items-center justify-center mb-4 transform -rotate-6">
         <Edit3 className="w-8 h-8 text-brand-300" />
       </div>
-      <h3 className="text-xl font-display font-bold text-slate-700 mb-2">
+      <h3 className="text-xl font-display font-bold text-heading_color mb-2">
         Select or create a note
       </h3>
-      <p className="text-sm text-slate-500 text-center max-w-sm mb-6">
+      <p className="text-sm text-heading_color_secondary text-center max-w-sm mb-6">
         Write down your daily reflections, study notes, or brainstorm ideas
         using Markdown.
       </p>
@@ -27,25 +27,25 @@ const EmptyState: React.FC<IEmptyStateProps> = ({ onAddNote }) => {
             Create Note
           </Button>
 
-          <div className="w-full space-y-1 pt-5 mt-6 border-t border-slate-200 opacity-70">
-            <div className="flex items-center gap-1 text-slate-400 font-medium">
+          <div className="w-full space-y-1 pt-5 mt-6 border-t border-border_color opacity-70">
+            <div className="flex items-center gap-1 text-heading_color_secondary font-medium">
               <span className="w-8 font-mono text-brand-500">#</span>
               <span>Main Title</span>
             </div>
-            <div className="flex items-center gap-1 text-slate-400 font-medium">
+            <div className="flex items-center gap-1 text-heading_color_secondary font-medium">
               <span className="w-8 font-mono text-brand-500">##</span>
               <span>Section Header</span>
             </div>
-            <div className="flex items-center gap-1 text-slate-400 font-medium">
+            <div className="flex items-center gap-1 text-heading_color_secondary font-medium">
               <span className="w-8 font-mono text-brand-500">###</span>
               <span>Sub-section</span>
             </div>
-            <div className="flex items-center gap-1 text-slate-400 font-medium">
+            <div className="flex items-center gap-1 text-heading_color_secondary font-medium">
               <span className="w-8 font-mono text-brand-500">**</span>
               <span>Bold Text</span>
               <span className="w-8 font-mono text-brand-500">**</span>
             </div>
-            <div className="flex items-center gap-1 text-slate-400 font-medium">
+            <div className="flex items-center gap-1 text-heading_color_secondary font-medium">
               <span className="w-8 font-mono text-brand-500">-</span>
               <span>List Item</span>
             </div>
@@ -53,7 +53,7 @@ const EmptyState: React.FC<IEmptyStateProps> = ({ onAddNote }) => {
 
           <button
             onClick={() => onAddNote(MARKDOWN_EXAMPLE)}
-            className="text-xs font-bold text-slate-400 hover:text-brand-600 border border-slate-200 hover:border-brand-200 px-4 py-2 rounded-lg transition-all"
+            className="text-xs font-bold text-heading_color_secondary hover:text-brand-600 border border-border_color hover:border-brand-200 px-4 py-2 rounded-lg transition-all"
           >
             Write Example of markdown file
           </button>
