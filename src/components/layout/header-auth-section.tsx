@@ -30,7 +30,7 @@ const AuthSection: React.FC = () => {
             height={20}
             className="rounded-full border border-slate-200 shadow-xs"
           />
-          <span className="text-xs font-bold text-slate-700 max-w-[100px] truncate hidden sm:inline-block">
+          <span className="text-xs font-bold text-slate-700 max-w-[100px] truncate">
             {user?.displayName}
           </span>
           <Button

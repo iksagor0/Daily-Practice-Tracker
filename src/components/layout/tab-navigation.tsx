@@ -1,14 +1,9 @@
 "use client";
 
 import { useAppContext } from "@/context/app-context";
-import { EActiveTab } from "@/types";
+import { EActiveTab, INavItem } from "@/types";
 import { cn } from "@/utils/cn";
 import React from "react";
-
-interface INavItem {
-  id: EActiveTab;
-  label: string;
-}
 
 const NAV_ITEMS: INavItem[] = [
   { id: EActiveTab.TRACKER, label: "Task Tracker" },
@@ -35,7 +30,8 @@ const TabNavigation: React.FC = () => {
                 "px-5 py-1.5 rounded-xl text-xs font-bold transition-all duration-300 ease-out relative",
                 {
                   "bg-brand-600/10 text-brand-600": isActive,
-                  "text-slate-500 hover:text-slate-700 hover:bg-slate-100": !isActive,
+                  "text-slate-500 hover:text-slate-600 hover:bg-brand-600/5":
+                    !isActive,
                 },
               )}
             >
