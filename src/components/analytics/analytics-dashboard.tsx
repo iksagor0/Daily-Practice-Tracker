@@ -259,7 +259,7 @@ const AnalyticsDashboard: React.FC = () => {
         </div>
 
         <div className="mt-6 pt-5 border-t border-slate-200 text-center">
-          <span className="inline-flex items-center text-xs text-slate-500 font-medium bg-slate-100 px-3 py-1 rounded-full">
+          <span className="inline-flex items-center text-xs text-slate-600 bg-brand-600/5 px-3 py-1 rounded-full">
             <RefreshCw className="w-3 h-3 mr-1.5" /> Resets at 6:00 AM
             Bangladesh Time
           </span>

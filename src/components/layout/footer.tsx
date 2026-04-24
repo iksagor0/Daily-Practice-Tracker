@@ -1,5 +1,6 @@
 import { APP_COPYRIGHT_TEXT, APP_VERSION } from "@/constants";
 import { Code2, Github, Linkedin, MapPin } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 const Footer: React.FC = () => {
@@ -28,16 +29,7 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <a
-            href="https://github.com/iksagor0/Daily-Practice-Tracker"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-3 py-[6.75px] rounded-xl bg-slate-50 text-slate-600 hover:text-brand-600 hover:bg-brand-50 border border-slate-200 hover:border-brand-200 transition-all text-xs font-bold shadow-xs shrink-0"
-          >
-            <Github className="w-4 h-4" />
-            <span>Open Source</span>
-          </a>
-          <a
+          <Link
             href="https://www.linkedin.com/in/ibrahim-khalil-js/"
             target="_blank"
             rel="noopener noreferrer"
@@ -45,7 +37,16 @@ const Footer: React.FC = () => {
             title="Linkedin Profile"
           >
             <Linkedin className="w-4 h-4 fill-current" />
-          </a>
+          </Link>
+          <Link
+            href="https://github.com/iksagor0/Daily-Practice-Tracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 px-3 py-[6.75px] rounded-xl bg-slate-50 text-slate-600 hover:text-brand-600 hover:bg-brand-50 border border-slate-200 hover:border-brand-200 transition-all text-xs font-bold shadow-xs shrink-0"
+          >
+            <Github className="w-4 h-4" />
+            <span>Open Source</span>
+          </Link>
         </div>
       </div>
 

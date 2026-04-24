@@ -56,7 +56,7 @@ export default function RootLayout({
         className={cn(
           inter.variable,
           outfit.variable,
-          "font-sans text-slate-800 antialiased selection:bg-brand-200 selection:text-brand-900 pb-20 overflow-x-hidden",
+          "font-sans text-slate-800 antialiased selection:bg-brand-200 selection:text-brand-900 pb-6 overflow-x-hidden",
         )}
       >
         <AuthProvider>
