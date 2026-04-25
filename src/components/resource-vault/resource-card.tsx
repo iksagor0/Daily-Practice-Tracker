@@ -42,6 +42,7 @@ const ResourceCard: React.FC<IResourceCardProps> = ({
       className="group relative bg-base_color/60 backdrop-blur-xl rounded-xl border border-border_color p-4 transition-all duration-300 hover:shadow-md hover:bg-base_color/90 hover:border-primary_color hover:shadow-primary_color/5 flex flex-col gap-2 cursor-pointer"
     >
       <div className="flex items-start justify-between gap-2">
+        {/* icon + title + url */}
         <div className="flex-1 flex items-center gap-3 overflow-hidden min-w-0">
           <div className="shrink-0 w-10 h-10 rounded-2xl bg-primary_color/5 flex items-center justify-center border border-border_color/50 group-hover:bg-primary_color/10 transition-colors">
             {_renderIcon()}
@@ -54,13 +55,14 @@ const ResourceCard: React.FC<IResourceCardProps> = ({
               href={resource.url}
               target="_blank"
               onClick={(e) => e.stopPropagation()}
-              className="text-sm font-medium text-primary_color/70 break-all line-clamp-2"
+              className="text-sm font-semibold text-heading_color/50 break-all line-clamp-2"
             >
               {resource.url.replace(/^https?:\/\/(www\.)?/, "")}
             </NextLink>
           </div>
         </div>
 
+        {/* actions */}
         <div className="flex flex-col items-center gap-2 shrink-0">
           <button
             onClick={(e) => {
@@ -85,6 +87,7 @@ const ResourceCard: React.FC<IResourceCardProps> = ({
         </div>
       </div>
 
+      {/* tags */}
       {resource?.tags?.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {resource?.tags?.map((tag) => (

@@ -5,7 +5,7 @@
 
 #markdown h1 {
   margin-bottom: 0.5rem;
-  color: #37393d;
+  color: var(--color-heading_color);
   font-weight: 700;
 }
 
@@ -13,7 +13,7 @@
 #markdown h3 {
   margin-top: 0;
   margin-bottom: 0.25rem;
-  color: #37393d;
+  color: var(--color-heading_color);
   font-weight: 700;
 }
 
@@ -22,7 +22,7 @@
 #markdown h6 {
   margin-top: 0;
   margin-bottom: 0;
-  color: #37393d;
+  color: var(--color-heading_color);
   font-weight: 700;
 }
 
@@ -58,5 +58,5 @@
 }
 
 #markdown li::marker {
-  color: #7d8288;
+  color: var(--color-disable_color); /* #7d8288 */
 }
