@@ -1,3 +1,4 @@
+import { cn } from "@/utils/cn";
 import { IResourceCardProps } from "@/types";
 import {
   FileText,
@@ -13,6 +14,8 @@ const ResourceCard: React.FC<IResourceCardProps> = ({
   resource,
   onDelete,
   onEdit,
+  onCustomDragStart,
+  isHidden,
 }) => {
   const handleCardClick = () => {
     window.open(resource.url, "_blank", "noopener,noreferrer");
@@ -39,8 +42,25 @@ const ResourceCard: React.FC<IResourceCardProps> = ({
   return (
     <div
       onClick={handleCardClick}
-      className="group relative bg-base_color/60 backdrop-blur-xl rounded-xl border border-border_color p-4 transition-all duration-300 hover:shadow-md hover:bg-base_color/90 hover:border-primary_color hover:shadow-primary_color/5 flex flex-col gap-2 cursor-pointer"
+      data-resource-id={resource.id}
+      className={cn(
+        "group relative bg-base_color/60 backdrop-blur-xl rounded-xl border border-border_color p-4 transition-all duration-300 hover:shadow-md hover:bg-base_color/90 hover:border-primary_color hover:shadow-primary_color/5 flex flex-col gap-2 cursor-pointer",
+        {
+          "opacity-0 invisible": isHidden,
+          "opacity-100": !isHidden,
+        },
+      )}
     >
+      {/* Drag Handles */}
+      <div
+        onPointerDown={(e) => onCustomDragStart?.(e, resource.id)}
+        className="absolute top-0 left-0 right-0 h-4 cursor-move z-20"
+      />
+      <div
+        onPointerDown={(e) => onCustomDragStart?.(e, resource.id)}
+        className="absolute bottom-0 left-0 right-0 h-4 cursor-move z-20"
+      />
+
       <div className="flex items-start justify-between gap-2">
         {/* icon + title + url */}
         <div className="flex-1 flex items-center gap-3 overflow-hidden min-w-0">

@@ -72,6 +72,7 @@ type TAppAction =
   | { type: "ADD_RESOURCE"; payload: IResource }
   | { type: "UPDATE_RESOURCE"; payload: IResource }
   | { type: "DELETE_RESOURCE"; payload: string }
+  | { type: "REORDER_RESOURCES"; payload: { sourceId: string; targetId: string } }
   | { type: "SET_ACTIVE_TAB"; payload: EActiveTab };
 
 const initialState: IAppState = {
@@ -261,6 +262,20 @@ function appReducer(state: IAppState, action: TAppAction): IAppState {
         ...state,
         resources: state.resources.filter((r) => r.id !== action.payload),
       };
+
+    case "REORDER_RESOURCES": {
+      const { sourceId, targetId } = action.payload;
+      const resources = [...state.resources];
+      const sourceIndex = resources.findIndex((r) => r.id === sourceId);
+      const targetIndex = resources.findIndex((r) => r.id === targetId);
+
+      if (sourceIndex === -1 || targetIndex === -1) return state;
+
+      const [movedResource] = resources.splice(sourceIndex, 1);
+      resources.splice(targetIndex, 0, movedResource);
+
+      return { ...state, resources };
+    }
 
     case "SET_ACTIVE_TAB":
       return { ...state, activeTab: action.payload };

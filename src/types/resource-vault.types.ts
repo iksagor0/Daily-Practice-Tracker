@@ -4,6 +4,8 @@ export interface IResourceCardProps {
   resource: IResource;
   onDelete: (id: string) => void;
   onEdit: (resource: IResource) => void;
+  onCustomDragStart?: (e: React.PointerEvent, id: string) => void;
+  isHidden?: boolean;
 }
 
 export interface IAddResourceModalProps {
