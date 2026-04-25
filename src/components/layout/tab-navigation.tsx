@@ -8,6 +8,7 @@ import React from "react";
 const NAV_ITEMS: INavItem[] = [
   { id: EActiveTab.TRACKER, label: "Task Tracker" },
   { id: EActiveTab.NOTEBOOK, label: "Notebook" },
+  { id: EActiveTab.VAULT, label: "Resource Vault" },
 ];
 
 const TabNavigation: React.FC = () => {

@@ -1,6 +1,7 @@
 export enum EActiveTab {
   TRACKER = "TRACKER",
   NOTEBOOK = "NOTEBOOK",
+  VAULT = "VAULT",
 }
 
 export interface IHeaderProps {

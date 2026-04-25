@@ -115,11 +115,11 @@ const AnalyticsDashboard: React.FC = () => {
       <QuoteCard />
 
       {/* Today's Progress Card */}
-      <div className="bg-white/50 backdrop-blur-xl rounded-3xl p-6 relative overflow-hidden group border border-white/60 shadow-xl shadow-slate-200/40">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-brand-500/10 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
+      <div className="bg-base_color/50 backdrop-blur-xl rounded-3xl p-6 relative overflow-hidden group border border-border_color shadow-xl shadow-base_color/10">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-primary_color/10 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
 
-        <h2 className="text-lg font-display font-bold text-slate-900 mb-6 flex items-center">
-          <TrendingUp className="w-5 h-5 mr-2 text-brand-500" />
+        <h2 className="text-lg font-display font-bold text-heading_color mb-6 flex items-center">
+          <TrendingUp className="w-5 h-5 mr-2 text-primary_color" />
           Today&apos;s Progress
         </h2>
 
@@ -131,34 +131,34 @@ const AnalyticsDashboard: React.FC = () => {
             mounted={mounted}
           />
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-3xl font-display font-black text-slate-900 tracking-tight">
+            <span className="text-3xl font-display font-black text-heading_color tracking-tight">
               {stats.percentage}%
             </span>
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+            <span className="text-[10px] font-bold text-disable_color uppercase tracking-widest mt-1">
               Completed
             </span>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-white/80 rounded-2xl p-4 border border-white text-center shadow-sm shadow-slate-100">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
+          <div className="bg-base_color/80 rounded-2xl p-4 border border-border_color text-center shadow-sm">
+            <p className="text-xs font-bold text-disable_color uppercase tracking-wider mb-1">
               Tasks
             </p>
-            <p className="text-2xl font-display font-bold text-slate-800">
-              <span className="text-brand-600">{stats.completedCount}</span>
-              <span className="text-lg text-slate-400">
+            <p className="text-2xl font-display font-bold text-heading_color">
+              <span className="text-primary_color">{stats.completedCount}</span>
+              <span className="text-lg text-disable_color">
                 /{stats.totalTasks}
               </span>
             </p>
           </div>
-          <div className="bg-white/80 rounded-2xl p-4 border border-white text-center shadow-sm shadow-slate-100">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
+          <div className="bg-base_color/80 rounded-2xl p-4 border border-border_color text-center shadow-sm">
+            <p className="text-xs font-bold text-disable_color uppercase tracking-wider mb-1">
               Time Spent
             </p>
-            <p className="text-2xl font-display font-bold text-slate-800">
-              <span className="text-brand-600">{stats.todayTime}</span>
-              <span className="text-lg text-slate-400">m</span>
+            <p className="text-2xl font-display font-bold text-heading_color">
+              <span className="text-primary_color">{stats.todayTime}</span>
+              <span className="text-lg text-disable_color">m</span>
             </p>
           </div>
         </div>
@@ -193,9 +193,9 @@ const AnalyticsDashboard: React.FC = () => {
       )}
 
       {/* Performance Analytics Card */}
-      <div className="bg-white/50 backdrop-blur-xl rounded-3xl p-6 border border-white/60 shadow-xl shadow-slate-200/40">
-        <h2 className="text-lg font-display font-bold text-slate-900 mb-5 flex items-center">
-          <BarChart2 className="w-5 h-5 mr-2 text-indigo-500" />
+      <div className="bg-base_color/50 backdrop-blur-xl rounded-3xl p-6 border border-border_color shadow-xl shadow-base_color/10">
+        <h2 className="text-lg font-display font-bold text-heading_color mb-5 flex items-center">
+          <BarChart2 className="w-5 h-5 mr-2 text-primary_color" />
           Performance Analytics
         </h2>
 
@@ -211,9 +211,9 @@ const AnalyticsDashboard: React.FC = () => {
                 <span className="text-slate-500 font-normal">min</span>
               </span>
             </div>
-            <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+            <div className="w-full bg-border_color/30 h-2 rounded-full overflow-hidden">
               <div
-                className="bg-indigo-400 h-full rounded-full transition-all duration-1000"
+                className="bg-primary_color h-full rounded-full transition-all duration-1000"
                 style={{ width: mounted ? `${stats.avgPct}%` : "0%" }}
               ></div>
             </div>
@@ -258,8 +258,8 @@ const AnalyticsDashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-6 pt-5 border-t border-slate-200 text-center">
-          <span className="inline-flex items-center text-xs text-slate-600 bg-brand-600/5 px-3 py-1 rounded-full">
+        <div className="mt-6 pt-5 border-t border-border_color text-center">
+          <span className="inline-flex items-center text-xs text-heading_color_secondary bg-primary_color/5 px-3 py-1 rounded-full">
             <RefreshCw className="w-3 h-3 mr-1.5" /> Resets at 6:00 AM
             Bangladesh Time
           </span>
@@ -267,18 +267,18 @@ const AnalyticsDashboard: React.FC = () => {
       </div>
 
       {/* Lifetime Milestones Card */}
-      <div className="bg-white/50 backdrop-blur-xl rounded-3xl p-6 border border-white/60 shadow-xl shadow-slate-200/40">
-        <h2 className="text-lg font-display font-bold text-slate-900 mb-5 flex items-center">
-          <Award className="w-5 h-5 mr-2 text-rose-500" />
+      <div className="bg-base_color/50 backdrop-blur-xl rounded-3xl p-6 border border-border_color shadow-xl shadow-base_color/10">
+        <h2 className="text-lg font-display font-bold text-heading_color mb-5 flex items-center">
+          <Award className="w-5 h-5 mr-2 text-primary_color" />
           Lifetime Milestones
         </h2>
 
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-white/80 rounded-2xl p-4 border border-white text-center shadow-sm shadow-slate-100 group">
-            <div className="w-10 h-10 mx-auto bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300">
+          <div className="bg-base_color/80 rounded-2xl p-4 border border-border_color text-center shadow-sm group">
+            <div className="w-10 h-10 mx-auto bg-primary_color/10 text-primary_color rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300">
               <Flame className="w-5 h-5" />
             </div>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">
+            <p className="text-xs font-bold text-disable_color uppercase tracking-wider mb-0.5">
               Active Days
             </p>
             <p className="text-2xl font-display font-bold text-slate-800">

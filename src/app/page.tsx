@@ -9,6 +9,7 @@ import {
   Notebook,
   TaskList,
   TimeInputModal,
+  ResourceVault,
 } from "@/components";
 import { useAppContext } from "@/context/app-context";
 import { ITask } from "@/models";
@@ -118,8 +119,8 @@ export default function Home() {
       <LandingOverlay />
       <Header />
 
-      {state.activeTab === EActiveTab.TRACKER ? (
-        <div className="flex-1 w-full flex flex-col lg:flex-row gap-8 lg:gap-12 px-4 lg:px-8 mt-4 relative">
+      {state.activeTab === EActiveTab.TRACKER && (
+        <div className="flex-1 w-full flex flex-col lg:flex-row gap-8 lg:gap-12 px-4 lg:px-8 mt-4 relative animate-fade-in">
           <div className="flex-1 min-w-0">
             <TaskList
               onOpenAddModal={handleOpenAddModal}
@@ -130,12 +131,19 @@ export default function Home() {
               onUndoTask={handleUndoTask}
             />
           </div>
-
           <AnalyticsDashboard />
         </div>
-      ) : (
-        <div className="flex-1 w-full flex flex-col px-4 lg:px-8 mt-4 relative">
+      )}
+
+      {state.activeTab === EActiveTab.NOTEBOOK && (
+        <div className="flex-1 w-full flex flex-col px-4 lg:px-8 mt-4 relative animate-fade-in">
           <Notebook />
+        </div>
+      )}
+
+      {state.activeTab === EActiveTab.VAULT && (
+        <div className="flex-1 w-full flex flex-col px-4 lg:px-8 mt-4 relative animate-fade-in">
+          <ResourceVault />
         </div>
       )}
 

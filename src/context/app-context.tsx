@@ -1,7 +1,7 @@
 "use client";
 
 import { INITIAL_TASKS } from "@/constants";
-import { INote, ITask, THistory } from "@/models";
+import { INote, IResource, ITask, THistory } from "@/models";
 
 import { db } from "@/utils/firebase";
 import { sanitizeForFirebase } from "@/utils/sanitize";
@@ -33,6 +33,7 @@ interface IAppState {
     | "midnight"
     | "nordic-dark"
     | "slate-dark";
+  resources: readonly IResource[];
   loadedFor: string | "guest" | null;
   activeTab: EActiveTab;
 }
@@ -66,6 +67,9 @@ type TAppAction =
   | { type: "ADD_NOTE"; payload: INote }
   | { type: "EDIT_NOTE"; payload: INote }
   | { type: "DELETE_NOTE"; payload: string }
+  | { type: "ADD_RESOURCE"; payload: IResource }
+  | { type: "UPDATE_RESOURCE"; payload: IResource }
+  | { type: "DELETE_RESOURCE"; payload: string }
   | { type: "SET_ACTIVE_TAB"; payload: EActiveTab };
 
 const initialState: IAppState = {
@@ -75,6 +79,7 @@ const initialState: IAppState = {
   lastResetTime: null,
   isLoaded: false,
   theme: "default",
+  resources: [],
   loadedFor: null,
   activeTab: EActiveTab.TRACKER,
 };
@@ -106,6 +111,7 @@ function appReducer(state: IAppState, action: TAppAction): IAppState {
         ...payload,
         tasks,
         notes: payload.notes || [],
+        resources: payload.resources || [],
         loadedFor: payload.loadedFor,
         isLoaded: true,
       };
@@ -213,6 +219,23 @@ function appReducer(state: IAppState, action: TAppAction): IAppState {
       return {
         ...state,
         notes: state.notes.filter((n) => n.id !== action.payload),
+      };
+
+    case "ADD_RESOURCE":
+      return { ...state, resources: [action.payload, ...state.resources] };
+
+    case "UPDATE_RESOURCE":
+      return {
+        ...state,
+        resources: state.resources.map((r) =>
+          r.id === action.payload.id ? action.payload : r,
+        ),
+      };
+
+    case "DELETE_RESOURCE":
+      return {
+        ...state,
+        resources: state.resources.filter((r) => r.id !== action.payload),
       };
 
     case "SET_ACTIVE_TAB":
@@ -338,6 +361,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
           history: state.history,
           lastResetTime: state.lastResetTime,
           theme: state.theme,
+          resources: state.resources,
         }),
       );
     } else if (user) {
@@ -350,6 +374,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
           history: state.history,
           lastResetTime: state.lastResetTime,
           theme: state.theme,
+          resources: state.resources,
         }),
       );
     }
@@ -359,6 +384,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
     state.history,
     state.lastResetTime,
     state.theme,
+    state.resources,
     isGuest,
     user?.uid,
     state.isLoaded,

@@ -22,8 +22,8 @@ const SingleNoteItem: React.FC<INoteItemProps> = ({
       className={cn(
         "p-4 rounded-2xl cursor-pointer transition-all border group relative",
         {
-          "bg-white border-brand-200 shadow-sm shadow-brand-500/5": isActive,
-          "bg-white border-transparent hover:bg-white/80 hover:border-slate-200":
+          "bg-base_color border-primary_color shadow-sm shadow-primary_color/5": isActive,
+          "bg-base_color/40 border-transparent hover:bg-base_color/80 hover:border-border_color":
             !isActive,
         },
       )}
@@ -31,20 +31,20 @@ const SingleNoteItem: React.FC<INoteItemProps> = ({
       <div className="flex items-start justify-between gap-2 mb-1">
         <h4
           className={cn("font-bold text-sm truncate pr-10", {
-            "text-brand-900": isActive,
-            "text-slate-700": !isActive,
+            "text-primary_color": isActive,
+            "text-heading_color": !isActive,
           })}
         >
           {previewText.split("\n")[0].substring(0, 40) || "New Note"}
         </h4>
       </div>
 
-      <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed mb-0.5">
+      <p className="text-xs text-heading_color_secondary line-clamp-2 leading-relaxed mb-0.5">
         {previewText}
       </p>
 
       <div className="flex items-center justify-end">
-        <span className="text-[10px] font-medium text-slate-400 whitespace-nowrap">
+        <span className="text-[10px] font-medium text-disable_color whitespace-nowrap">
           {format(new Date(note.updatedAt), "d MMMM yyyy")}
         </span>
       </div>
