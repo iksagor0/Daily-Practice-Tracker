@@ -16,7 +16,7 @@ const NoteList: React.FC<INoteListProps> = ({
   }, [notes]);
 
   return (
-    <div className="w-full lg:w-80 flex flex-col h-full bg-base_color/40 backdrop-blur-xl rounded-3xl border border-border_color shadow-xl shadow-base_color/10 p-4">
+    <div className="w-full md:w-64 lg:w-80 flex flex-col h-full bg-base_color/40 backdrop-blur-xl rounded-3xl border border-border_color shadow-xl shadow-base_color/10 p-4 shrink-0">
       <div className="flex items-center justify-between mb-6 px-2">
         <h2 className="text-lg font-display font-bold text-heading_color flex items-center gap-2">
           <FileText className="w-5 h-5 text-primary_color" />
@@ -36,7 +36,9 @@ const NoteList: React.FC<INoteListProps> = ({
             <div className="w-12 h-12 bg-base_color border border-border_color rounded-full flex items-center justify-center mx-auto mb-3">
               <FileText className="w-6 h-6 text-disable_color" />
             </div>
-            <p className="text-sm font-medium text-heading_color">No notes yet</p>
+            <p className="text-sm font-medium text-heading_color">
+              No notes yet
+            </p>
             <p className="text-xs text-disable_color mt-1">
               Click the + button to create one.
             </p>

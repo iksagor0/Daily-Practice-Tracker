@@ -60,7 +60,7 @@ const Notebook: React.FC = () => {
   const activeNote = state.notes.find((n) => n.id === activeNoteId) || null;
 
   return (
-    <div className="w-full lg:h-[calc(100vh-140px)] flex flex-col lg:flex-row gap-6 animate-fade-in fill-mode-forwards">
+    <div className="w-full md:h-[calc(100vh-140px)] flex flex-col-reverse md:flex-row gap-3 lg:gap-6 animate-fade-in fill-mode-forwards">
       <NoteList
         notes={state.notes}
         activeNoteId={activeNoteId}
