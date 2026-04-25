@@ -1,19 +1,26 @@
 "use client";
 
+import { FirebaseError } from "firebase/app";
+import {
+  User,
+  getRedirectResult,
+  onAuthStateChanged,
+  signInWithPopup,
+  signInWithRedirect,
+  signOut,
+} from "firebase/auth";
 import React, {
+  ReactNode,
   createContext,
   useContext,
   useEffect,
   useState,
-  ReactNode,
 } from "react";
-import {
-  User,
-  onAuthStateChanged,
-  signInWithPopup,
-  signOut,
-} from "firebase/auth";
 import { auth, googleProvider } from "@/utils/firebase";
+
+enum EAuthErrorCode {
+  POPUP_BLOCKED = "auth/popup-blocked",
+}
 
 interface IAuthContext {
   user: User | null;
@@ -29,15 +36,29 @@ const AuthContext = createContext<IAuthContext | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<User | null>(null);
   const [isGuest, setIsGuest] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [user, setUser] = useState<User | null>(null);
 
-  const loginWithGoogle = async () => {
+  const loginWithGoogle = async (): Promise<void> => {
+    setIsLoading(true);
     try {
       await signInWithPopup(auth, googleProvider);
     } catch (error) {
-      console.error("Auth Error:", error);
+      if (
+        error instanceof FirebaseError &&
+        error.code === EAuthErrorCode.POPUP_BLOCKED
+      ) {
+        try {
+          await signInWithRedirect(auth, googleProvider);
+        } catch (redirectError) {
+          console.error("Redirect Auth Error:", redirectError);
+          setIsLoading(false);
+        }
+      } else {
+        console.error("Auth Error:", error);
+        setIsLoading(false);
+      }
     }
   };
 
@@ -76,6 +97,21 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         setIsLoading(false);
       },
     );
+
+    const handleRedirect = async (): Promise<void> => {
+      try {
+        const result = await getRedirectResult(auth);
+        if (result?.user) {
+          setUser(result.user);
+          setIsGuest(false);
+          localStorage.removeItem("isGuestTracker");
+        }
+      } catch (error) {
+        console.error("Redirect Result Error:", error);
+      }
+    };
+
+    handleRedirect();
 
     return () => unsubscribe();
   }, []);
