@@ -3,4 +3,5 @@ export interface INote {
   readonly content: string;
   readonly createdAt: number;
   readonly updatedAt: number;
+  readonly pinned?: boolean;
 }

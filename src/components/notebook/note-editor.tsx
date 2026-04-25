@@ -85,15 +85,16 @@ const NoteEditor: React.FC<INoteEditorProps> = ({
   }
 
   return (
-    <div className="w-full h-screen md:h-full md:flex-1 flex flex-col bg-base_color/80 backdrop-blur-xl rounded-3xl border border-border_color shadow-xl shadow-slate-200/10 overflow-hidden">
+    <div className="w-full h-screen md:h-full md:flex-1 flex flex-col bg-base_color/80 backdrop-blur-xl rounded-2xl border border-border_color shadow-xl shadow-slate-200/10 overflow-hidden">
       {/* Editor Header */}
-      <div className="p-4 lg:px-6 lg:py-4 border-b border-border_color/50 flex items-center justify-between bg-base_color/30 flex-wrap gap-2">
+      <div className="p-4 lg:py-2 border-b border-border_color/50 flex items-center justify-between bg-base_color/30 flex-wrap gap-2">
         <div className="flex flex-col lg:flex-row items-start lg:items-center lg:gap-2">
           <span className="text-xs font-bold text-heading_color_secondary tracking-wider bg-primary_color/5 py-1 px-2 rounded-lg">
             {format(new Date(note.createdAt), "d MMMM, yyyy")}
           </span>
           <span className="text-[10px] font-medium text-disable_color">
-            Last edited: {format(new Date(note.updatedAt), "dd-MM-yyyy hh:mm a")}
+            Last edited:{" "}
+            {format(new Date(note.updatedAt), "dd-MM-yyyy hh:mm a")}
           </span>
         </div>
 

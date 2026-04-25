@@ -37,17 +37,3 @@ export interface ITimeInputModalProps {
 export interface ITaskTimeBadgeProps {
   targetStr: string;
 }
-
-export interface IDragState {
-  id: string;
-  task: ITask;
-  startX: number;
-  startY: number;
-  currentX: number;
-  currentY: number;
-  offsetX: number;
-  offsetY: number;
-  width: number;
-  height: number;
-  isDragging: boolean;
-}

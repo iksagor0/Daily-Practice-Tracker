@@ -57,6 +57,10 @@ const Notebook: React.FC = () => {
     }
   };
 
+  const handleTogglePin = (id: string) => {
+    dispatch({ type: "TOGGLE_NOTE_PIN", payload: id });
+  };
+
   const activeNote = state.notes.find((n) => n.id === activeNoteId) || null;
 
   return (
@@ -67,6 +71,7 @@ const Notebook: React.FC = () => {
         onSelectNote={setActiveNoteId}
         onAddNote={handleAddNote}
         onDeleteNote={handleDeleteNote}
+        onTogglePin={handleTogglePin}
       />
       <NoteEditor
         key={activeNoteId || "empty"}

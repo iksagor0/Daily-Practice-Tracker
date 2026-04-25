@@ -67,6 +67,8 @@ type TAppAction =
   | { type: "ADD_NOTE"; payload: INote }
   | { type: "EDIT_NOTE"; payload: INote }
   | { type: "DELETE_NOTE"; payload: string }
+  | { type: "REORDER_NOTES"; payload: { sourceId: string; targetId: string } }
+  | { type: "TOGGLE_NOTE_PIN"; payload: string }
   | { type: "ADD_RESOURCE"; payload: IResource }
   | { type: "UPDATE_RESOURCE"; payload: IResource }
   | { type: "DELETE_RESOURCE"; payload: string }
@@ -219,6 +221,28 @@ function appReducer(state: IAppState, action: TAppAction): IAppState {
       return {
         ...state,
         notes: state.notes.filter((n) => n.id !== action.payload),
+      };
+ 
+    case "REORDER_NOTES": {
+      const { sourceId, targetId } = action.payload;
+      const notes = [...state.notes];
+      const sourceIndex = notes.findIndex((n) => n.id === sourceId);
+      const targetIndex = notes.findIndex((n) => n.id === targetId);
+ 
+      if (sourceIndex === -1 || targetIndex === -1) return state;
+ 
+      const [movedNote] = notes.splice(sourceIndex, 1);
+      notes.splice(targetIndex, 0, movedNote);
+ 
+      return { ...state, notes };
+    }
+ 
+    case "TOGGLE_NOTE_PIN":
+      return {
+        ...state,
+        notes: state.notes.map((n) =>
+          n.id === action.payload ? { ...n, pinned: !n.pinned } : n,
+        ),
       };
 
     case "ADD_RESOURCE":

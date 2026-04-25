@@ -16,7 +16,7 @@ const TaskList: React.FC<ITaskListProps> = ({
   onUndoTask,
 }) => {
   const { state, dispatch } = useAppContext();
-  const [dragState, setDragState] = useState<IDragState | null>(null);
+  const [dragState, setDragState] = useState<IDragState<ITask> | null>(null);
 
   const todoTasks = state.tasks.filter((t) => t.status === "TODO");
   const doneTasks = state.tasks.filter((t) => t.status === "DONE");
