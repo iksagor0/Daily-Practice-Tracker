@@ -1,6 +1,6 @@
 "use client";
 
-import { APP_DESCRIPTION, APP_NAME } from "@/constants";
+import { APP_DESCRIPTION, APP_SHORT_NAME } from "@/constants";
 import { format } from "date-fns";
 import Image from "next/image";
 import React, { useMemo } from "react";
@@ -27,8 +27,8 @@ const Header: React.FC = () => {
             className="w-9 h-9 object-contain rounded-lg"
           />
           <div className="text-left">
-            <h1 className="text-xl md:text-xl font-display font-extrabold text-heading_color tracking-tight leading-none">
-              {APP_NAME}
+            <h1 className="text-xl md:text-xl font-display font-extrabold text-heading_color tracking-tight leading-none uppercase">
+              {APP_SHORT_NAME}
             </h1>
             <p className="text-heading_color_secondary font-medium text-[10px] tracking-wide mt-px">
               {APP_DESCRIPTION}
