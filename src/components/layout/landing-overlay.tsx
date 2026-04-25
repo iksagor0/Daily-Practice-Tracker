@@ -1,5 +1,6 @@
 "use client";
 
+import { APP_NAME } from "@/constants";
 import { useAuth } from "@/context/auth-context";
 import { UserIcon } from "lucide-react";
 import Image from "next/image";
@@ -57,7 +58,7 @@ const LandingOverlay: React.FC = () => {
             />
           </div>
           <h1 className="text-3xl md:text-5xl font-display font-black text-slate-900 mb-3 tracking-tight">
-            Daily Practice Tracker
+            {APP_NAME}
           </h1>
           <p className="hidden md:block text-slate-500 text-lg font-medium max-w-md mx-auto">
             Build consistency, track progress, and achieve mastery in your daily
@@ -68,7 +69,7 @@ const LandingOverlay: React.FC = () => {
 
       <div className="bg-white/80 backdrop-blur-xl p-6 md:p-8 rounded-3xl border border-slate-300 md:shadow-lg w-full max-w-sm text-center transform transition-all animate-slide-up relative">
         <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6">
-          Access Your Tracker
+          Access Your App
         </p>
 
         <Button
