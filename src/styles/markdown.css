@@ -1,0 +1,62 @@
+#markdown * {
+  color: var(--color-heading_color_secondary);
+  font-family: "Inter", sans-serif;
+}
+
+#markdown h1 {
+  margin-bottom: 0.5rem;
+  color: var(--color-heading_color);
+  font-weight: 700;
+}
+
+#markdown h2,
+#markdown h3 {
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+  color: var(--color-heading_color);
+  font-weight: 700;
+}
+
+#markdown h4,
+#markdown h5,
+#markdown h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+  color: var(--color-heading_color);
+  font-weight: 700;
+}
+
+#markdown p,
+#markdown a,
+#markdown ul,
+#markdown ol,
+#markdown li,
+#markdown b {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+#markdown h1 {
+  font-size: 1.75rem;
+}
+
+#markdown p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+#markdown ul {
+  margin-top: -0.8rem;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+#markdown ul li {
+  padding-inline-start: 0;
+}
+
+#markdown li::marker {
+  color: var(--color-disable_color); /* #7d8288 */
+}

@@ -1,0 +1,317 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  /* Default Theme Variables */
+  --color-brand-50: #f0f9ff;
+  --color-brand-100: #e0f2fe;
+  --color-brand-200: #bae6fd;
+  --color-brand-400: #38bdf8;
+  --color-brand-500: #0ea5e9;
+  --color-brand-600: #0284c7;
+  --color-brand-700: #0369a1;
+  --color-brand-900: #0c4a6e;
+
+  --color-ui-bg: #f8fafc;
+  --color-ui-card: rgba(255, 255, 255, 0.7);
+  --color-ui-border: rgba(255, 255, 255, 0.4);
+
+  /* Required Variables from User Rule */
+  --color-primary_color: var(--color-brand-500);
+  --color-body_color: #f8fafc;
+  --color-body_text_color: #1e293b;
+  --color-heading_color: #0f172a;
+  --color-heading_color_secondary: #475569;
+  --color-base_color: #ffffff;
+  --color-border_color: #e2e8f0;
+  --color-primary_color_weak: rgba(14, 165, 233, 0.1);
+  --color-primary_color_light: #e0f2fe;
+  --color-secondary_color: #10b981;
+  --color-forground_color: #ffffff;
+  --color-error_color: #ef4444;
+  --color-error_bg_color: #fef2f2;
+  --color-error_border_color: #fecaca;
+  --color-success_color: #10b981;
+  --color-success_bg_color: #f0fdf4;
+  --color-success_border_color: #bbf7d0;
+  --color-warning_color: #f59e0b;
+  --color-warning_bg_color: #fffbeb;
+  --color-warning_border_color: #fef3c7;
+  --color-blur_color: rgba(255, 255, 255, 0.3);
+  --color-disable_color: #94a3b8;
+  --color-button_primary_color: var(--color-brand-500);
+
+  --font-sans: "Inter", sans-serif;
+  --font-display: "Outfit", sans-serif;
+
+  --animate-fade-in: fadeIn 0.4s ease-out forwards;
+  --animate-slide-up: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-scale-in: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-toast-bounce: toastBounce 0.6s ease-out 0.3s both;
+  --animate-float: float 10s infinite ease-in-out;
+  --animate-float-delayed: float-delayed 12s infinite ease-in-out;
+}
+
+/* Theme Overrides */
+[data-theme="sakura"] {
+  --color-brand-500: #ec4899;
+  --color-brand-600: #db2777;
+  --color-ui-bg: #fff1f2;
+  --color-body_color: #fff1f2;
+  --color-body_text_color: #4c0519;
+  --color-heading_color: #831843;
+  --color-ui-card: rgba(255, 255, 255, 0.7);
+  --color-ui-border: rgba(236, 72, 153, 0.1);
+  --color-primary_color_weak: rgba(236, 72, 153, 0.1);
+  --color-secondary_color: #f472b6;
+}
+
+[data-theme="earth"] {
+  --color-brand-500: #b45309;
+  --color-brand-600: #92400e;
+  --color-ui-bg: #fffbeb;
+  --color-body_color: #fffbeb;
+  --color-body_text_color: #451a03;
+  --color-heading_color: #78350f;
+  --color-ui-card: rgba(255, 255, 255, 0.7);
+  --color-ui-border: rgba(180, 83, 9, 0.1);
+  --color-primary_color_weak: rgba(180, 83, 9, 0.1);
+  --color-secondary_color: #d97706;
+}
+
+[data-theme="mint"] {
+  --color-brand-500: #059669;
+  --color-brand-600: #047857;
+  --color-ui-bg: #ecfdf5;
+  --color-body_color: #ecfdf5;
+  --color-body_text_color: #022c22;
+  --color-heading_color: #064e3b;
+  --color-ui-card: rgba(255, 255, 255, 0.7);
+  --color-ui-border: rgba(5, 150, 105, 0.1);
+  --color-primary_color_weak: rgba(5, 150, 105, 0.1);
+  --color-secondary_color: #10b981;
+}
+
+[data-theme="lavender"] {
+  --color-brand-500: #8b5cf6;
+  --color-brand-600: #7c3aed;
+  --color-ui-bg: #fafafa;
+  --color-body_color: #fafafa;
+  --color-body_text_color: #4c3e7b;
+  --color-heading_color: #2e1065;
+  --color-ui-card: rgba(255, 255, 255, 0.7);
+  --color-ui-border: rgba(139, 92, 246, 0.1);
+  --color-primary_color_weak: rgba(139, 92, 246, 0.1);
+  --color-secondary_color: #ec4899;
+}
+
+[data-theme="midnight"] {
+  --color-brand-500: #38bdf8;
+  --color-brand-600: #0ea5e9;
+  --color-ui-bg: #020617;
+  --color-body_color: #020617;
+  --color-body_text_color: #f1f5f9;
+  --color-heading_color: #ffffff;
+  --color-heading_color_secondary: #94a3b8;
+  --color-ui-card: rgba(15, 23, 42, 0.7);
+  --color-ui-border: rgba(255, 255, 255, 0.1);
+  --color-base_color: #0f172a;
+  --color-border_color: #1e293b;
+  --color-primary_color_weak: rgba(56, 189, 248, 0.15);
+  --color-secondary_color: #10b981;
+}
+
+[data-theme="nordic-dark"] {
+  --color-brand-500: #94a3b8;
+  --color-brand-600: #64748b;
+  --color-ui-bg: #1a1c1e;
+  --color-body_color: #1a1c1e;
+  --color-body_text_color: #e2e8f0;
+  --color-heading_color: #f8fafc;
+  --color-heading_color_secondary: #94a3b8;
+  --color-ui-card: rgba(30, 32, 35, 0.7);
+  --color-ui-border: rgba(255, 255, 255, 0.05);
+  --color-base_color: #2c2e33;
+  --color-border_color: #3e4147;
+  --color-primary_color_weak: rgba(148, 163, 184, 0.1);
+  --color-secondary_color: #576d65;
+}
+
+[data-theme="slate-dark"] {
+  --color-brand-500: #38bdf8;
+  --color-brand-600: #0ea5e9;
+  --color-ui-bg: #0f172a;
+  --color-body_color: #0f172a;
+  --color-body_text_color: #f1f5f9;
+  --color-heading_color: #ffffff;
+  --color-heading_color_secondary: #94a3b8;
+  --color-ui-card: rgba(30, 41, 59, 0.7);
+  --color-ui-border: rgba(255, 255, 255, 0.08);
+  --color-base_color: #1e293b;
+  --color-border_color: #334155;
+  --color-primary_color_weak: rgba(56, 189, 248, 0.1);
+  --color-secondary_color: #0ea5e9;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes toastBounce {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(15px, 15px);
+  }
+}
+
+@keyframes float-delayed {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-15px, -15px);
+  }
+}
+
+body {
+  background-color: var(--color-body_color);
+  color: var(--color-body_text_color);
+  transition:
+    background-color 0.5s ease,
+    color 0.5s ease;
+  min-height: 100vh;
+  background-attachment: fixed;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Theme-Aware Background Gradients */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  background-image:
+    radial-gradient(at 0% 0%, var(--color-brand-500) 0px, transparent 50%),
+    radial-gradient(
+      at 100% 0%,
+      var(--color-secondary_color) 0px,
+      transparent 50%
+    ),
+    radial-gradient(at 100% 100%, var(--color-brand-600) 0px, transparent 50%);
+  opacity: 0.1;
+  filter: blur(80px);
+}
+
+[data-theme="sakura"] body::before {
+  opacity: 0.15;
+  background-image:
+    radial-gradient(at 0% 0%, #ec4899 0px, transparent 50%),
+    radial-gradient(at 100% 100%, #f472b6 0px, transparent 50%);
+}
+
+[data-theme="earth"] body::before {
+  opacity: 0.12;
+  background-image:
+    radial-gradient(at 0% 0%, #b45309 0px, transparent 50%),
+    radial-gradient(at 100% 100%, #fbbf24 0px, transparent 50%);
+}
+
+[data-theme="mint"] body::before {
+  opacity: 0.08;
+  background-image:
+    radial-gradient(at 0% 0%, #10b981 0px, transparent 50%),
+    radial-gradient(at 100% 100%, #059669 0px, transparent 50%);
+}
+
+[data-theme="midnight"] body::before {
+  opacity: 0.3;
+  background-image:
+    radial-gradient(at 0% 0%, #38bdf8 0px, transparent 40%),
+    radial-gradient(at 100% 100%, #0ea5e9 0px, transparent 40%);
+}
+
+[data-theme="nordic-dark"] body::before {
+  opacity: 0.1;
+  background-image:
+    radial-gradient(at 0% 0%, #3e4147 0px, transparent 40%),
+    radial-gradient(at 100% 100%, #1a1c1e 0px, transparent 40%);
+}
+
+[data-theme="slate-dark"] body::before {
+  opacity: 0.12;
+  background-image:
+    radial-gradient(at 0% 0%, #1e293b 0px, transparent 40%),
+    radial-gradient(at 100% 100%, #0f172a 0px, transparent 40%);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-brand-500);
+  opacity: 0.3;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-brand-600);
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+button {
+  cursor: pointer;
+}

@@ -1,9 +1,12 @@
+import { AppProvider } from "@/context/app-context";
+import { AuthProvider } from "@/context/auth-context";
+import { cn } from "@/utils/cn";
 import type { Metadata, Viewport } from "next";
 import { Inter, Outfit } from "next/font/google";
-import { AuthProvider } from "@/context/auth-context";
-import { AppProvider } from "@/context/app-context";
-import { cn } from "@/utils/cn";
-import "./globals.css";
+
+import { APP_NAME } from "@/constants";
+import "../styles/globals.css";
+import "../styles/markdown.css";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -16,25 +19,26 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Daily Practice Tracker",
+  title: APP_NAME,
   description:
     "Build consistency. Track progress. Achieve mastery. A beautiful daily practice tracker to manage your learning habits, set goals, and celebrate achievements.",
-  authors: [{ name: "Daily Practice Tracker" }],
+  authors: [{ name: APP_NAME }],
   openGraph: {
     type: "website",
-    title: "Daily Practice Tracker",
+    title: APP_NAME,
     description:
       "Build consistency. Track progress. Achieve mastery. A beautiful daily practice tracker to manage your learning habits and celebrate achievements.",
-    siteName: "Daily Practice Tracker",
+    siteName: APP_NAME,
   },
   twitter: {
     card: "summary",
-    title: "Daily Practice Tracker",
+    title: APP_NAME,
     description:
       "Build consistency. Track progress. Achieve mastery. A beautiful daily practice tracker to manage your learning habits and celebrate achievements.",
   },
   icons: {
-    icon: "/favicon.png",
+    icon: "/logo.png",
+    shortcut: "/logo.ico",
   },
 };
 
@@ -48,12 +52,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
           inter.variable,
           outfit.variable,
-          "font-sans text-slate-800 antialiased selection:bg-brand-200 selection:text-brand-900 pb-20 overflow-x-hidden",
+          "font-sans text-slate-800 antialiased selection:bg-brand-200 selection:text-brand-900 pb-6 overflow-x-hidden",
         )}
       >
         <AuthProvider>

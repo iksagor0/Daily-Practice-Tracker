@@ -2,7 +2,7 @@ import React from "react";
 import { cn } from "@/utils/cn";
 import { TogglerProps } from "@/types";
 
-export const Toggler: React.FC<TogglerProps> = ({
+const Toggler: React.FC<TogglerProps> = ({
   enabled,
   onChange,
   className,
@@ -27,3 +27,5 @@ export const Toggler: React.FC<TogglerProps> = ({
     </button>
   );
 };
+
+export default Toggler;

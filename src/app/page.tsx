@@ -1,15 +1,20 @@
 "use client";
 
-import React, { useState } from "react";
-import { Header } from "@/components/header";
-import { TaskList } from "@/components/task-list";
-import { AnalyticsDashboard } from "@/components/analytics-dashboard";
-import { Footer } from "@/components/footer";
-import { AuthOverlay } from "@/components/auth-overlay";
-import { AddTaskModal } from "@/components/add-task-modal";
-import { TimeInputModal } from "@/components/time-input-modal";
+import {
+  AddTaskModal,
+  AnalyticsDashboard,
+  Footer,
+  Header,
+  LandingOverlay,
+  Notebook,
+  ResourceVault,
+  TaskList,
+  TimeInputModal,
+} from "@/components";
 import { useAppContext } from "@/context/app-context";
 import { ITask } from "@/models";
+import { EActiveTab } from "@/types";
+import { useState } from "react";
 
 export default function Home() {
   const { state, dispatch } = useAppContext();
@@ -111,24 +116,36 @@ export default function Home() {
 
   return (
     <main className="max-w-[1280px] mx-auto min-h-screen flex flex-col pt-4">
-      <AuthOverlay />
-
+      <LandingOverlay />
       <Header />
 
-      <div className="flex-1 w-full flex flex-col lg:flex-row gap-8 lg:gap-12 px-4 lg:px-8 mt-4 relative">
-        <div className="flex-1 min-w-0">
-          <TaskList
-            onOpenAddModal={handleOpenAddModal}
-            onEditTask={handleEditTask}
-            onDeleteTask={handleDeleteTask}
-            onMarkDoneTask={handleMarkDone}
-            onQuickDoneTask={handleQuickDone}
-            onUndoTask={handleUndoTask}
-          />
+      {state.activeTab === EActiveTab.TRACKER && (
+        <div className="flex-1 w-full flex flex-col lg:flex-row gap-8 lg:gap-12 px-4 lg:px-8 mt-2 relative animate-fade-in">
+          <div className="flex-1 min-w-0">
+            <TaskList
+              onOpenAddModal={handleOpenAddModal}
+              onEditTask={handleEditTask}
+              onDeleteTask={handleDeleteTask}
+              onMarkDoneTask={handleMarkDone}
+              onQuickDoneTask={handleQuickDone}
+              onUndoTask={handleUndoTask}
+            />
+          </div>
+          <AnalyticsDashboard />
         </div>
+      )}
 
-        <AnalyticsDashboard />
-      </div>
+      {state.activeTab === EActiveTab.NOTEBOOK && (
+        <div className="flex-1 w-full flex flex-col px-4 lg:px-8 mt-2 relative animate-fade-in">
+          <Notebook />
+        </div>
+      )}
+
+      {state.activeTab === EActiveTab.VAULT && (
+        <div className="flex-1 w-full flex flex-col px-4 lg:px-8 mt-2 relative animate-fade-in">
+          <ResourceVault />
+        </div>
+      )}
 
       <Footer />
 
