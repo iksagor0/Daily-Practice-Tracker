@@ -20,7 +20,7 @@ const TabNavigation: React.FC = () => {
 
   return (
     <nav className="flex justify-center border-b border-solid border-border_color pb-2">
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-0">
         {NAV_ITEMS.map((item) => {
           const isActive = state.activeTab === item.id;
           return (
@@ -28,7 +28,7 @@ const TabNavigation: React.FC = () => {
               key={item.id}
               onClick={() => handleTabChange(item.id)}
               className={cn(
-                "px-5 py-1.5 rounded-xl text-xs font-bold transition-all duration-300 ease-out relative",
+                "px-4 py-1.5 rounded-xl text-xs font-bold transition-all duration-300 ease-out relative",
                 {
                   "bg-primary_color_weak text-primary_color": isActive,
                   "text-heading_color_secondary hover:text-heading_color hover:bg-primary_color_weak/5":

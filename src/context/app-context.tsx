@@ -118,7 +118,7 @@ function appReducer(state: IAppState, action: TAppAction): IAppState {
     }
 
     case "ADD_TASK":
-      return { ...state, tasks: [...state.tasks, action.payload] };
+      return { ...state, tasks: [action.payload, ...state.tasks] };
 
     case "EDIT_TASK":
       return {
