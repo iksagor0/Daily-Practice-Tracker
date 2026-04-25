@@ -27,3 +27,17 @@ export interface ProgressSvgProps {
   mounted: boolean;
   className?: string;
 }
+
+export interface IDragState<T> {
+  id: string;
+  task: T;
+  startX: number;
+  startY: number;
+  currentX: number;
+  currentY: number;
+  offsetX: number;
+  offsetY: number;
+  width: number;
+  height: number;
+  isDragging: boolean;
+}

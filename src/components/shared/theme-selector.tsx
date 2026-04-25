@@ -10,10 +10,10 @@ const ThemeSelector: React.FC = () => {
   const { state, dispatch } = useAppContext();
 
   return (
-    <div className="bg-white/50 backdrop-blur-xl rounded-3xl p-6 border border-white/60 shadow-xl shadow-slate-200/40">
+    <div className="bg-base_color/50 backdrop-blur-xl rounded-3xl p-6 border border-border_color shadow-xl shadow-base_color/10">
       <div className="flex items-center gap-2 mb-6">
-        <Palette className="w-5 h-5 text-brand-500" />
-        <h2 className="text-lg font-display font-bold text-slate-900">
+        <Palette className="w-5 h-5 text-primary_color" />
+        <h2 className="text-lg font-display font-bold text-heading_color">
           Theme Store
         </h2>
       </div>
@@ -26,8 +26,8 @@ const ThemeSelector: React.FC = () => {
             className={cn(
               "relative flex flex-col items-start gap-2 p-3 rounded-2xl border transition-all duration-300 active:scale-95 group overflow-hidden cursor-pointer",
               state.theme === theme.id
-                ? "bg-white border-brand-500 shadow-md shadow-brand-500/10"
-                : "bg-white/40 border-slate-200 hover:border-brand-200 hover:bg-white/60",
+                ? "bg-base_color border-primary_color shadow-md shadow-primary_color/10"
+                : "bg-base_color/40 border-border_color/50 hover:border-primary_color/20 hover:bg-base_color/60",
             )}
           >
             {/* Theme Preview Dots */}
@@ -41,8 +41,8 @@ const ThemeSelector: React.FC = () => {
               className={cn(
                 "text-xs font-bold tracking-wide uppercase transition-colors",
                 state.theme === theme.id
-                  ? "text-brand-600"
-                  : "text-slate-500 group-hover:text-slate-700",
+                  ? "text-primary_color"
+                  : "text-heading_color_secondary group-hover:text-heading_color",
               )}
             >
               {theme.name}
@@ -50,7 +50,7 @@ const ThemeSelector: React.FC = () => {
 
             {state.theme === theme.id && (
               <div className="absolute top-2 right-2">
-                <Check className="w-3 h-3 text-brand-500" />
+                <Check className="w-3 h-3 text-primary_color" />
               </div>
             )}
 

@@ -9,7 +9,7 @@ import React from "react";
 import Button from "../atoms/button";
 
 const AuthSection: React.FC = () => {
-  const { user, isGuest, isLoading, loginWithGoogle, logout } = useAuth();
+  const { user, isLoading, loginWithGoogle, logout } = useAuth();
   const { dispatch } = useAppContext();
 
   const handleLogout = () => {
@@ -22,7 +22,7 @@ const AuthSection: React.FC = () => {
   return (
     <div className="bg-base_color p-1 rounded-xl shadow-xs border border-border_color flex items-center">
       {user ? (
-        <div className="flex items-center gap-2 pl-2 pr-1">
+        <div className="relative flex items-center gap-1 md:gap-2 pl-2 pr-1 group">
           <Image
             src={user?.photoURL || "/default-avatar.png"}
             alt="Profile"
@@ -33,6 +33,9 @@ const AuthSection: React.FC = () => {
           <span className="text-xs font-bold text-heading_color max-w-[100px] truncate">
             {user?.displayName}
           </span>
+          <span className="px-3 py-1 rounded-lg bg-base_color/90 border border-border_color text-xs font-bold text-heading_color max-w-[200px] truncate hidden group-hover:block absolute top-full right-0 mt-1.5 z-50">
+            {user?.email}
+          </span>
           <Button
             onClick={handleLogout}
             className="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 transition-colors"
@@ -41,7 +44,7 @@ const AuthSection: React.FC = () => {
             <LogOut className="w-3.5 h-3.5" />
           </Button>
         </div>
-      ) : isGuest ? (
+      ) : (
         <div className="flex items-center gap-1.5 pl-2 pr-1">
           <div className="w-5 h-5 rounded-full bg-base_color/50 border border-border_color flex items-center justify-center">
             <span className="text-[10px] font-bold text-disable_color">G</span>
@@ -63,7 +66,7 @@ const AuthSection: React.FC = () => {
             <LogOut className="w-3.5 h-3.5" />
           </Button>
         </div>
-      ) : null}
+      )}
     </div>
   );
 };

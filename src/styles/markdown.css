@@ -1,11 +1,11 @@
 #markdown * {
-  color: #0f172a;
+  color: var(--color-heading_color_secondary);
   font-family: "Inter", sans-serif;
 }
 
 #markdown h1 {
   margin-bottom: 0.5rem;
-  color: #37393d;
+  color: var(--color-heading_color);
   font-weight: 700;
 }
 
@@ -13,7 +13,7 @@
 #markdown h3 {
   margin-top: 0;
   margin-bottom: 0.25rem;
-  color: #37393d;
+  color: var(--color-heading_color);
   font-weight: 700;
 }
 
@@ -22,7 +22,7 @@
 #markdown h6 {
   margin-top: 0;
   margin-bottom: 0;
-  color: #37393d;
+  color: var(--color-heading_color);
   font-weight: 700;
 }
 
@@ -33,7 +33,7 @@
 #markdown li,
 #markdown b {
   margin: 0;
-  font-size: 15px;
+  font-size: 1rem;
   font-weight: 400;
 }
 
@@ -42,17 +42,21 @@
 }
 
 #markdown p {
-  font-size: 1rem;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  font-weight: 500;
 }
 
 #markdown ul {
+  margin-top: -0.8rem;
   margin-bottom: 1rem;
   margin-left: 1rem;
 }
+
 #markdown ul li {
   padding-inline-start: 0;
 }
 
 #markdown li::marker {
-  color: #7d8288;
+  color: var(--color-disable_color); /* #7d8288 */
 }

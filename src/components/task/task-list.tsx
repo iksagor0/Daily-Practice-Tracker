@@ -1,25 +1,11 @@
 import { useAppContext } from "@/context/app-context";
 import { ITask } from "@/models";
-import { ITaskListProps } from "@/types";
+import { IDragState, ITaskListProps } from "@/types";
 import { Plus } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { Button } from "../atoms";
 import TaskCard from "./task-card";
-
-interface DragState {
-  id: string;
-  task: ITask;
-  startX: number;
-  startY: number;
-  currentX: number;
-  currentY: number;
-  offsetX: number;
-  offsetY: number;
-  width: number;
-  height: number;
-  isDragging: boolean;
-}
 
 const TaskList: React.FC<ITaskListProps> = ({
   onOpenAddModal,
@@ -30,7 +16,7 @@ const TaskList: React.FC<ITaskListProps> = ({
   onUndoTask,
 }) => {
   const { state, dispatch } = useAppContext();
-  const [dragState, setDragState] = useState<DragState | null>(null);
+  const [dragState, setDragState] = useState<IDragState<ITask> | null>(null);
 
   const todoTasks = state.tasks.filter((t) => t.status === "TODO");
   const doneTasks = state.tasks.filter((t) => t.status === "DONE");

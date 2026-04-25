@@ -1,8 +1,9 @@
+import { useAppContext } from "@/context/app-context";
 import { INoteEditorProps } from "@/types/notebook.types";
 import { cn } from "@/utils/cn";
 import { format } from "date-fns";
 import { Download, Edit3, Eye, Upload } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import EmptyState from "./empty-state";
 import MarkdownPreview from "./markdown-preview";
 
@@ -11,9 +12,18 @@ const NoteEditor: React.FC<INoteEditorProps> = ({
   onChange,
   onAddNote,
 }) => {
-  const [viewMode, setViewMode] = useState<"WRITE" | "PREVIEW">("WRITE");
-  const [localContent, setLocalContent] = useState(note?.content || "");
+  const { state } = useAppContext();
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [localContent, setLocalContent] = useState(note?.content || "");
+  const [viewMode, setViewMode] = useState<"WRITE" | "PREVIEW">(
+    note && note.content ? "PREVIEW" : "WRITE",
+  );
+
+  const isDark = useMemo(
+    () => ["midnight", "nordic-dark", "slate-dark"].includes(state.theme),
+    [state.theme],
+  );
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -75,21 +85,22 @@ const NoteEditor: React.FC<INoteEditorProps> = ({
   }
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-base_color/80 backdrop-blur-xl rounded-3xl border border-border_color shadow-xl shadow-slate-200/10 overflow-hidden min-h-[500px]">
+    <div className="w-full h-screen md:h-full md:flex-1 flex flex-col bg-base_color/80 backdrop-blur-xl rounded-2xl border border-border_color shadow-xl shadow-slate-200/10 overflow-hidden">
       {/* Editor Header */}
-      <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-white/50 flex-wrap gap-4">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-heading_color_secondary tracking-wider bg-base_color/50 px-2.5 py-1 rounded-lg">
+      <div className="p-4 lg:py-2 border-b border-border_color/50 flex items-center justify-between bg-base_color/30 flex-wrap gap-2">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center lg:gap-2">
+          <span className="text-xs font-bold text-heading_color_secondary tracking-wider bg-primary_color/5 py-1 px-2 rounded-lg">
             {format(new Date(note.createdAt), "d MMMM, yyyy")}
           </span>
           <span className="text-[10px] font-medium text-disable_color">
-            Last edited {format(new Date(note.updatedAt), "hh:mm a")}
+            Last edited:{" "}
+            {format(new Date(note.updatedAt), "dd-MM-yyyy hh:mm a")}
           </span>
         </div>
 
         <div className="flex items-center gap-3">
           {/* File Operations */}
-          <div className="flex items-center gap-1 mr-2">
+          <div className="flex items-center gap-1">
             {!localContent && (
               <>
                 <input
@@ -101,7 +112,7 @@ const NoteEditor: React.FC<INoteEditorProps> = ({
                 />
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-brand-600 hover:bg-brand-50 transition-colors cursor-pointer"
+                  className="p-1.5 rounded-lg text-heading_color_secondary hover:text-primary_color hover:bg-primary_color/10 transition-colors cursor-pointer"
                   title="Import Markdown"
                 >
                   <Upload className="w-4 h-4" />
@@ -112,7 +123,7 @@ const NoteEditor: React.FC<INoteEditorProps> = ({
               onClick={handleExport}
               disabled={!localContent.trim()}
               className={cn(
-                "p-1.5 rounded-lg text-slate-400 hover:text-brand-600 hover:bg-brand-50 transition-colors cursor-pointer",
+                "p-1.5 rounded-lg text-heading_color_secondary hover:text-primary_color hover:bg-primary_color/10 transition-colors cursor-pointer",
                 {
                   "opacity-30 cursor-not-allowed pointer-events-none":
                     !localContent.trim(),
@@ -125,14 +136,16 @@ const NoteEditor: React.FC<INoteEditorProps> = ({
           </div>
 
           {/* View Toggle */}
-          <div className="bg-slate-100/80 p-1 rounded-xl flex items-center">
+          <div className="bg-primary_color/5 p-1 rounded-xl flex items-center border border-border_color/20">
             <button
               onClick={() => setViewMode("WRITE")}
               className={cn(
                 "px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5",
                 {
-                  "bg-white text-brand-600 shadow-sm": viewMode === "WRITE",
-                  "text-slate-500 hover:text-slate-700": viewMode !== "WRITE",
+                  "bg-base_color text-primary_color shadow-sm":
+                    viewMode === "WRITE",
+                  "text-heading_color_secondary hover:text-heading_color":
+                    viewMode !== "WRITE",
                 },
               )}
             >
@@ -144,8 +157,10 @@ const NoteEditor: React.FC<INoteEditorProps> = ({
               className={cn(
                 "px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5",
                 {
-                  "bg-white text-brand-600 shadow-sm": viewMode === "PREVIEW",
-                  "text-slate-500 hover:text-slate-700": viewMode !== "PREVIEW",
+                  "bg-base_color text-primary_color shadow-sm":
+                    viewMode === "PREVIEW",
+                  "text-heading_color_secondary hover:text-heading_color":
+                    viewMode !== "PREVIEW",
                 },
               )}
             >
@@ -157,24 +172,32 @@ const NoteEditor: React.FC<INoteEditorProps> = ({
       </div>
 
       {/* Editor Body */}
-      <div className="flex-1 overflow-hidden relative">
+      <div className="flex-1 flex flex-col h-full overflow-hidden relative pb-2 md:pb-0">
         {viewMode === "WRITE" ? (
           <textarea
             value={localContent}
             onChange={(e) => setLocalContent(e.target.value)}
             placeholder="Write down your daily reflections, study notes, or brainstorm ideas using Markdown..."
-            className="w-full h-full p-4 lg:p-6 resize-none bg-transparent focus:outline-none text-heading_color_secondary leading-relaxed font-medium placeholder:text-disable_color custom-scrollbar"
+            className="flex-1 min-h-[400px] h-full w-full p-4 lg:p-6 resize-none bg-transparent focus:outline-none text-heading_color_secondary leading-relaxed font-medium placeholder:text-disable_color custom-scrollbar"
             autoFocus
           />
         ) : (
           <div
             id="markdown"
-            className="mark-down-preview-wrapper w-full h-full overflow-y-auto p-4 lg:p-6 custom-scrollbar prose prose-slate prose-brand max-w-none prose-headings:font-display prose-headings:font-bold prose-a:text-brand-600"
+            className={cn(
+              "mark-down-preview-wrapper flex-1 w-full overflow-y-auto p-4 lg:p-6 custom-scrollbar prose max-w-none prose-headings:font-display prose-headings:font-bold prose-a:text-primary_color min-h-[400px] lg:min-h-0",
+              {
+                "prose-invert": isDark,
+                "prose-slate": !isDark,
+              },
+            )}
           >
             {localContent ? (
               <MarkdownPreview content={localContent} />
             ) : (
-              <div className="text-slate-400 italic">Nothing to preview...</div>
+              <div className="text-disable_color italic">
+                Nothing to preview...
+              </div>
             )}
           </div>
         )}
