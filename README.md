@@ -2,8 +2,6 @@
 
 A premium, modern web application designed for continuous, small improvements every day. **Kaizen** helps you track daily learning habits, document reflections, and manage a curated vault of resources with elegance. Built with **Next.js 16**, **React 19**, and **Tailwind CSS v4**, it combines professional performance with a stunning glassmorphic UI.
 
-![Kaizen](https://github.com/iksagor0/Daily-Practice-Tracker/raw/main/public/favicon.svg)
-
 ## ✨ Core Features
 
 - **📋 Daily Task Tracker** — Effortlessly add, edit, and organize your daily practice routines with smart daily resets.
