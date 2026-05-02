@@ -102,7 +102,10 @@ export default function Home() {
   };
 
   const handleQuickDone = (taskId: string) => {
-    dispatch({ type: "COMPLETE_TASK", payload: { id: taskId, timeSpent: 0 } });
+    dispatch({
+      type: "COMPLETE_TASK",
+      payload: { id: taskId, timeSpent: 0, repeatDaily: false },
+    });
   };
 
   const handleSubmitTime = (taskId: string, timeSpent: number) => {

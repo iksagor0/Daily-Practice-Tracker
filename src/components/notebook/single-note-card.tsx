@@ -1,7 +1,7 @@
 import { INoteCardProps } from "@/types/notebook.types";
 import { cn } from "@/utils/cn";
 import { format } from "date-fns";
-import { Pin, Trash2 } from "lucide-react";
+import { Archive, ArchiveRestore, Pin, Trash2 } from "lucide-react";
 import React from "react";
 
 const SingleNoteCard: React.FC<INoteCardProps> = ({
@@ -10,10 +10,10 @@ const SingleNoteCard: React.FC<INoteCardProps> = ({
   onSelect,
   onDelete,
   onTogglePin,
+  onToggleArchive,
   onCustomDragStart,
   isHidden,
 }) => {
-  // Extract a small snippet from content for the preview
   const rawText = note.content.trim() || "Empty note...";
   const previewText = rawText
     .replace(/^[#*>-]+\s*/gm, "")
@@ -35,12 +35,11 @@ const SingleNoteCard: React.FC<INoteCardProps> = ({
       onClick={() => onSelect(note.id)}
       data-note-id={note.id}
       className={cn(
-        "p-4 rounded-2xl cursor-pointer transition-all border group relative flex items-start gap-3 w-full",
+        "p-4 rounded-2xl cursor-pointer transition-all border group relative flex items-start gap-3 w-full bg-base_color/50 border-border_color/70 hover:bg-base_color/90 hover:border-border_color",
         {
           "bg-base_color border-primary_color shadow-sm shadow-primary_color/5":
             isActive,
-          "bg-base_color/40 border-transparent hover:bg-base_color/80 hover:border-border_color":
-            !isActive,
+          "grayscale-[0.5] opacity-70": note.archived,
         },
       )}
     >
@@ -63,6 +62,11 @@ const SingleNoteCard: React.FC<INoteCardProps> = ({
             })}
           >
             {previewText.split("\n")[0].substring(0, 40) || "New Note"}
+            {note.archived && (
+              <span className="shrink-0 bg-disable_color/10 text-disable_color text-[8px] uppercase tracking-wider font-bold px-1 py-0.5 rounded-sm">
+                Archived
+              </span>
+            )}
           </h4>
         </div>
 
@@ -85,6 +89,32 @@ const SingleNoteCard: React.FC<INoteCardProps> = ({
         <button
           onClick={(e) => {
             e.stopPropagation();
+            onDelete(note.id);
+          }}
+          className="text-rose-700 cursor-pointer hover:scale-110 transition-transform"
+          title="Delete note"
+        >
+          <Trash2 className="w-3 h-3" />
+        </button>
+
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleArchive(note.id);
+          }}
+          className="text-amber-500 cursor-pointer hover:scale-110 transition-transform"
+          title={note.archived ? "Unarchive note" : "Archive note"}
+        >
+          {note.archived ? (
+            <ArchiveRestore className="w-3 h-3" />
+          ) : (
+            <Archive className="w-3 h-3" />
+          )}
+        </button>
+
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
             onTogglePin(note.id);
           }}
           className={cn("cursor-pointer hover:scale-110 transition-transform", {
@@ -94,19 +124,8 @@ const SingleNoteCard: React.FC<INoteCardProps> = ({
           title={note.pinned ? "Unpin note" : "Pin note"}
         >
           <Pin
-            className={cn("w-3.5 h-3.5", { "fill-primary_color": note.pinned })}
+            className={cn("w-3 h-3", { "fill-primary_color": note.pinned })}
           />
-        </button>
-
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onDelete(note.id);
-          }}
-          className="text-rose-700 cursor-pointer hover:scale-110 transition-transform"
-          title="Delete note"
-        >
-          <Trash2 className="w-3.5 h-3.5" />
         </button>
       </div>
     </div>

@@ -21,7 +21,7 @@ const NoteEditor: React.FC<INoteEditorProps> = ({
   );
 
   const isDark = useMemo(
-    () => ["midnight", "nordic-dark", "slate-dark"].includes(state.theme),
+    () => ["midnight", "eye-comfort", "slate-dark"].includes(state.theme),
     [state.theme],
   );
 

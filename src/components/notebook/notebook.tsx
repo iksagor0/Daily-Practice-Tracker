@@ -7,6 +7,7 @@ import NoteList from "./note-list";
 const Notebook: React.FC = () => {
   const { state, dispatch } = useAppContext();
   const [activeNoteId, setActiveNoteId] = useState<string | null>(null);
+  const [showArchived, setShowArchived] = useState(false);
 
   const handleAddNote = (content: string = "") => {
     const contentStr = typeof content === "string" ? content : "";
@@ -61,17 +62,28 @@ const Notebook: React.FC = () => {
     dispatch({ type: "TOGGLE_NOTE_PIN", payload: id });
   };
 
+  const handleToggleArchive = (id: string) => {
+    dispatch({ type: "TOGGLE_ARCHIVE_NOTE", payload: id });
+  };
+
+  const filteredNotes = state.notes.filter((n) =>
+    showArchived ? n.archived : !n.archived,
+  );
+
   const activeNote = state.notes.find((n) => n.id === activeNoteId) || null;
 
   return (
     <div className="w-full md:h-[calc(100vh-140px)] flex flex-col-reverse md:flex-row gap-3 lg:gap-6 animate-fade-in fill-mode-forwards">
       <NoteList
-        notes={state.notes}
+        notes={filteredNotes}
         activeNoteId={activeNoteId}
         onSelectNote={setActiveNoteId}
         onAddNote={handleAddNote}
         onDeleteNote={handleDeleteNote}
         onTogglePin={handleTogglePin}
+        onToggleArchive={handleToggleArchive}
+        showArchived={showArchived}
+        onToggleShowArchived={setShowArchived}
       />
       <NoteEditor
         key={activeNoteId || "empty"}

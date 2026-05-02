@@ -31,7 +31,7 @@ interface IAppState {
     | "mint"
     | "lavender"
     | "midnight"
-    | "nordic-dark"
+    | "eye-comfort"
     | "slate-dark";
   resources: readonly IResource[];
   loadedFor: string | "guest" | null;
@@ -59,7 +59,10 @@ type TAppAction =
       >;
     }
   | { type: "DELETE_TASK"; payload: string }
-  | { type: "COMPLETE_TASK"; payload: { id: string; timeSpent: number } }
+  | {
+      type: "COMPLETE_TASK";
+      payload: { id: string; timeSpent: number; repeatDaily?: boolean };
+    }
   | { type: "UNDO_TASK"; payload: string }
   | { type: "RUN_DAILY_RESET"; payload: string }
   | { type: "SET_THEME"; payload: IAppState["theme"] }
@@ -69,10 +72,12 @@ type TAppAction =
   | { type: "DELETE_NOTE"; payload: string }
   | { type: "REORDER_NOTES"; payload: { sourceId: string; targetId: string } }
   | { type: "TOGGLE_NOTE_PIN"; payload: string }
+  | { type: "TOGGLE_ARCHIVE_NOTE"; payload: string }
   | { type: "ADD_RESOURCE"; payload: IResource }
   | { type: "UPDATE_RESOURCE"; payload: IResource }
   | { type: "DELETE_RESOURCE"; payload: string }
   | { type: "REORDER_RESOURCES"; payload: { sourceId: string; targetId: string } }
+  | { type: "TOGGLE_ARCHIVE_RESOURCE"; payload: string }
   | { type: "SET_ACTIVE_TAB"; payload: EActiveTab };
 
 const initialState: IAppState = {
@@ -147,6 +152,10 @@ function appReducer(state: IAppState, action: TAppAction): IAppState {
                 status: "DONE",
                 actualTime: action.payload.timeSpent,
                 completedAt: Date.now(),
+                repeatDaily:
+                  action.payload.repeatDaily !== undefined
+                    ? action.payload.repeatDaily
+                    : t.repeatDaily,
               }
             : t,
         ),
@@ -246,6 +255,14 @@ function appReducer(state: IAppState, action: TAppAction): IAppState {
         ),
       };
 
+    case "TOGGLE_ARCHIVE_NOTE":
+      return {
+        ...state,
+        notes: state.notes.map((n) =>
+          n.id === action.payload ? { ...n, archived: !n.archived } : n,
+        ),
+      };
+
     case "ADD_RESOURCE":
       return { ...state, resources: [action.payload, ...state.resources] };
 
@@ -276,6 +293,14 @@ function appReducer(state: IAppState, action: TAppAction): IAppState {
 
       return { ...state, resources };
     }
+
+    case "TOGGLE_ARCHIVE_RESOURCE":
+      return {
+        ...state,
+        resources: state.resources.map((r) =>
+          r.id === action.payload ? { ...r, archived: !r.archived } : r,
+        ),
+      };
 
     case "SET_ACTIVE_TAB":
       return { ...state, activeTab: action.payload };

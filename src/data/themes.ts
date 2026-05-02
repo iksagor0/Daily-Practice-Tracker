@@ -38,8 +38,8 @@ export const THEMES = [
   },
 
   {
-    id: "nordic-dark",
-    name: "Nordic Night",
-    colors: ["bg-[#1a1c1e]", "bg-[#2c2e33]"],
+    id: "eye-comfort",
+    name: "Eye Comfort",
+    colors: ["bg-[#1c1b18]", "bg-[#d97706]"],
   },
 ] as const;

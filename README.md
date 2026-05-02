@@ -5,8 +5,8 @@ A premium, modern web application designed for continuous, small improvements ev
 ## ✨ Core Features
 
 - **📋 Daily Task Tracker** — Effortlessly add, edit, and organize your daily practice routines with smart daily resets.
-- **📝 Integrated Notebook** — A powerful, markdown-supported notebook feature to document your learning journey alongside your tasks.
-- **📚 Resource Vault** — A central hub to store and categorize study materials, video links, and articles for quick access.
+- **📝 Integrated Notebook** — A powerful, markdown-supported notebook feature to document your learning journey alongside your tasks, now featuring a dedicated **Archive system** and note counters
+- **📚 Resource Vault** — A central hub to store and categorize study materials, video links, and articles for quick access, advanced **Tag filtering** and a robust **Archive feature**.
 - **💾 Markdown Portability** — Export your notes as standard `.md` files, or import existing `.md` and `.txt` files directly into your notebook.
 - **🔐 Secure Sync** — Full Google Authentication with seamless data persistence via Firebase Realtime Database.
 - **📊 Progress Analytics** — Gain insights with daily averages, weekly totals, and achievement milestones.
@@ -15,7 +15,7 @@ A premium, modern web application designed for continuous, small improvements ev
 - **📊 Advanced Analytics** — Gain insights with daily averages, weekly totals, and monthly milestone tracking.
 - **🌅 Smart Daily Reset** — Automated routine refresh at **6:00 AM Bangladesh Time** to keep your focus fresh.
 - **✨ Aesthetic Placeholders** — Hand-picked motivational GIFs and quotes that make an empty list feel like a clean slate.
-- **🎨 Elite Theme Engine** — Choose from curated, beautiful themes like "Sakura Blossom," "Midnight Horizon," and "Nordic Dark" with instant, flicker-free loading.
+- **🎨 Elite Theme Engine** — Choose from curated, beautiful themes like "Sakura Blossom," "Midnight Horizon," and "Eye Comfort" with instant, flicker-free loading.
 
 ## 🏆 Achievement System
 

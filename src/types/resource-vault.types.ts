@@ -4,6 +4,7 @@ export interface IResourceCardProps {
   resource: IResource;
   onDelete: (id: string) => void;
   onEdit: (resource: IResource) => void;
+  onArchive?: (id: string) => void;
   onCustomDragStart?: (e: React.PointerEvent, id: string) => void;
   isHidden?: boolean;
 }
@@ -27,12 +28,15 @@ export interface IVaultFiltersProps {
   allTags: string[];
   selectedTag: string | null;
   onTagSelect: (tag: string | null) => void;
+  showArchivedOnly: boolean;
+  onShowArchivedToggle: (val: boolean) => void;
 }
 
 export interface IVaultGridProps {
   resources: IResource[];
   onDelete: (id: string) => void;
   onEdit: (resource: IResource) => void;
+  onArchive: (id: string) => void;
   searchQuery: string;
   selectedTag: string | null;
 }

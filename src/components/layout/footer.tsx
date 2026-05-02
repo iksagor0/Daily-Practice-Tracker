@@ -5,7 +5,7 @@ import React from "react";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="w-full mt-12 pb-8 pt-6 border-t border-border_color flex flex-col md:flex-row items-center justify-between gap-6 px-4 lg:px-8">
+    <footer className="w-full mt-12 pb-4 pt-6 border-t border-border_color flex flex-col md:flex-row items-center justify-between gap-6 px-4 lg:px-8">
       <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-base_color/50 flex items-center justify-center border border-border_color shadow-sm shrink-0">
