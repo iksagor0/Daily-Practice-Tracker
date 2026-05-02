@@ -76,6 +76,7 @@ type TAppAction =
   | { type: "UPDATE_RESOURCE"; payload: IResource }
   | { type: "DELETE_RESOURCE"; payload: string }
   | { type: "REORDER_RESOURCES"; payload: { sourceId: string; targetId: string } }
+  | { type: "TOGGLE_ARCHIVE_RESOURCE"; payload: string }
   | { type: "SET_ACTIVE_TAB"; payload: EActiveTab };
 
 const initialState: IAppState = {
@@ -283,6 +284,14 @@ function appReducer(state: IAppState, action: TAppAction): IAppState {
 
       return { ...state, resources };
     }
+
+    case "TOGGLE_ARCHIVE_RESOURCE":
+      return {
+        ...state,
+        resources: state.resources.map((r) =>
+          r.id === action.payload ? { ...r, archived: !r.archived } : r,
+        ),
+      };
 
     case "SET_ACTIVE_TAB":
       return { ...state, activeTab: action.payload };

@@ -10,6 +10,7 @@ const VaultGrid: React.FC<IVaultGridProps> = ({
   resources,
   onDelete,
   onEdit,
+  onArchive,
   searchQuery,
   selectedTag,
 }) => {
@@ -135,6 +136,7 @@ const VaultGrid: React.FC<IVaultGridProps> = ({
             resource={resource}
             onDelete={onDelete}
             onEdit={onEdit}
+            onArchive={onArchive}
             onCustomDragStart={(e) =>
               handlePointerDown(e, resource.id, resource)
             }

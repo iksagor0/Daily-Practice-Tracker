@@ -11,6 +11,7 @@ const ResourceVault: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [showArchivedOnly, setShowArchivedOnly] = useState(false);
   const [editingResource, setEditingResource] = useState<IResource | null>(null);
 
   const allTags = useMemo(() => {
@@ -24,10 +25,36 @@ const ResourceVault: React.FC = () => {
       const matchesSearch =
         r?.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         r?.url?.toLowerCase().includes(searchQuery.toLowerCase());
+
+      if (showArchivedOnly) {
+        return matchesSearch && r.archived;
+      }
+
       const matchesTag = !selectedTag || r?.tags?.includes(selectedTag);
-      return matchesSearch && matchesTag;
+
+      // Rule: In "All Assets" (no tag), hide archived. If tag selected, show all (including archived).
+      const isArchivedHidden = !selectedTag ? !r.archived : true;
+
+      return matchesSearch && matchesTag && isArchivedHidden;
     });
-  }, [state?.resources, searchQuery, selectedTag]);
+  }, [state?.resources, searchQuery, selectedTag, showArchivedOnly]);
+
+  const handleTagSelect = useCallback((tag: string | null) => {
+    setSelectedTag(tag);
+    setShowArchivedOnly(false);
+  }, []);
+
+  const handleShowArchivedToggle = useCallback((val: boolean) => {
+    setShowArchivedOnly(val);
+    if (val) setSelectedTag(null);
+  }, []);
+
+  const handleArchiveResource = useCallback(
+    (id: string) => {
+      dispatch({ type: "TOGGLE_ARCHIVE_RESOURCE", payload: id });
+    },
+    [dispatch],
+  );
 
   const handleCloseModal = useCallback(() => {
     setIsModalOpen(false);
@@ -85,13 +112,16 @@ const ResourceVault: React.FC = () => {
       <VaultFilters
         allTags={allTags}
         selectedTag={selectedTag}
-        onTagSelect={setSelectedTag}
+        onTagSelect={handleTagSelect}
+        showArchivedOnly={showArchivedOnly}
+        onShowArchivedToggle={handleShowArchivedToggle}
       />
 
       <VaultGrid
         resources={filteredResources}
         onDelete={handleDeleteResource}
         onEdit={handleEditResource}
+        onArchive={handleArchiveResource}
         searchQuery={searchQuery}
         selectedTag={selectedTag}
       />

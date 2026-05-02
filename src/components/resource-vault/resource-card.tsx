@@ -6,6 +6,8 @@ import {
   Pencil,
   Trash2,
   Youtube,
+  Archive,
+  ArchiveRestore,
 } from "lucide-react";
 import NextLink from "next/link";
 import React from "react";
@@ -14,6 +16,7 @@ const ResourceCard: React.FC<IResourceCardProps> = ({
   resource,
   onDelete,
   onEdit,
+  onArchive,
   onCustomDragStart,
   isHidden,
 }) => {
@@ -48,6 +51,7 @@ const ResourceCard: React.FC<IResourceCardProps> = ({
         {
           "opacity-0 invisible": isHidden,
           "opacity-100": !isHidden,
+          "grayscale-[0.5] opacity-70": resource.archived,
         },
       )}
     >
@@ -68,8 +72,13 @@ const ResourceCard: React.FC<IResourceCardProps> = ({
             {_renderIcon()}
           </div>
           <div className="flex-1 flex flex-col overflow-hidden min-w-0">
-            <h3 className="font-display font-semibold text-heading_color leading-tight line-clamp-1 transition-colors">
+            <h3 className="font-display font-semibold text-heading_color leading-tight line-clamp-1 transition-colors flex items-center gap-1.5">
               {resource.title}
+              {resource.archived && (
+                <span className="shrink-0 bg-disable_color/10 text-disable_color text-[8px] uppercase tracking-wider font-bold px-1 py-0.5 rounded-sm">
+                  Archived
+                </span>
+              )}
             </h3>
             <NextLink
               href={resource.url}
@@ -84,6 +93,20 @@ const ResourceCard: React.FC<IResourceCardProps> = ({
 
         {/* actions */}
         <div className="flex flex-col items-center gap-2 shrink-0">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onArchive?.(resource.id);
+            }}
+            className="text-disable_color hover:text-amber-500 hover:bg-amber-500/5 transition-all opacity-0 group-hover:opacity-100"
+            title={resource.archived ? "Unarchive Resource" : "Archive Resource"}
+          >
+            {resource.archived ? (
+              <ArchiveRestore className="w-3.5 h-3.5" />
+            ) : (
+              <Archive className="w-3.5 h-3.5" />
+            )}
+          </button>
           <button
             onClick={(e) => {
               e.stopPropagation();

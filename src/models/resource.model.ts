@@ -5,4 +5,5 @@ export interface IResource {
   tags: string[];
   createdAt: number;
   updatedAt: number;
+  archived?: boolean;
 }
