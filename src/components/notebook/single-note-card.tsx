@@ -35,12 +35,10 @@ const SingleNoteCard: React.FC<INoteCardProps> = ({
       onClick={() => onSelect(note.id)}
       data-note-id={note.id}
       className={cn(
-        "p-4 rounded-2xl cursor-pointer transition-all border group relative flex items-start gap-3 w-full",
+        "p-4 rounded-2xl cursor-pointer transition-all border group relative flex items-start gap-3 w-full bg-base_color/50 border-border_color/70 hover:bg-base_color/90 hover:border-border_color",
         {
           "bg-base_color border-primary_color shadow-sm shadow-primary_color/5":
             isActive,
-          "bg-base_color/40 border-transparent hover:bg-base_color/80 hover:border-border_color":
-            !isActive,
         },
       )}
     >
