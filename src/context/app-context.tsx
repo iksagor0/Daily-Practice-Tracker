@@ -72,6 +72,7 @@ type TAppAction =
   | { type: "DELETE_NOTE"; payload: string }
   | { type: "REORDER_NOTES"; payload: { sourceId: string; targetId: string } }
   | { type: "TOGGLE_NOTE_PIN"; payload: string }
+  | { type: "TOGGLE_ARCHIVE_NOTE"; payload: string }
   | { type: "ADD_RESOURCE"; payload: IResource }
   | { type: "UPDATE_RESOURCE"; payload: IResource }
   | { type: "DELETE_RESOURCE"; payload: string }
@@ -251,6 +252,14 @@ function appReducer(state: IAppState, action: TAppAction): IAppState {
         ...state,
         notes: state.notes.map((n) =>
           n.id === action.payload ? { ...n, pinned: !n.pinned } : n,
+        ),
+      };
+
+    case "TOGGLE_ARCHIVE_NOTE":
+      return {
+        ...state,
+        notes: state.notes.map((n) =>
+          n.id === action.payload ? { ...n, archived: !n.archived } : n,
         ),
       };
 

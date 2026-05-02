@@ -1,7 +1,8 @@
 import { useAppContext } from "@/context/app-context";
 import { INote } from "@/models/notebook.model";
 import { IDragState, INoteListProps } from "@/types";
-import { FileText, Plus } from "lucide-react";
+import { cn } from "@/utils";
+import { Archive, FileText, Plus } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import Button from "../atoms/button";
@@ -14,6 +15,9 @@ const NoteList: React.FC<INoteListProps> = ({
   onAddNote,
   onDeleteNote,
   onTogglePin,
+  onToggleArchive,
+  showArchived,
+  onToggleShowArchived,
 }) => {
   const { dispatch } = useAppContext();
   const [dragState, setDragState] = useState<IDragState<INote> | null>(null);
@@ -59,6 +63,7 @@ const NoteList: React.FC<INoteListProps> = ({
       onSelect={onSelectNote}
       onDelete={onDeleteNote}
       onTogglePin={onTogglePin}
+      onToggleArchive={onToggleArchive}
       onCustomDragStart={(e) => handlePointerDown(e, note.id, note)}
       isHidden={dragState?.id === note.id && dragState.isDragging}
     />
@@ -150,13 +155,30 @@ const NoteList: React.FC<INoteListProps> = ({
         <h2 className="text-lg font-display font-bold text-heading_color flex items-center gap-2">
           <FileText className="w-5 h-5 text-primary_color" />
           Notes
+          <span className="bg-primary_color/10 text-primary_color text-sm px-2 py-0.5 rounded-full font-bold">
+            {notes.length}
+          </span>
         </h2>
-        <Button
-          onClick={() => onAddNote()}
-          className="p-1.5 rounded-xl bg-base_color border border-border_color shadow-sm text-primary_color hover:bg-primary_color/5 transition-colors cursor-pointer"
-        >
-          <Plus className="w-4 h-4" />
-        </Button>
+        <div className="flex items-center gap-1">
+          <Button
+            onClick={() => onToggleShowArchived(!showArchived)}
+            className={cn(
+              "p-1.5 rounded-xl transition-all border",
+              showArchived
+                ? "bg-amber-900 text-white border-amber-900"
+                : "bg-base_color border-border_color text-disable_color hover:text-amber-500 hover:border-amber-500/30",
+            )}
+            title={showArchived ? "Show Active Notes" : "Show Archived Notes"}
+          >
+            <Archive className="w-4 h-4" />
+          </Button>
+          <Button
+            onClick={() => onAddNote()}
+            className="p-1.5 rounded-xl bg-base_color border border-border_color shadow-sm text-primary_color hover:bg-primary_color/5 transition-colors cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
+          </Button>
+        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar relative">
@@ -227,6 +249,7 @@ const NoteList: React.FC<INoteListProps> = ({
                 onSelect={() => {}}
                 onDelete={() => {}}
                 onTogglePin={() => {}}
+                onToggleArchive={() => {}}
               />
             </div>
           </div>,

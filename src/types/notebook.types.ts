@@ -7,6 +7,9 @@ export interface INoteListProps {
   onAddNote: (content?: string) => void;
   onDeleteNote: (id: string) => void;
   onTogglePin: (id: string) => void;
+  onToggleArchive: (id: string) => void;
+  showArchived: boolean;
+  onToggleShowArchived: (val: boolean) => void;
 }
 
 export interface INoteEditorProps {
@@ -21,6 +24,7 @@ export interface INoteCardProps {
   onSelect: (id: string) => void;
   onDelete: (id: string) => void;
   onTogglePin: (id: string) => void;
+  onToggleArchive: (id: string) => void;
   onCustomDragStart?: (e: React.PointerEvent) => void;
   isHidden?: boolean;
 }

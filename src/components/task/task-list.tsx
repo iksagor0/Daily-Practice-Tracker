@@ -234,7 +234,7 @@ const TaskList: React.FC<ITaskListProps> = ({
       <div className="pt-8 mb-6 mt-8 border-t border-border_color">
         <h2 className="text-xl font-display font-bold text-heading_color tracking-tight flex items-center gap-2 mb-2">
           Completed
-          <span className="bg-success_bg_color text-success_color text-xs px-2.5 py-1 rounded-full font-bold">
+          <span className="bg-success_color/10 text-success_color text-xs px-2.5 py-1 rounded-full font-bold">
             {doneTasks.length}
           </span>
         </h2>
