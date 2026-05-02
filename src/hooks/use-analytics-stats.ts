@@ -37,7 +37,6 @@ export const useAnalyticsStats = (): IAnalyticsStats => {
     const todayObj = new Date(currentEffectiveDate);
 
     let totalEverTime = 0;
-    const daysRecorded = state.history.length;
     let rolling7Total = todayTime;
     let rolling30Total = todayTime;
 
@@ -63,9 +62,9 @@ export const useAnalyticsStats = (): IAnalyticsStats => {
     const lifetimeMins = totalEverTimeMinutes % 60;
 
     const overallAvg =
-      daysRecorded === 0
+      activeDays === 0
         ? todayTime
-        : Math.round((totalEverTime + todayTime) / (daysRecorded + 1));
+        : Math.round((totalEverTime + todayTime) / activeDays);
     const avgPct = Math.min((overallAvg / 120) * 100, 100);
     const weekPct = Math.min((rolling7Total / 840) * 100, 100);
     const monthPct = Math.min((rolling30Total / (120 * 30)) * 100, 100);
