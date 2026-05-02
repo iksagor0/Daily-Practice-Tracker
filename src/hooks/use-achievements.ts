@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState, useRef, useMemo } from "react";
-import confetti from "canvas-confetti";
 import { ACHIEVEMENTS, IAchievementDef } from "@/constants";
 import { useAppContext } from "@/context/app-context";
 import { getBDTime, getEffectiveBDDateStr } from "@/utils/time";
+import confetti from "canvas-confetti";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export const useAchievements = () => {
   const { state } = useAppContext();
@@ -46,10 +46,10 @@ export const useAchievements = () => {
     };
   }, [state.tasks, state.history]);
 
-  // Restore session storage shown state
+  // Restore localStorage shown state
   useEffect(() => {
     try {
-      const stored = sessionStorage.getItem("shownAchievements");
+      const stored = localStorage.getItem("shownAchievements");
       if (stored) {
         shownRef.current = new Set(JSON.parse(stored));
       }
@@ -59,13 +59,29 @@ export const useAchievements = () => {
   useEffect(() => {
     if (!state.isLoaded) return;
 
+    const dateStr = getEffectiveBDDateStr();
+    const monthStr = dateStr.substring(0, 7);
+
+    // Simple week key: find the most recent Monday
+    const dateObj = new Date(dateStr);
+    const day = dateObj.getDay();
+    const diff = dateObj.getDate() - day + (day === 0 ? -6 : 1);
+    const monday = new Date(dateObj.setDate(diff));
+    const weekStr = monday.toISOString().split("T")[0];
+
     for (const achievement of ACHIEVEMENTS) {
-      if (shownRef.current.has(achievement.id)) continue;
+      // Generate type-aware key
+      let trackingKey = achievement.id;
+      if (achievement.type === "daily") trackingKey += `_${dateStr}`;
+      else if (achievement.type === "weekly") trackingKey += `_${weekStr}`;
+      else if (achievement.type === "monthly") trackingKey += `_${monthStr}`;
+
+      if (shownRef.current.has(trackingKey)) continue;
 
       if (achievement.check(stats)) {
-        shownRef.current.add(achievement.id);
+        shownRef.current.add(trackingKey);
         try {
-          sessionStorage.setItem(
+          localStorage.setItem(
             "shownAchievements",
             JSON.stringify([...shownRef.current]),
           );
@@ -82,6 +98,7 @@ export const useAchievements = () => {
   return { activeToast };
 };
 
+// confetti animation burst
 function fireConfettiBurst() {
   const BURST_COLORS = [
     ["#ff0000", "#ff6600", "#ffcc00"],
