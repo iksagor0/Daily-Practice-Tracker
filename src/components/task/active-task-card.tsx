@@ -110,7 +110,7 @@ const ActiveTaskCard: React.FC<ITaskCardProps> = ({
 
           <Button
             onClick={() => onQuickDone && onQuickDone(task.id)}
-            title="Quick Done (0m)"
+            title="Move to Completed (0m)"
             className="w-8 h-8 sm:w-6 sm:h-6 flex-1 sm:flex-none flex py-2.5 sm:py-0 shrink-0 rounded-lg bg-base_color/50 border border-border_color text-disable_color hover:border-amber-400 hover:text-amber-500 hover:bg-amber-50 shadow-sm gap-1 sm:gap-0 whitespace-nowrap"
           >
             <ZapIcon className="w-4 h-4" />

@@ -59,7 +59,10 @@ type TAppAction =
       >;
     }
   | { type: "DELETE_TASK"; payload: string }
-  | { type: "COMPLETE_TASK"; payload: { id: string; timeSpent: number } }
+  | {
+      type: "COMPLETE_TASK";
+      payload: { id: string; timeSpent: number; repeatDaily?: boolean };
+    }
   | { type: "UNDO_TASK"; payload: string }
   | { type: "RUN_DAILY_RESET"; payload: string }
   | { type: "SET_THEME"; payload: IAppState["theme"] }
@@ -147,6 +150,10 @@ function appReducer(state: IAppState, action: TAppAction): IAppState {
                 status: "DONE",
                 actualTime: action.payload.timeSpent,
                 completedAt: Date.now(),
+                repeatDaily:
+                  action.payload.repeatDaily !== undefined
+                    ? action.payload.repeatDaily
+                    : t.repeatDaily,
               }
             : t,
         ),
