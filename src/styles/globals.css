@@ -121,20 +121,20 @@
   --color-secondary_color: #10b981;
 }
 
-[data-theme="nordic-dark"] {
-  --color-brand-500: #94a3b8;
-  --color-brand-600: #64748b;
-  --color-ui-bg: #1a1c1e;
-  --color-body_color: #1a1c1e;
-  --color-body_text_color: #e2e8f0;
-  --color-heading_color: #f8fafc;
-  --color-heading_color_secondary: #94a3b8;
-  --color-ui-card: rgba(30, 32, 35, 0.7);
+[data-theme="eye-comfort"] {
+  --color-brand-500: #d97706;
+  --color-brand-600: #b45309;
+  --color-ui-bg: #1c1b18;
+  --color-body_color: #1c1b18;
+  --color-body_text_color: #e6e4de;
+  --color-heading_color: #f5f4f0;
+  --color-heading_color_secondary: #9c9a92;
+  --color-ui-card: rgba(35, 34, 30, 0.7);
   --color-ui-border: rgba(255, 255, 255, 0.05);
-  --color-base_color: #2c2e33;
-  --color-border_color: #3e4147;
-  --color-primary_color_weak: rgba(148, 163, 184, 0.1);
-  --color-secondary_color: #576d65;
+  --color-base_color: #24231f;
+  --color-border_color: #33322d;
+  --color-primary_color_weak: rgba(217, 119, 6, 0.1);
+  --color-secondary_color: #6d5d4d;
 }
 
 [data-theme="slate-dark"] {
@@ -277,11 +277,11 @@ body::before {
     radial-gradient(at 100% 100%, #0ea5e9 0px, transparent 40%);
 }
 
-[data-theme="nordic-dark"] body::before {
+[data-theme="eye-comfort"] body::before {
   opacity: 0.1;
   background-image:
-    radial-gradient(at 0% 0%, #3e4147 0px, transparent 40%),
-    radial-gradient(at 100% 100%, #1a1c1e 0px, transparent 40%);
+    radial-gradient(at 0% 0%, #d97706 0px, transparent 40%),
+    radial-gradient(at 100% 100%, #1c1b18 0px, transparent 40%);
 }
 
 [data-theme="slate-dark"] body::before {

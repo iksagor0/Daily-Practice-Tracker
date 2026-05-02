@@ -31,7 +31,7 @@ interface IAppState {
     | "mint"
     | "lavender"
     | "midnight"
-    | "nordic-dark"
+    | "eye-comfort"
     | "slate-dark";
   resources: readonly IResource[];
   loadedFor: string | "guest" | null;
