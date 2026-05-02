@@ -61,7 +61,7 @@ const CompletedTaskCard: React.FC<ITaskCardProps> = ({
           <h3 className="font-bold text-heading_color_secondary text-base line-through leading-tight truncate w-full sm:w-auto opacity-70">
             {task.name}
           </h3>
-          <div className="text-emerald-600 font-bold text-xs flex items-center gap-1.5 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100 shrink-0 sm:ml-2">
+          <div className="text-success_color font-bold text-xs flex items-center gap-1.5 bg-success_bg_color px-2.5 py-1 rounded-full border border-success_border_color shrink-0 sm:ml-2">
             <TimerIcon className="w-3.5 h-3.5" /> {task.actualTime} min
           </div>
         </div>
@@ -93,7 +93,7 @@ const CompletedTaskCard: React.FC<ITaskCardProps> = ({
         <Button
           onClick={() => onUndo && onUndo(task.id)}
           title="Undo"
-          className="flex-1 sm:flex-none flex sm:w-10 sm:h-10 py-2.5 sm:py-0 shrink-0 gap-2 sm:gap-0 text-slate-400 font-semibold sm:font-normal hover:text-indigo-500 rounded-xl sm:rounded-full hover:bg-white/50 border border-transparent hover:border-slate-200 shadow-sm"
+          className="flex-1 sm:flex-none flex sm:w-10 sm:h-10 py-2.5 sm:py-0 shrink-0 gap-2 sm:gap-0 text-disable_color font-semibold sm:font-normal hover:text-primary_color rounded-xl sm:rounded-full hover:bg-base_color/50 border border-transparent hover:border-border_color shadow-sm"
         >
           <UndoIcon className="w-4 h-4" />{" "}
           <span className="sm:hidden text-sm">Undo</span>

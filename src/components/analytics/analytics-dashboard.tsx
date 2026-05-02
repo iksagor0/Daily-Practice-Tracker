@@ -203,12 +203,12 @@ const AnalyticsDashboard: React.FC = () => {
           {/* Daily Avg */}
           <div>
             <div className="flex justify-between items-end mb-1.5">
-              <span className="text-sm font-semibold text-slate-600">
+              <span className="text-sm font-semibold text-heading_color_secondary">
                 Daily Average
               </span>
-              <span className="text-sm font-bold text-slate-900">
+              <span className="text-sm font-bold text-heading_color">
                 <span>{stats.overallAvg}</span>{" "}
-                <span className="text-slate-500 font-normal">min</span>
+                <span className="text-disable_color font-normal">min</span>
               </span>
             </div>
             <div className="w-full bg-border_color/30 h-2 rounded-full overflow-hidden">
@@ -222,15 +222,15 @@ const AnalyticsDashboard: React.FC = () => {
           {/* Weekly Total */}
           <div>
             <div className="flex justify-between items-end mb-1.5">
-              <span className="text-sm font-semibold text-slate-600">
+              <span className="text-sm font-semibold text-heading_color_secondary">
                 This Week Total
               </span>
-              <span className="text-sm font-bold text-slate-900">
+              <span className="text-sm font-bold text-heading_color">
                 <span>{stats.rolling7Total}</span>{" "}
-                <span className="text-slate-500 font-normal">min</span>
+                <span className="text-disable_color font-normal">min</span>
               </span>
             </div>
-            <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+            <div className="w-full bg-border_color/30 h-2 rounded-full overflow-hidden">
               <div
                 className="bg-brand-400 h-full rounded-full transition-all duration-1000 delay-100"
                 style={{ width: mounted ? `${stats.weekPct}%` : "0%" }}
@@ -241,15 +241,15 @@ const AnalyticsDashboard: React.FC = () => {
           {/* Monthly Total */}
           <div>
             <div className="flex justify-between items-end mb-1.5">
-              <span className="text-sm font-semibold text-slate-600">
+              <span className="text-sm font-semibold text-heading_color_secondary">
                 This Month Total
               </span>
-              <span className="text-sm font-bold text-slate-900">
+              <span className="text-sm font-bold text-heading_color">
                 <span>{stats.rolling30Total}</span>{" "}
-                <span className="text-slate-500 font-normal">min</span>
+                <span className="text-disable_color font-normal">min</span>
               </span>
             </div>
-            <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+            <div className="w-full bg-border_color/30 h-2 rounded-full overflow-hidden">
               <div
                 className="bg-emerald-400 h-full rounded-full transition-all duration-1000 delay-200"
                 style={{ width: mounted ? `${stats.monthPct}%` : "0%" }}
@@ -281,23 +281,23 @@ const AnalyticsDashboard: React.FC = () => {
             <p className="text-xs font-bold text-disable_color uppercase tracking-wider mb-0.5">
               Active Days
             </p>
-            <p className="text-2xl font-display font-bold text-slate-800">
+            <p className="text-2xl font-display font-bold text-heading_color">
               {stats.activeDays}{" "}
-              <span className="text-sm font-medium text-slate-400">days</span>
+              <span className="text-sm font-medium text-disable_color">days</span>
             </p>
           </div>
-          <div className="bg-white/80 rounded-2xl p-4 border border-white text-center shadow-sm shadow-slate-100 group">
-            <div className="w-10 h-10 mx-auto bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300">
+          <div className="bg-base_color/80 rounded-2xl p-4 border border-border_color text-center shadow-sm shadow-base_color/10 group">
+            <div className="w-10 h-10 mx-auto bg-success_bg_color text-success_color rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300">
               <Clock className="w-5 h-5" />
             </div>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">
+            <p className="text-xs font-bold text-disable_color uppercase tracking-wider mb-0.5">
               Total Focus
             </p>
-            <p className="text-2xl font-display font-bold text-slate-800 leading-none mt-1">
+            <p className="text-2xl font-display font-bold text-heading_color leading-none mt-1">
               {stats.lifetimeHours}
-              <span className="text-sm font-medium text-slate-400 mr-2">h</span>
+              <span className="text-sm font-medium text-disable_color mr-2">h</span>
               {stats.lifetimeMins}
-              <span className="text-sm font-medium text-slate-400">m</span>
+              <span className="text-sm font-medium text-disable_color">m</span>
             </p>
           </div>
         </div>
